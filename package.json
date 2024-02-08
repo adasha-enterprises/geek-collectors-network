@@ -8,7 +8,11 @@
     "Rhys Mahannah <rmahannah@my.bcit.ca>"
   ],
   "license": "MIT",
-  "workspaces": [ ],
+  "workspaces": [
+    "apps/api",
+    "apps/frontend",
+    "packages/example-package"
+  ],
   "engines": {
     "node": ">=18.0.0"
   },
