@@ -17,7 +17,7 @@ if [ -z "$SERVICE" ]; then
   exit 1
 fi
 
-if ! echo "$VALID_SERVICES" | grep -qE "$SERVICE$"; then
+if ! echo "$VALID_SERVICES" | grep -qE "$SERVICE\$"; then
   echo "Invalid service: $SERVICE"
   fn_display_services $VALID_SERVICES
   exit 1
