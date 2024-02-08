@@ -7,5 +7,37 @@
     "Ben Chiang <bchiang10@my.bcit.ca>",
     "Toco Tachibana <ttachibana@my.bcit.ca>",
     "Rhys Mahannah <rmahannah@my.bcit.ca>"
-  ]
+  ],
+  "devDependencies": {
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "autoprefixer": "^10.4.17",
+    "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^6.10.0",
+    "fork-ts-checker-webpack-plugin": "^9.0.2",
+    "html-webpack-plugin": "^5.6.0",
+    "mini-css-extract-plugin": "^2.8.0",
+    "postcss": "^8.4.35",
+    "postcss-loader": "^8.1.0",
+    "postcss-prettify": "^0.3.4",
+    "postcss-scss": "^4.0.9",
+    "sass": "^1.70.0",
+    "sass-loader": "^14.1.0",
+    "style-loader": "^3.3.4",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.2.2",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "start": "npm run dist/index.js",
+    "start:dev": "webpack serve"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.1"
+  }
 }
