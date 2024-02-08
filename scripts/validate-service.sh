@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 SERVICE=$1
 VALID_SERVICES=${@:2}
