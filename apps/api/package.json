@@ -34,6 +34,7 @@
     "build": "tsc && tsc-alias",
     "start": "npm run dist/index.js",
     "start:dev": "nodemon -x 'node -r dotenv/config -r ts-node/register -r tsconfig-paths/register' src/ --watch src/ --ext ts,json",
+    "lint": "eslint --ext ts src/ && tsc --noEmit -p tsconfig.json",
     "migrate": "drizzle-kit generate:pg"
   }
 }
