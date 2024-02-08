@@ -7,7 +7,6 @@
     "Toco Tachibana <ttachibana@my.bcit.ca>",
     "Rhys Mahannah <rmahannah@my.bcit.ca>"
   ],
-  "license": "MIT",
   "workspaces": [
     "apps/api",
     "apps/frontend",
