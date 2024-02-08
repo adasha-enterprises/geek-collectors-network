@@ -1,0 +1,118 @@
+# ========================== VARIABLES ==========================
+x-api-args: &api-args
+  NAME: api
+  DOCKER_NODE_VERSION: 18.17.0-slim
+  DOCKER_UBUNTU_VERSION: jammy-20230624
+
+x-frontend-args: &frontend-args
+  NAME: frontend
+  DOCKER_NODE_VERSION: 18.17.0-slim
+  DOCKER_UBUNTU_VERSION: jammy-20230624
+
+
+services:
+# ========================== PRODUCTION ==========================
+  api-prod:
+    build:
+      dockerfile: ./docker/Dockerfile.backend
+      target: production
+      args: *api-args
+
+  frontend-prod:
+    build:
+      dockerfile: ./docker/Dockerfile.web
+      target: production
+      args: *frontend-args
+
+
+# ========================== DEVELOPMENT ==========================
+  api-dev:
+    build:
+      dockerfile: ./docker/Dockerfile.backend
+      target: development
+      args: *api-args
+    env_file:
+      - ./apps/api/.env
+    environment:
+      POSTGRES_HOST: postgres-dev
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: geekcollectorsnetwork
+    ports:
+      - ${API_PORT:-3000}:${API_PORT:-3000}
+    restart: unless-stopped
+    volumes:
+      - ./apps/api:/app/api:ro
+    depends_on:
+      - postgres-dev
+
+  frontend-dev:
+    build:
+      dockerfile: ./docker/Dockerfile.web
+      target: development
+      args: *frontend-args
+    env_file:
+      - ./apps/frontend/.env
+    environment:
+      PORT: ${FE_PORT:-80}
+    ports:
+      - ${FE_PORT:-80}:${FE_PORT:-80}
+    restart: unless-stopped
+    volumes:
+      - ./apps/frontend:/app/frontend:ro
+
+  postgres-dev:
+    image: postgres:16.1
+    environment:
+      POSTGRES_PASSWORD: dev
+    volumes:
+      # This volume is pretty redundant, but if the postgres server crashed
+      # during dev, it'll be nice not to lose the data you were working
+      # with.
+      - postgres-dev-ephemeral:/var/lib/postgresql/data
+      - ./docker/postgres/initdb:/docker-entrypoint-initdb.d
+
+  pgadmin-dev:
+    image: dpage/pgadmin4:8.2
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dev@localhost.lan
+      PGADMIN_DEFAULT_PASSWORD: dev
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    volumes:
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
+    ports:
+      - 5433:80
+    depends_on:
+      - postgres-dev
+
+volumes:
+  postgres-dev-ephemeral: {}
+
+# ========================== TEMPLATES ==========================
+# A list of templates for apps and packages
+# x-example-app-args: &example-app-args
+#   NAME: example-app
+#   DOCKER_NODE_VERSION: 18.17.0-slim
+#   DOCKER_UBUNTU_VERSION: jammy-20230624
+
+# _app-dev:
+#   build:
+#     dockerfile: ./docker/Dockerfile.backend
+#     target: development
+#     args: *_app-args
+#   restart: unless-stopped
+#   volumes:
+#     - ./apps/_app:/app/_app:ro
+#   depends_on:
+#     - _package-dev
+
+# _package-dev:
+#   build:
+#     dockerfile: ./docker/Dockerfile.package
+#     target: builder
+#     args: *_package-args
+#   restart: unless-stopped
+#   volumes:
+#     - ./packages/_package:/packages/_package:ro

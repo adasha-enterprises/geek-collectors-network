@@ -1,6 +1,49 @@
+PROJECT = geek-collectors-network
+
+COMPOSE_FILE = ./docker-compose.yml
+COMPOSE = docker compose -p $(PROJECT) -f $(COMPOSE_FILE)
+
 MAKEFLAGS += --no-print-directory
 
-.PHONY: install
+.PHONY: soft-prune check-valid-service logs down build run dev prod install
+
+############## DOCKER PRUNING ##########
+
+# Removes dangling images and containers.
+soft-prune:
+	docker image prune -f && \
+	docker container prune -f
+
+###### UTILITIES ##########
+
+check-valid-service:
+	@./scripts/validate-service.sh $(SERVICE) $(shell $(COMPOSE) config --services)
+
+########## MANAGEMENT ##########
+
+logs:
+	$(COMPOSE) logs -f $(SERVICE)
+
+down:
+	$(COMPOSE) down --remove-orphans $(shell $(COMPOSE) config --services | grep -vE "dev-container") -t 1
+# Remove all docker volumes that end with `-ephemeral`
+	-docker volume rm $(shell docker volume ls -q | grep -E "$(PROJECT)_.*\-ephemeral$$")
+
+build:
+	$(COMPOSE) build $(shell $(COMPOSE) config --services | grep -E "($(SERVICE)|common)$$")
+
+########## LAUNCH ##########
+
+run: soft-prune check-valid-service build down
+	$(COMPOSE) up -d $(shell $(COMPOSE) config --services | grep -E "($(SERVICE)|common)$$")
+
+dev:
+	$(MAKE) run SERVICE=dev
+
+prod:
+	$(MAKE) run SERVICE=prod
+
+########## OTHER ##########
 
 install:
 	npm install -ws
