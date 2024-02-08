@@ -1,0 +1,18 @@
+{
+  "name": "@Geek-Collectors-Network/geek-collectors-network",
+  "private": true,
+  "authors": [
+    "Terence Grigoruk <tgrigoruk@my.bcit.ca>",
+    "Ben Chiang <bchiang10@my.bcit.ca>",
+    "Toco Tachibana <ttachibana@my.bcit.ca>",
+    "Rhys Mahannah <rmahannah@my.bcit.ca>"
+  ],
+  "license": "MIT",
+  "workspaces": [ ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "npm run build -w packages --if-present && npm run build -w apps --if-present"
+  }
+}
