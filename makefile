@@ -5,14 +5,7 @@ COMPOSE = docker compose -p $(PROJECT) -f $(COMPOSE_FILE)
 
 MAKEFLAGS += --no-print-directory
 
-.PHONY: soft-prune check-valid-service logs down build run dev prod install
-
-############## DOCKER PRUNING ##########
-
-# Removes dangling images and containers.
-soft-prune:
-	docker image prune -f && \
-	docker container prune -f
+.PHONY: check-valid-service logs down build run dev prod install
 
 ###### UTILITIES ##########
 
@@ -34,7 +27,7 @@ build:
 
 ########## LAUNCH ##########
 
-run: soft-prune check-valid-service build down
+run: check-valid-service build down
 	$(COMPOSE) up -d $(shell $(COMPOSE) config --services | grep -E "($(SERVICE)|common)$$")
 
 dev:
