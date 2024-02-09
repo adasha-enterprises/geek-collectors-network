@@ -1,0 +1,21 @@
+ARG NAME
+ARG USER=node
+ARG WORKSPACE=/app
+
+ARG DOCKER_NODE_VERSION=latest
+
+# ========================== BUILDER STAGE ==========================
+FROM --platform=linux/amd64 node:${DOCKER_NODE_VERSION} AS builder
+ARG NAME
+ARG WORKSPACE
+WORKDIR ${WORKSPACE}
+
+COPY ./packages/${NAME}/package.json ./
+COPY ./package-lock.json ./
+RUN npm install
+
+WORKDIR ${WORKSPACE}/lib
+COPY ./packages/${NAME} ./
+RUN npm run build
+
+CMD ["npm", "run", "build:watch"]

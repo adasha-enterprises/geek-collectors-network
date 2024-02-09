@@ -1,0 +1,29 @@
+{
+  "name": "@Geek-Collectors-Network/geek-collectors-network",
+  "private": true,
+  "authors": [
+    "Terence Grigoruk <tgrigoruk@my.bcit.ca>",
+    "Ben Chiang <bchiang10@my.bcit.ca>",
+    "Toco Tachibana <ttachibana@my.bcit.ca>",
+    "Rhys Mahannah <rmahannah@my.bcit.ca>"
+  ],
+  "workspaces": [
+    "apps/api",
+    "apps/frontend",
+    "packages/example-package"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "npm run build -w packages --if-present && npm run build -w apps --if-present",
+    "lint": "npm run lint -w packages --if-present && npm run lint -w apps --if-present"
+  },
+  "devDependencies": {
+    "@forvais/eslint-config-base": "^1.0.0",
+    "@forvais/eslint-config-node": "^1.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "eslint": "^8.56.0"
+  }
+}
