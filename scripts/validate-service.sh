@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SERVICE=$1
-VALID_SERVICES=${@:2}
+VALID_SERVICES=$(docker compose config --services)
 
 fn_display_services() {
   echo -e "\nPlease use one of the valid services below:"
@@ -17,7 +17,7 @@ if [ -z "$SERVICE" ]; then
   exit 1
 fi
 
-if ! echo "$VALID_SERVICES" | grep -qE "$SERVICE\$"; then
+if ! echo "$VALID_SERVICES" | grep -qE "$SERVICE"; then
   echo "Invalid service: $SERVICE"
   fn_display_services $VALID_SERVICES
   exit 1

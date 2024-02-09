@@ -10,7 +10,7 @@ MAKEFLAGS += --no-print-directory
 ###### UTILITIES ##########
 
 check-valid-service:
-	@./scripts/validate-service.sh $(SERVICE) $(shell $(COMPOSE) config --services)
+	@./scripts/validate-service.sh $(SERVICE)
 
 ########## MANAGEMENT ##########
 
