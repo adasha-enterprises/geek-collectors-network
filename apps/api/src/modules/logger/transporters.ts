@@ -6,6 +6,7 @@ const logDirectory = path.join(__dirname, '..', '..', '..', 'logs');
 const logFilepath = path.join(logDirectory, 'info.log');
 const errorLogFilepath = path.join(logDirectory, 'error.log');
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formatMessage = (message: any): string => {
   if (typeof message === 'object') {
     return JSON.stringify(message, null, 2);

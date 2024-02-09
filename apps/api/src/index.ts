@@ -1,3 +1,5 @@
+/* eslint-disable prefer-destructuring */
+
 import path from 'path';
 
 import { drizzle } from 'drizzle-orm/postgres-js';
@@ -30,7 +32,7 @@ import { logger } from './modules/logger';
   /* ====== SERVER ====== */
 
   const HOST: string = process.env.API_HOST || '0.0.0.0';
-  const PORT: number = parseInt(process.env.API_PORT || '3000');
+  const PORT: number = parseInt(process.env.API_PORT || '3000', 10);
 
   if (!process.env.API_HOST) logger.warn('No API_HOST environment variable detected. Defaulting to 0.0.0.0');
   if (!process.env.API_PORT) logger.warn('No API_PORT environment variable detected. Defaulting to 3000');

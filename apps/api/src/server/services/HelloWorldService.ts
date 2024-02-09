@@ -8,9 +8,8 @@ import { BaseService, type Resources } from './Service';
   * or even user validation! It doesn't care!
   */
 export class HelloWorldController {
-  constructor(
-    private readonly resources: Resources
-  ) {}
+  // eslint-disable-next-line no-useless-constructor
+  constructor(private readonly resources: Resources) {}
 
   public greet(user: string) {
     return `Hello, ${user}!`;

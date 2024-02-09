@@ -16,7 +16,7 @@ export class Server {
   public static readonly VERSIONS = VERSIONS;
 
   private readonly app: express.Application;
-  private server: ReturnType<(typeof this.app)['listen']> | null = null;
+  private server: ReturnType<express.Application['listen']> | null = null;
 
   constructor() {
     this.app = express();
@@ -29,7 +29,7 @@ export class Server {
     }));
 
     this.app.get('/health', (_, res) => res.status(200).json({
-      msg: 'OK'
+      msg: 'OK',
     }));
   }
 

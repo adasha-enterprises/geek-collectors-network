@@ -40,7 +40,7 @@ export type RequiredResources = {
   *
   * The utility of this is debatable, but it's here in case we want to use it.
   */
-export type Resources = Readonly<RequiredResources & Record<string, any>>;
+export type Resources = Readonly<RequiredResources & Record<string, unknown>>;
 
 export class BaseService {
   /**
