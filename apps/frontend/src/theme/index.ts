@@ -7,7 +7,7 @@ const theme = extendTheme({
     primaryBlack: 'black',
     primaryWhite: 'white',
   },
-  font: {
+  fonts: {
     primaryFont: "'IBM Plex Mono', monospace",
   },
 });

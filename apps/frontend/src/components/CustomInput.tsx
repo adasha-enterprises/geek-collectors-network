@@ -10,7 +10,7 @@ function CustomInput(props: InputProps) {
       border={"3px solid"}
       borderColor={theme.colors.primaryOrange}
       _placeholder={{
-        fontFamily: theme.font.primaryFont,
+        fontFamily: theme.fonts.primaryFont,
         opacity: 1,
         color: "black",
       }}

@@ -1,5 +1,4 @@
 import React from "react";
-
 import CustomInput from "./CustomInput";
 import RegistrationCard from "./RegistrationCard";
 import CustomButton from "./CustomButton";
