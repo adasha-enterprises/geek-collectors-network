@@ -6,6 +6,7 @@ const theme = extendTheme({
     primaryOrange: '#ff6000',
     primaryBlack: 'black',
     primaryWhite: 'white',
+    customHoverYellow: '#FFD84D',
   },
   fonts: {
     primaryFont: "'IBM Plex Mono', monospace",
