@@ -7,11 +7,15 @@ function CustomButton(props: ButtonProps) {
   return (
     <Button
       color={theme.colors.primaryWhite}
+      fontFamily={theme.font.primaryFont}
       backgroundColor={theme.colors.primaryPurple}
+      size={"lg"}
       borderRadius={5}
       boxShadow={`5px 5px ${theme.colors.primaryPurple}`}
       border={"3px solid"}
       borderColor={theme.colors.primaryBlack}
+      _hover={{ backgroundColor: "#BFB9FA" }}
+      _placeholder={{ opacity: 1, color: "black " }}
       {...props}
     ></Button>
   );
