@@ -14,7 +14,6 @@ function CustomButton(props: ButtonProps) {
       boxShadow={`5px 5px ${theme.colors.primaryPurple}`}
       border={"3px solid"}
       borderColor={theme.colors.primaryBlack}
-      _hover={{ backgroundColor: "#BFB9FA" }}
       _placeholder={{ opacity: 1, color: "black " }}
       {...props}
     ></Button>
