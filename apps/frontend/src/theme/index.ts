@@ -7,6 +7,9 @@ const theme = extendTheme({
     primaryBlack: 'black',
     primaryWhite: 'white',
   },
+  font: {
+    primaryFont: "'IBM Plex Mono', monospace",
+  },
 });
 
 export default theme;

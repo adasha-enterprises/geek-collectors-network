@@ -7,9 +7,15 @@ function CustomInput(props: InputProps) {
   return (
     <Input
       margin={2} // Default margin
-      padding={2} // Default padding
       border={"3px solid"}
       borderColor={theme.colors.primaryOrange}
+      _placeholder={{
+        fontFamily: theme.font.primaryFont,
+        opacity: 1,
+        color: "black",
+      }}
+      _hover={{ backgroundColor: "#FFD84D" }}
+      focusBorderColor={theme.colors.primary_orange}
       isRequired={true}
       borderRadius={5}
       boxShadow={`5px 5px ${theme.colors.primaryOrange}}`}
