@@ -34,18 +34,19 @@ services:
     env_file:
       - ./apps/api/.env
     environment:
-      POSTGRES_HOST: postgres-dev
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: dev
-      POSTGRES_DB: geekcollectorsnetwork
+      DATABASE_HOST: mysql-dev
+      DATABASE_PORT: 3306
+      DATABASE_USER: root
+      DATABASE_PASSWORD: dev
+      DATABASE_NAME: GeekCollectorsNetwork
     ports:
       - ${API_PORT:-3000}:${API_PORT:-3000}
     restart: unless-stopped
     volumes:
       - ./apps/api:/app/api:ro
     depends_on:
-      - postgres-dev
+      mysql-dev:
+        condition: service_healthy
 
   frontend-dev:
     build:
@@ -62,33 +63,37 @@ services:
     volumes:
       - ./apps/frontend:/app/frontend:ro
 
-  postgres-dev:
-    image: postgres:16.1
+  mysql-dev:
+    image: mysql:8.3.0
     environment:
-      POSTGRES_PASSWORD: dev
+      MYSQL_ROOT_PASSWORD: dev
     volumes:
-      # This volume is pretty redundant, but if the postgres server crashed
+      # This volume is pretty redundant, but if the database crashed
       # during dev, it'll be nice not to lose the data you were working
       # with.
-      - postgres-dev-ephemeral:/var/lib/postgresql/data
-      - ./docker/postgres/initdb:/docker-entrypoint-initdb.d
+      - mysql-dev-ephemeral:/var/lib/mysql
+      - ./docker/mysql/initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
 
-  pgadmin-dev:
-    image: dpage/pgadmin4:8.2
+  phpmyadmin-dev:
+    image: phpmyadmin:5.2.1
     environment:
-      PGADMIN_DEFAULT_EMAIL: dev@localhost.lan
-      PGADMIN_DEFAULT_PASSWORD: dev
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
-    volumes:
-      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
+      PMA_USER: root
+      PMA_PASSWORD: dev
+    links:
+      - mysql-dev:db
     ports:
-      - 5433:80
+      - 3307:80
     depends_on:
-      - postgres-dev
+      mysql-dev:
+        condition: service_healthy
 
 volumes:
-  postgres-dev-ephemeral: {}
+  mysql-dev-ephemeral: {}
 
 # ========================== TEMPLATES ==========================
 # A list of templates for apps and packages

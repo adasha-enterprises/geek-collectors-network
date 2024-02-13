@@ -1,4 +1,4 @@
-import type { drizzle } from 'drizzle-orm/postgres-js';
+import type { drizzle } from 'drizzle-orm/mysql2';
 
 import express from 'express';
 
