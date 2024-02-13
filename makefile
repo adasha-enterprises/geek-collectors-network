@@ -39,5 +39,5 @@ prod:
 ########## OTHER ##########
 
 install:
-	npm install -ws
+	npm install && npm install -ws
 	npm run build
