@@ -34,7 +34,7 @@
     "build": "tsc && tsc-alias",
     "start": "npm run dist/index.js",
     "start:dev": "webpack serve",
-    "lint": "eslint --ext ts src/ && tsc --noEmit -p tsconfig.json"
+    "lint": "eslint --ext ts,tsx src/ && tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
