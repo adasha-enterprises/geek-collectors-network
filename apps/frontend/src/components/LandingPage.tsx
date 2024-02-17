@@ -34,7 +34,7 @@ function LandingPage() {
       spacing={4}
       w="100vw"
       h="100vh"
-      bg="background.900"
+      bg="brand.500"
       align="center"
       justify="center">
 
