@@ -6,11 +6,9 @@ import theme from './theme/theme';
 
 const container = document.getElementById('__react_app__');
 const root = createRoot(container!);
-root.render(
-	<React.StrictMode>
-		<ChakraProvider theme={theme}>
-			<App />
-		</ChakraProvider>
-	</React.StrictMode>
-);
+root.render(<React.StrictMode>
+  <ChakraProvider theme={theme}>
+    <App />
+  </ChakraProvider>
+</React.StrictMode>);
 

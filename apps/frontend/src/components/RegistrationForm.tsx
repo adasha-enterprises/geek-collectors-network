@@ -1,46 +1,126 @@
 import React from 'react';
 import {
-	FormControl,
-	FormLabel,
-	Input,
-	Button,
-	VStack,
-	HStack,
-	Checkbox,
+  FormControl,
+  FormLabel,
+  FormHelperText,
+  FormErrorMessage,
+  Input,
+  Button,
+  HStack,
+  Checkbox,
 } from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object({
+  firstName: Yup.string()
+    .max(20, 'Must be 20 characters or less.')
+    .required('Please enter your first name.'),
+  lastName: Yup.string()
+    .max(20, 'Must be 20 characters or less.')
+    .required('Please enter your last name.'),
+  email: Yup.string()
+    .email('Invalid email address.')
+    .required('Please enter your email.'),
+  password: Yup.string()
+    .min(8, 'Must be at least 8 characters.')
+    .required('Please enter your password.'),
+});
 
 function RegistrationForm() {
-	return (
-		<VStack spacing={8} w={{ base: '100%', md: '80%', lg: '50%' }}>
-			<FormControl id='first-name'>
-				<FormLabel>First name:</FormLabel>
-				<Input type='text' />
-			</FormControl>
-			<FormControl id='last-name'>
-				<FormLabel>Last name:</FormLabel>
-				<Input type='text' />
-			</FormControl>
-			<FormControl id='email'>
-				<FormLabel>Email:</FormLabel>
-				<Input type='email' />
-				{/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-			</FormControl>
-			<FormControl id='password'>
-				<FormLabel>Password:</FormLabel>
-				<Input type='password' />
-				{/* <FormHelperText>Must be at least 8 characters.</FormHelperText> */}
-			</FormControl>
-			<HStack w={'100%'} justify={'space-around'}>
-				<Checkbox size={['sm', 'md']}>Remember me</Checkbox>
-				<Button size={['sm', 'md']} colorScheme='brand' variant='link'>
-					Forgot password?
-				</Button>
-			</HStack>
-			<Button w={'100%'} colorScheme='brand' variant='solid' mt={8} p={6}>
-				SIGN UP
-			</Button>
-		</VStack>
-	);
+  const formik = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+    },
+    validationSchema,
+    onSubmit: values => {
+      console.log(values);
+    },
+  });
+
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <FormControl
+        id="firstName"
+        isInvalid={!!(formik.errors.firstName && formik.touched.firstName)}
+      >
+        <FormLabel>First name:</FormLabel>
+        <Input
+          type="text"
+          focusBorderColor="brand.600"
+          value={formik.values.firstName}
+          onChange={formik.handleChange}
+        />
+        <FormErrorMessage>{formik.errors.firstName}</FormErrorMessage>
+      </FormControl>
+      <FormControl
+        id="lastName"
+        isInvalid={!!(formik.errors.lastName && formik.touched.lastName)}
+      >
+        <FormLabel>Last name:</FormLabel>
+        <Input
+          type="text"
+          focusBorderColor="brand.600"
+          value={formik.values.lastName}
+          onChange={formik.handleChange}
+        />
+        <FormErrorMessage>{formik.errors.lastName}</FormErrorMessage>
+      </FormControl>
+      <FormControl
+        id="email"
+        isInvalid={!!(formik.errors.email && formik.touched.email)}
+      >
+        <FormLabel>Email:</FormLabel>
+        <Input
+          type="email"
+          focusBorderColor="brand.600"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+        />
+        <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+      </FormControl>
+      <FormControl
+        id="password"
+        isInvalid={!!(formik.errors.password && formik.touched.password)}
+      >
+        <FormLabel>Password:</FormLabel>
+        <Input
+          type="password"
+          focusBorderColor="brand.600"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+        />
+        <FormHelperText>Must be at least 8 characters.</FormHelperText>
+        <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+      </FormControl>
+      <HStack w={'100%'} justify={'space-around'}>
+        <Checkbox size={['sm', 'md']}>Remember me</Checkbox>
+        <Button
+          as="a"
+          href="#"
+          size={['sm', 'md']}
+          colorScheme="brand"
+          variant="link"
+        >
+          Forgot password?
+        </Button>
+      </HStack>
+      <Button
+        type="submit"
+        w={'100%'}
+        colorScheme="brand"
+        variant="solid"
+        mt={8}
+        p={6}
+        disabled={formik.isSubmitting}
+      >
+        SIGN UP
+      </Button>
+    </form>
+  );
 }
 
 export default RegistrationForm;
