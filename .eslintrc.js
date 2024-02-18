@@ -42,7 +42,7 @@ module.exports = {
   settings: {
     react: {
       version: 'detect',
-    }
+    },
   },
   ignorePatterns: ['node_modules/', 'build/'],
   overrides: [
@@ -50,15 +50,15 @@ module.exports = {
       files: ['*.ts', '*.tsx', '*.d.ts'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
-        ecmaFeatures: {
-          jsx: true
-        }
+        'ecmaFeatures': {
+          jsx: true,
+        },
       },
       plugins: ['@typescript-eslint/eslint-plugin', 'react'],
       extends: [
         '@forvais/eslint-config-base',
         'plugin:@typescript-eslint/recommended',
-        'plugin:react/recommended'
+        'plugin:react/recommended',
       ],
       rules: tsRules,
     },

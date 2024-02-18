@@ -24,6 +24,7 @@ module.exports = {
     static: DIST_PATH,
     hot: true,
     port: process.env.PORT,
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -40,6 +41,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.resolve(TEMPLATES_PATH, 'index.html'),
+      base: '/',
     }),
     // new CopyPlugin({
     //   patterns: [{ from: PUBLIC_PATH, to: DIST_PATH }],
