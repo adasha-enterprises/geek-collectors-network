@@ -8,19 +8,11 @@ ARG DOCKER_NODE_VERSION=latest
 ARG DOCKER_UBUNTU_VERSION=latest
 
 # ========================== NODE STAGE ==========================
-FROM --platform=linux/amd64 node:${DOCKER_NODE_VERSION} AS node
-# Copy all the required libraries for Node to run in a scratch container
-RUN mkdir -p /node-deps/lib/x86_64-linux-gnu \
-      /node-deps/usr/lib/x86_64-linux-gnu \
-      /node-deps/lib64 \
-    && ldd $(which node) \
-      | grep '=>' \
-      | awk '{ print $3 }' \
-      | xargs -I '{}' cp -v '{}' /node-deps'{}'
+FROM node:${DOCKER_NODE_VERSION} AS node
 
 
 # ========================== PACKAGES STAGE ==========================
-FROM --platform=linux/amd64 node:${DOCKER_NODE_VERSION} AS packages
+FROM node:${DOCKER_NODE_VERSION} AS packages
 ARG USER
 ARG WORKSPACE
 WORKDIR ${WORKSPACE}
@@ -32,7 +24,7 @@ RUN npm install -ws \
 
 
 # ========================== BASE STAGE ==========================
-FROM --platform=linux/amd64 ubuntu:${DOCKER_UBUNTU_VERSION} AS base
+FROM ubuntu:${DOCKER_UBUNTU_VERSION} AS base
 ARG NAME
 ARG WORKSPACE
 ARG USER
@@ -64,7 +56,7 @@ RUN npm install --omit=dev
 
 
 # ========================== DEVELOPMENT STAGE ==========================
-FROM --platform=linux/amd64 base AS development
+FROM base AS development
 ARG NAME
 
 ENV NODE_ENV=development
@@ -81,7 +73,7 @@ CMD ["npm", "run", "start:dev"]
 
 
 # ========================== BUILD STAGE ==========================
-FROM --platform=linux/amd64 base AS build
+FROM base AS build
 ARG NAME
 
 ARG WORKSPACE
@@ -95,7 +87,7 @@ RUN rm -rf build/ \
 
 
 # ========================== PRODUCTION STAGE ==========================
-FROM --platform=linux/amd64 scratch AS production
+FROM node:${DOCKER_NODE_VERSION} AS production
 ARG NAME
 
 ARG WORKSPACE
@@ -105,11 +97,6 @@ ENV NODE_ENV=production
 
 # Copy Tini
 COPY --from=base /usr/bin/tini /usr/bin/tini
-
-# Copy necessary libraries to run Node in a scratch container
-COPY --from=node /node-deps/ /
-COPY --from=node /usr/local/bin/node /usr/local/bin/node
-COPY --from=node /lib64/ld-linux-x86-64.so.2 /lib64/
 
 # Copy build artifacts
 COPY --from=build --chown=${USER}:${USER} ${WORKSPACE}/${NAME}/dist ${WORKSPACE}/${NAME}/dist

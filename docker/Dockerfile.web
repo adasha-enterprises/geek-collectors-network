@@ -9,10 +9,10 @@ ARG DOCKER_UBUNTU_VERSION=latest
 ARG DOCKER_NGINX_VERSION=latest
 
 # ========================== NODE STAGE ==========================
-FROM --platform=linux/amd64 node:${DOCKER_NODE_VERSION} AS node
+FROM node:${DOCKER_NODE_VERSION} AS node
 
 # ========================== PACKAGES STAGE ==========================
-FROM --platform=linux/amd64 node:${DOCKER_NODE_VERSION} AS packages
+FROM node:${DOCKER_NODE_VERSION} AS packages
 ARG USER
 ARG WORKSPACE
 WORKDIR ${WORKSPACE}
@@ -24,7 +24,7 @@ RUN npm install -ws \
 
 
 # ========================== BASE STAGE ==========================
-FROM --platform=linux/amd64 ubuntu:${DOCKER_UBUNTU_VERSION} AS base
+FROM ubuntu:${DOCKER_UBUNTU_VERSION} AS base
 ARG NAME
 ARG WORKSPACE
 ARG USER
@@ -56,7 +56,7 @@ RUN npm install --omit=dev
 
 
 # ========================== DEVELOPMENT STAGE ==========================
-FROM --platform=linux/amd64 base AS development
+FROM base AS development
 ARG NAME
 
 ENV NODE_ENV=development
@@ -73,7 +73,7 @@ CMD ["npm", "run", "start:dev"]
 
 
 # ========================== BUILD STAGE ==========================
-FROM --platform=linux/amd64 base AS build
+FROM base AS build
 ARG NAME
 
 ARG WORKSPACE
@@ -87,7 +87,7 @@ RUN rm -rf build/ \
 
 
 # ========================== PRODUCTION STAGE ==========================
-FROM --platform=linux/amd64 nginx:${DOCKER_NGINX_VERSION} AS production
+FROM nginx:${DOCKER_NGINX_VERSION} AS production
 ARG NAME
 ARG WORKSPACE
 
