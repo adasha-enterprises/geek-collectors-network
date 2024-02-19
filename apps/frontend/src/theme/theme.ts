@@ -23,15 +23,6 @@ export const theme = extendTheme({
     body: 'Montserrat, sans-serif',
     heading: 'Montserrat, sans-serif',
   },
-  styles: {
-    global: {
-      form: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-      },
-    },
-  },
 });
 
 export default theme;
