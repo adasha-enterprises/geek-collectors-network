@@ -1,10 +1,10 @@
-import path from 'path';
+// import path from 'path';
 
 import winston, { format } from 'winston';
 
-const logDirectory = path.join(__dirname, '..', '..', '..', 'logs');
-const logFilepath = path.join(logDirectory, 'info.log');
-const errorLogFilepath = path.join(logDirectory, 'error.log');
+// const logDirectory = path.join(__dirname, '..', '..', '..', 'logs');
+// const logFilepath = path.join(logDirectory, 'info.log');
+// const errorLogFilepath = path.join(logDirectory, 'error.log');
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formatMessage = (message: any): string => {
@@ -21,16 +21,16 @@ const consoleFormat = format.combine(
   format.printf(({ level, message, timestamp, stack }) => `[${timestamp}/${level.toUpperCase()}]: ${stack || formatMessage(message)}`),
 );
 
-const fileFormat = format.combine(
-  format.timestamp(),
-  format.json(),
-);
+// const fileFormat = format.combine(
+//   format.timestamp(),
+//   format.json(),
+// );
 
-const errorFileFormat = format.combine(
-  format.errors({ stack: true }),
-  fileFormat,
-);
+// const errorFileFormat = format.combine(
+//   format.errors({ stack: true }),
+//   fileFormat,
+// );
 
 export const ConsoleTransporter = new winston.transports.Console({ format: consoleFormat, level: 'info' });
-export const LogFileTransporter = new winston.transports.File({ format: fileFormat, filename: logFilepath, level: 'info' });
-export const ErrorFileTransporter = new winston.transports.File({ format: errorFileFormat, filename: errorLogFilepath, level: 'error' });
+// export const LogFileTransporter = new winston.transports.File({ format: fileFormat, filename: logFilepath, level: 'info' });
+// export const ErrorFileTransporter = new winston.transports.File({ format: errorFileFormat, filename: errorLogFilepath, level: 'error' });

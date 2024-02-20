@@ -31,8 +31,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "scripts": {
-    "build": "tsc && tsc-alias",
-    "start": "npm run dist/index.js",
+    "build": "webpack",
     "start:dev": "webpack serve",
     "lint": "eslint --ext ts,tsx src/ && tsc --noEmit -p tsconfig.json"
   },

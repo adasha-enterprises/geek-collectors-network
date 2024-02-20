@@ -15,7 +15,7 @@ enum VERSIONS {
 export class Server {
   public static readonly VERSIONS = VERSIONS;
 
-  private readonly app: express.Application;
+  public readonly app: express.Application;
   private server: ReturnType<express.Application['listen']> | null = null;
 
   constructor() {
