@@ -16,8 +16,8 @@ function LandingPage() {
         src="gcn_logo.svg"
         alt="gcn_logo"
       /> */}
-       <NavigationButton label='LOGIN' to='/login'  />
-       <NavigationButton label='SIGN UP' to='/register' />
+      <NavigationButton label="LOGIN" to="/login" />
+      <NavigationButton label="SIGN UP" to="/register" />
     </VStack>
   );
 }
