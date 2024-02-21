@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "a210f237-e224-4595-94be-b25d230757d5",
+  "id": "ed64dfc9-8efe-42da-ae5e-43f1bccc77d3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "tag": {
@@ -28,22 +28,22 @@
           "notNull": false,
           "autoincrement": false
         },
-        "createdBy": {
-          "name": "createdBy",
-          "type": "varchar(128)",
+        "creatorId": {
+          "name": "creatorId",
+          "type": "serial",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false
+          "autoincrement": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "tag_createdBy_user_id_fk": {
-          "name": "tag_createdBy_user_id_fk",
+        "tag_creatorId_user_id_fk": {
+          "name": "tag_creatorId_user_id_fk",
           "tableFrom": "tag",
           "tableTo": "user",
           "columnsFrom": [
-            "createdBy"
+            "creatorId"
           ],
           "columnsTo": [
             "id"
@@ -67,16 +67,16 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(128)",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
         "createdAt": {
           "name": "createdAt",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "updatedAt": {
@@ -95,14 +95,14 @@
         },
         "hashedPassword": {
           "name": "hashedPassword",
-          "type": "varchar(255)",
+          "type": "varbinary(256)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "salt": {
           "name": "salt",
-          "type": "varbinary(16)",
+          "type": "varbinary(48)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -203,10 +203,10 @@
         },
         "userId": {
           "name": "userId",
-          "type": "varchar(128)",
+          "type": "serial",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false
+          "autoincrement": true
         },
         "tagId": {
           "name": "tagId",

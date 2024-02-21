@@ -9,6 +9,7 @@ import mysql from 'mysql2/promise';
 import { Server } from './server/server';
 import { Service, type Resources } from './server/services/Service';
 import { HelloWorldService } from './server/services/HelloWorldService';
+import { AuthService } from './server/services/AuthService';
 
 import { logger } from './modules/logger';
 
@@ -41,7 +42,7 @@ import { logger } from './modules/logger';
 
   const resources: Resources = { db };
 
-  const v1Routes: Service[] = [HelloWorldService];
+  const v1Routes: Service[] = [HelloWorldService, AuthService];
 
   server.addServices(Server.VERSIONS.API_V1, v1Routes, resources);
   server.start(HOST, PORT);

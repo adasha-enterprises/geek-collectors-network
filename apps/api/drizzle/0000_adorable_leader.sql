@@ -2,17 +2,17 @@ CREATE TABLE `tag` (
 	`id` varchar(128) NOT NULL,
 	`createdAt` datetime NOT NULL,
 	`updatedAt` datetime,
-	`createdBy` varchar(128),
+	`creatorId` serial AUTO_INCREMENT,
 	CONSTRAINT `tag_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
 CREATE TABLE `user` (
-	`id` varchar(128) NOT NULL,
-	`createdAt` datetime NOT NULL,
+	`id` serial AUTO_INCREMENT NOT NULL,
+	`createdAt` datetime,
 	`updatedAt` datetime,
 	`email` varchar(255),
-	`hashedPassword` varchar(255),
-	`salt` varbinary(16),
+	`hashedPassword` varbinary(256),
+	`salt` varbinary(48),
 	`firstName` varchar(20),
 	`lastName` varchar(20),
 	`username` varchar(20),
@@ -28,13 +28,13 @@ CREATE TABLE `user` (
 --> statement-breakpoint
 CREATE TABLE `userInterestTag` (
 	`id` varchar(128) NOT NULL,
-	`userId` varchar(128),
+	`userId` serial AUTO_INCREMENT,
 	`tagId` varchar(128),
 	`createdAt` datetime NOT NULL,
 	`updatedAt` datetime,
 	CONSTRAINT `userInterestTag_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
-ALTER TABLE `tag` ADD CONSTRAINT `tag_createdBy_user_id_fk` FOREIGN KEY (`createdBy`) REFERENCES `user`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `tag` ADD CONSTRAINT `tag_creatorId_user_id_fk` FOREIGN KEY (`creatorId`) REFERENCES `user`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `userInterestTag` ADD CONSTRAINT `userInterestTag_userId_user_id_fk` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `userInterestTag` ADD CONSTRAINT `userInterestTag_tagId_tag_id_fk` FOREIGN KEY (`tagId`) REFERENCES `tag`(`id`) ON DELETE no action ON UPDATE no action;
