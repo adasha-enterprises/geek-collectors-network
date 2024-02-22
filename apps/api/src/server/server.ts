@@ -1,4 +1,5 @@
 import express from 'express';
+import { MySQLStore } from 'express-mysql-session';
 
 // Middleware
 import helmet from 'helmet';
@@ -18,8 +19,10 @@ export class Server {
   public readonly app: express.Application;
   private server: ReturnType<express.Application['listen']> | null = null;
 
-  constructor() {
+  constructor(sessionStore: any) {
     this.app = express();
+
+    this.app.use(sessionStore)
 
     this.app.use(helmet());
     this.app.use(morgan('combined', {

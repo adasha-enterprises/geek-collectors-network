@@ -1,7 +1,8 @@
 import { promisify } from 'util';
 
+import { eq } from 'drizzle-orm';
 import { MySqlInsertValue } from 'drizzle-orm/mysql-core';
-import { pbkdf2, randomBytes } from 'crypto';
+import { pbkdf2, randomBytes, timingSafeEqual } from 'node:crypto';
 
 import { isSqlError } from '../utils';
 import { BaseService, type Resources } from './Service';
@@ -9,9 +10,18 @@ import { user } from '../../models/user';
 
 const pbkdf2Promise = promisify(pbkdf2);
 
+declare module 'express-session' {
+  interface SessionData {
+    userId: number;
+    authenticated: boolean;
+  }
+}
+
 export class AuthController {
   // eslint-disable-next-line no-useless-constructor
-  constructor(private readonly resources: Resources) { }
+  constructor(private readonly resources: Resources) {
+  }
+
 
   public async signup(
     email: string,
@@ -19,15 +29,16 @@ export class AuthController {
     firstName: string,
     lastName: string,
   ) {
-    const salt = randomBytes(16).toString('utf8');
-    const hashedPassword = (await pbkdf2Promise(password, salt, 310000, 32, 'sha256')).toString('utf8');
+    const salt = randomBytes(16);
+    const hashedPassword = (await pbkdf2Promise(password, salt, 310000, 16, 'sha256'));
 
     const userValues: MySqlInsertValue<typeof user> = {
       email,
-      hashedPassword,
-      salt,
+      hashedPassword: hashedPassword.toString('hex'),
+      salt: salt.toString('hex'),
       firstName,
       lastName,
+      createdAt: new Date(),
     };
 
     const insertResults = await this.resources.db
@@ -37,6 +48,23 @@ export class AuthController {
 
     return insertResults[0];
   }
+
+  public async login(email: string, password: string) {
+    const userRecord = await this.resources.db
+      .select()
+      .from(user)
+      .where(eq(user.email, email));
+
+    if (userRecord.length !== 1) {
+      return null;
+    }
+
+    const salt = Buffer.from(userRecord[0].salt, 'hex');
+    const generatedHashedPassword = await pbkdf2Promise(password, salt, 310000, 16, 'sha256');
+    const retrievedHashedPassword = Buffer.from(userRecord[0].hashedPassword, 'hex');
+
+    return timingSafeEqual(retrievedHashedPassword, generatedHashedPassword) ? userRecord[0].id : null;
+  }
 }
 
 export class AuthService extends BaseService {
@@ -44,6 +72,7 @@ export class AuthService extends BaseService {
     super(resources, '/auth');
 
     const controller = new AuthController(resources);
+    this.router.use(resources.session);
 
     this.router.post('/signup', async (req, res) => {
       const { email, password, firstName, lastName } = req.body;
@@ -63,7 +92,7 @@ export class AuthService extends BaseService {
         );
 
         if (insertedUser) {
-          res.status(200).json(insertedUser);
+          res.status(200).json({ userId: insertedUser.insertId });
         } else {
           res.status(500).json({
             message: 'User not created',
@@ -81,6 +110,33 @@ export class AuthService extends BaseService {
           });
         }
       }
+    });
+
+    this.router.post('/login', async (req, res) => {
+      const { email, password } = req.body;
+      if (!email || !password) {
+        res.status(400).json({
+          message: 'Missing required fields',
+        });
+        return;
+      }
+
+      const userId = await controller.login(email.toString(), password.toString());
+      if (userId) {
+        // TODO: refactor to avoid possible race condition
+        req.session.userId = userId;
+        req.session.authenticated = true;
+        res.status(200).json({ userId });
+      } else {
+        res.status(401).json({
+          message: 'Invalid email or password',
+        });
+      }
+    });
+
+    this.router.post('/logout', async (req, res) => {
+      req.session.authenticated = false;
+      res.status(200).json({ message: 'Logged out' });
     });
   }
 }

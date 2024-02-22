@@ -5,6 +5,8 @@ import path from 'path';
 import { drizzle } from 'drizzle-orm/mysql2';
 import { migrate } from 'drizzle-orm/mysql2/migrator';
 import mysql from 'mysql2/promise';
+import * as session from 'express-session';
+import MySQLStore from 'express-mysql-session';
 
 import { Server } from './server/server';
 import { Service, type Resources } from './server/services/Service';
@@ -38,9 +40,24 @@ import { logger } from './modules/logger';
   if (!process.env.API_HOST) logger.warn('No API_HOST environment variable detected. Defaulting to 0.0.0.0');
   if (!process.env.API_PORT) logger.warn('No API_PORT environment variable detected. Defaulting to 3000');
 
-  const server = new Server();
+  const sessionStore = new (MySQLStore(session))({
+    host: DATABASE_HOST,
+    port: DATABASE_PORT,
+    user: DATABASE_USER,
+    password: DATABASE_PASSWORD,
+    database: 'SessionStore'
+  });
 
-  const resources: Resources = { db };
+  const sessionResource = session.default({
+    secret: 'session_cookie_secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
+  });
+
+  const server = new Server(sessionResource);
+
+  const resources: Resources = { db, session: sessionResource };
 
   const v1Routes: Service[] = [HelloWorldService, AuthService];
 

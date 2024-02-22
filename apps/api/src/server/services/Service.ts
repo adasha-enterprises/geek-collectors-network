@@ -1,4 +1,5 @@
 import type { drizzle } from 'drizzle-orm/mysql2';
+import * as session from 'express-session';
 
 import express from 'express';
 
@@ -9,6 +10,7 @@ import express from 'express';
   */
 export type RequiredResources = {
   db: ReturnType<typeof drizzle>;
+  session: ReturnType<typeof session.default>
 };
 
 /**

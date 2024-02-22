@@ -1,37 +1,34 @@
 CREATE TABLE `tag` (
-	`id` varchar(128) NOT NULL,
-	`createdAt` datetime NOT NULL,
-	`updatedAt` datetime,
-	`creatorId` serial AUTO_INCREMENT,
+	`id` int AUTO_INCREMENT NOT NULL,
+	`createdAt` timestamp NOT NULL,
+	`creatorId` int,
 	CONSTRAINT `tag_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
 CREATE TABLE `user` (
-	`id` serial AUTO_INCREMENT NOT NULL,
-	`createdAt` datetime,
-	`updatedAt` datetime,
-	`email` varchar(255),
-	`hashedPassword` varbinary(256),
-	`salt` varbinary(48),
+	`id` int AUTO_INCREMENT NOT NULL,
+	`createdAt` timestamp NOT NULL,
+	`updatedAt` timestamp ON UPDATE CURRENT_TIMESTAMP,
+	`lastLoginAt` timestamp,
+	`email` varchar(255) NOT NULL,
+	`isEmailVerified` boolean DEFAULT false,
+	`hashedPassword` varchar(128) NOT NULL,
+	`salt` varchar(128) NOT NULL,
 	`firstName` varchar(20),
 	`lastName` varchar(20),
 	`username` varchar(20),
-	`isAdmin` boolean DEFAULT false,
 	`profileImageUrl` varchar(255),
-	`isEmailVerified` boolean DEFAULT false,
-	`lastLoginAt` datetime,
 	`birthDate` date,
+	`isAdmin` boolean DEFAULT false,
 	CONSTRAINT `user_id` PRIMARY KEY(`id`),
-	CONSTRAINT `user_email_unique` UNIQUE(`email`),
-	CONSTRAINT `user_username_unique` UNIQUE(`username`)
+	CONSTRAINT `user_email_unique` UNIQUE(`email`)
 );
 --> statement-breakpoint
 CREATE TABLE `userInterestTag` (
-	`id` varchar(128) NOT NULL,
-	`userId` serial AUTO_INCREMENT,
-	`tagId` varchar(128),
-	`createdAt` datetime NOT NULL,
-	`updatedAt` datetime,
+	`id` int AUTO_INCREMENT NOT NULL,
+	`createdAt` timestamp NOT NULL,
+	`userId` int,
+	`tagId` int,
 	CONSTRAINT `userInterestTag_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint

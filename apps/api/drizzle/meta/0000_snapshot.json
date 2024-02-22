@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "ed64dfc9-8efe-42da-ae5e-43f1bccc77d3",
+  "id": "3ace1e41-61cb-4b1e-9dcd-01ad5a0efc7d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "tag": {
@@ -9,31 +9,24 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(128)",
+          "type": "int",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "datetime",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "creatorId": {
           "name": "creatorId",
-          "type": "serial",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": true
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -67,21 +60,29 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "int",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": true
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "updatedAt": {
           "name": "updatedAt",
-          "type": "datetime",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "onUpdate": true
+        },
+        "lastLoginAt": {
+          "name": "lastLoginAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -90,21 +91,29 @@
           "name": "email",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
+        },
+        "isEmailVerified": {
+          "name": "isEmailVerified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
         },
         "hashedPassword": {
           "name": "hashedPassword",
-          "type": "varbinary(256)",
+          "type": "varchar(128)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "salt": {
           "name": "salt",
-          "type": "varbinary(48)",
+          "type": "varchar(128)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "firstName": {
@@ -128,32 +137,9 @@
           "notNull": false,
           "autoincrement": false
         },
-        "isAdmin": {
-          "name": "isAdmin",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": false
-        },
         "profileImageUrl": {
           "name": "profileImageUrl",
           "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "isEmailVerified": {
-          "name": "isEmailVerified",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": false
-        },
-        "lastLoginAt": {
-          "name": "lastLoginAt",
-          "type": "datetime",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -164,6 +150,14 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "isAdmin": {
+          "name": "isAdmin",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
         }
       },
       "indexes": {},
@@ -182,12 +176,6 @@
           "columns": [
             "email"
           ]
-        },
-        "user_username_unique": {
-          "name": "user_username_unique",
-          "columns": [
-            "username"
-          ]
         }
       }
     },
@@ -196,35 +184,28 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(128)",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "userId": {
           "name": "userId",
-          "type": "serial",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": true
+          "autoincrement": false
         },
         "tagId": {
           "name": "tagId",
-          "type": "varchar(128)",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "datetime",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "datetime",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
