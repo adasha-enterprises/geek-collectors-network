@@ -20,7 +20,7 @@ function LoginPage({ formComponent }: LoginPageProps) {
       >
         <PageTitle title={'Login'} />
         {formComponent}
-        <PageLink text={"Don't have an account? Sign up!"} to={'/register'} p={4} />
+        <PageLink text={"Don't have an account? Sign up!"} to={'/register'} />
       </VStack>
     </PageLayout>
   );

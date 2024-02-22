@@ -1,18 +1,24 @@
 import React from 'react';
-import { HStack, Link as ChakraLink, BoxProps } from '@chakra-ui/react';
-import { Link as ReactRouterLink } from 'react-router-dom';
+import { HStack, Button } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
-interface PageLinkProps extends BoxProps {
+type PageLinkProps = {
     text: string;
     to: string;
   }
 
-function PageLink({ text, to, ...rest } : PageLinkProps) {
+function PageLink({ text, to } : PageLinkProps) {
   return (
-    <HStack w={'100%'} justify={'center'} color={'brand.500'} {...rest}>
-      <ChakraLink as={ReactRouterLink} to={to}>
-        <b>{text}</b>
-      </ChakraLink>
+    <HStack w={'100%'} justify={'center'} color={'brand.500'} >
+      <Link to={to} >
+        <Button
+          size={['sm', 'md']}
+          colorScheme="brand"
+          variant="link"
+        >
+          {text}
+        </Button>
+      </Link>
     </HStack>
   );
 }

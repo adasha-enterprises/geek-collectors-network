@@ -11,7 +11,7 @@ function Registration() {
       <VStack
         bg={'background'}
         px={10}
-        pt={20}
+        pt={14}
       >
         <PageTitle title={'Sign Up'} />
         <RegistrationForm />

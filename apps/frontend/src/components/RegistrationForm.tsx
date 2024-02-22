@@ -114,13 +114,12 @@ function RegistrationForm() {
           w={'100%'}
           colorScheme="brand"
           variant="solid"
-          mt={8}
-          m={5}
+          m={2}
           disabled={formik.isSubmitting}
         >
           SIGN UP
         </Button>
-        <PageLink text={'Already have an account? Log in!'} to={'/login'} paddingBottom={20} />
+        <PageLink text={'Already have an account? Log in!'} to={'/login'} />
       </VStack>
     </form>
   );

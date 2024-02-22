@@ -4,7 +4,7 @@ import { HamburgerIcon } from '@chakra-ui/icons';
 
 function Header() {
   return (
-    <Box as="header" bg="brand.500" p={6} zIndex="sticky" top={0}>
+    <Box as="header" bg="brand.500" p={3} zIndex="sticky" top={0}>
       <Flex justify="end" align="center">
         <IconButton
           colorScheme="brand"
