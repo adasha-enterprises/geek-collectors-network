@@ -3,7 +3,6 @@ import { VStack } from '@chakra-ui/react';
 
 import PageLayout from './PageLayout';
 import PageTitle from '../components/PageTitle';
-import PageLink from '../components/PageLink';
 
 interface LoginPageProps {
   formComponent: React.ReactNode;

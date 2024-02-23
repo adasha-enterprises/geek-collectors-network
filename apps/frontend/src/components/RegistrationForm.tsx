@@ -99,6 +99,7 @@ function RegistrationForm() {
           <FormHelperText>Must be at least 8 characters.</FormHelperText>
           <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
         </FormControl>
+
         <HStack w={'100%'} justify={'space-around'}>
           <Checkbox size={['sm', 'md']}>Remember me</Checkbox>
           <Button
@@ -109,6 +110,7 @@ function RegistrationForm() {
             Forgot password?
           </Button>
         </HStack>
+
         <Button
           type="submit"
           w={'100%'}
