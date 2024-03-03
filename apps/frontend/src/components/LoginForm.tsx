@@ -1,11 +1,10 @@
 import React from 'react';
-
 import { Form, Formik } from 'formik';
 import { Button, VStack } from '@chakra-ui/react';
 
 import TextInput from './TextInput';
 import PageLink from './PageLink';
-import { loginSchema } from '../schemas/Schemas';
+import { loginSchema } from '../schemas/schemas';
 import LoginControls from './LoginControls';
 
 function LoginForm() {
