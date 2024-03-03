@@ -5,7 +5,7 @@ import { Button, VStack } from '@chakra-ui/react';
 
 import TextInput from './TextInput';
 import PageLink from './PageLink';
-import { registrationSchema } from './ValidationSchemas';
+import { registrationSchema } from '../schemas/Schemas';
 import LoginControls from './LoginControls';
 
 function RegistrationForm() {
