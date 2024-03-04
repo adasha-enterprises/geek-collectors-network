@@ -63,10 +63,4 @@ import { logger } from './modules/logger';
 
   server.addServices(Server.VERSIONS.API_V1, v1Routes, resources);
   server.start(HOST, PORT);
-
-  process.on('SIGINT', () => {
-    server.stop();
-    client.end();
-    process.exitCode = 0;
-  });
 })();

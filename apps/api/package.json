@@ -28,18 +28,14 @@
     "@types/express-session": "^1.17.10",
     "@types/morgan": "^1.9.9",
     "@types/node": "^18.17.14",
-    "dotenv": "^16.4.1",
+    "bun": "^1.0.29",
     "drizzle-kit": "^0.20.14",
-    "nodemon": "^3.0.1",
-    "ts-node": "^10.9.1",
-    "tsc-alias": "^1.8.7",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
   },
   "scripts": {
-    "build": "tsc && tsc-alias",
-    "start": "npm run dist/index.js",
-    "start:dev": "nodemon -x 'node -r dotenv/config -r ts-node/register -r tsconfig-paths/register' src/ --watch src/ --ext ts,json",
+    "start": "bun src/index.ts",
+    "start:dev": "bun --watch src/index.ts",
     "lint": "eslint --ext ts src/ && tsc --noEmit -p tsconfig.json",
     "migrate": "drizzle-kit generate:mysql"
   }
