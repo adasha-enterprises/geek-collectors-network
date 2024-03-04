@@ -1,5 +1,7 @@
 import { BaseService, type Resources } from './Service';
 
+import { authenticate } from '../middleware/Authenticate';
+
 /**
   * A demonstration controller for the HelloWorldService.
   *
@@ -9,7 +11,7 @@ import { BaseService, type Resources } from './Service';
   */
 export class HelloWorldController {
   // eslint-disable-next-line no-useless-constructor
-  constructor(private readonly resources: Resources) {}
+  constructor(private readonly resources: Resources) { }
 
   public greet(user: string) {
     return `Hello, ${user}!`;
@@ -27,6 +29,7 @@ export class HelloWorldService extends BaseService {
     super(resources, '/hello');
 
     const controller = new HelloWorldController(resources);
+    this.router.use(authenticate);
 
     this.router.get('/world', (req, res) => {
       const { name = 'User' } = req.query;
