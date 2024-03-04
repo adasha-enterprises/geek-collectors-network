@@ -13,6 +13,7 @@ import { Service, type Resources } from './server/services/Service';
 import { HelloWorldService } from './server/services/HelloWorldService';
 import { AuthService } from './server/services/AuthService';
 
+import { writeDummyToDb } from './models/dummy';
 import { logger } from './modules/logger';
 
 (async () => {
@@ -31,6 +32,8 @@ import { logger } from './modules/logger';
   const db = drizzle(client);
 
   await migrate(db, { migrationsFolder });
+  if (process.env.NODE_ENV === 'development') await writeDummyToDb(db);
+
 
   /* ====== SERVER ====== */
 

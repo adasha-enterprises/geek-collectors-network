@@ -5,12 +5,15 @@ COMPOSE = docker compose -p $(PROJECT) -f $(COMPOSE_FILE)
 
 MAKEFLAGS += --no-print-directory
 
-.PHONY: check-valid-service logs down build run dev prod res resource resources install
+.PHONY: check-valid-service clean-db logs down build run dev prod res resource resources install
 
 ###### UTILITIES ##########
 
 check-valid-service:
 	@./scripts/validate-service.sh $(SERVICE)
+
+clean-db:
+	@./scripts/clean-db.sh
 
 ########## MANAGEMENT ##########
 
