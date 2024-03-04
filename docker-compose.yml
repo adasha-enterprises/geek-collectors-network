@@ -73,6 +73,8 @@ services:
       # with.
       - mysql-resource-ephemeral:/var/lib/mysql
       - ./docker/mysql/initdb:/docker-entrypoint-initdb.d
+    ports:
+     - 3306:3306
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       interval: 5s
