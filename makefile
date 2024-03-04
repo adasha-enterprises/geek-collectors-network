@@ -5,7 +5,7 @@ COMPOSE = docker compose -p $(PROJECT) -f $(COMPOSE_FILE)
 
 MAKEFLAGS += --no-print-directory
 
-.PHONY: check-valid-service logs down build run dev prod install
+.PHONY: check-valid-service logs down build run dev prod res resource resources install
 
 ###### UTILITIES ##########
 
@@ -27,14 +27,21 @@ build:
 
 ########## LAUNCH ##########
 
-run: check-valid-service build down
+run: check-valid-service
 	$(COMPOSE) up -d $(shell $(COMPOSE) config --services | grep -E "($(SERVICE)|common)$$")
 
-dev:
+dev: build down
+	$(MAKE) run SERVICE=resource
 	$(MAKE) run SERVICE=dev
 
-prod:
+prod: build down
 	$(MAKE) run SERVICE=prod
+
+res: resources
+resource: build down
+resources: build down
+	$(MAKE) run SERVICE=resource
+
 
 ########## OTHER ##########
 

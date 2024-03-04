@@ -34,7 +34,7 @@ services:
     env_file:
       - ./apps/api/.env
     environment:
-      DATABASE_HOST: mysql-dev
+      DATABASE_HOST: mysql-resource
       DATABASE_PORT: 3306
       DATABASE_USER: root
       DATABASE_PASSWORD: dev
@@ -45,7 +45,7 @@ services:
     volumes:
       - ./apps/api:/app/api:ro
     depends_on:
-      mysql-dev:
+      mysql-resource:
         condition: service_healthy
 
   frontend-dev:
@@ -63,7 +63,7 @@ services:
     volumes:
       - ./apps/frontend:/app/frontend:ro
 
-  mysql-dev:
+  mysql-resource:
     image: mysql:8.3.0
     environment:
       MYSQL_ROOT_PASSWORD: dev
@@ -71,7 +71,7 @@ services:
       # This volume is pretty redundant, but if the database crashed
       # during dev, it'll be nice not to lose the data you were working
       # with.
-      - mysql-dev-ephemeral:/var/lib/mysql
+      - mysql-resource-ephemeral:/var/lib/mysql
       - ./docker/mysql/initdb:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
@@ -79,21 +79,21 @@ services:
       timeout: 3s
       retries: 5
 
-  phpmyadmin-dev:
+  phpmyadmin-resource:
     image: phpmyadmin:5.2.1
     environment:
       PMA_USER: root
       PMA_PASSWORD: dev
     links:
-      - mysql-dev:db
+      - mysql-resource:db
     ports:
       - 3307:80
     depends_on:
-      mysql-dev:
+      mysql-resource:
         condition: service_healthy
 
 volumes:
-  mysql-dev-ephemeral: {}
+  mysql-resource-ephemeral: {}
 
 # ========================== TEMPLATES ==========================
 # A list of templates for apps and packages
