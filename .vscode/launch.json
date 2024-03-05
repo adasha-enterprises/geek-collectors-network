@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "bun",
+            "request": "attach",
+            "name": "Bun:debug",
+            "url": "ws://localhost:9229/gcn"
+        }
+    ]
+}

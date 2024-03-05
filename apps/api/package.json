@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "bun src/index.ts",
-    "start:dev": "bun --watch src/index.ts",
+    "start:dev": "bun --hot --inspect=0.0.0.0:9229/gcn src/index.ts",
     "lint": "eslint --ext ts src/ && tsc --noEmit -p tsconfig.json",
     "migrate": "drizzle-kit generate:mysql"
   }
