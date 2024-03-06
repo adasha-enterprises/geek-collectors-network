@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/mysql2';
 
 import type { UserType, TagType, UserInterestTagType } from './schema';
+// eslint-disable-next-line no-duplicate-imports
 import { user, tag, userInterestTag } from './schema';
 
 import { logger } from '../modules/logger';

@@ -1,5 +1,4 @@
 import express from 'express';
-import { MySQLStore } from 'express-mysql-session';
 
 // Middleware
 import helmet from 'helmet';
@@ -9,6 +8,7 @@ import { Service, Resources } from './services/Service';
 
 import { logger } from '../modules/logger';
 
+// eslint-disable-next-line no-shadow
 enum VERSIONS {
   API_V1 = '/api/v1',
 }
@@ -19,10 +19,10 @@ export class Server {
   public readonly app: express.Application;
   private server: ReturnType<express.Application['listen']> | null = null;
 
-  constructor(sessionStore: any) {
+  constructor(resources: Resources) {
     this.app = express();
 
-    this.app.use(sessionStore)
+    this.app.use(resources.sessions);
 
     this.app.use(helmet());
     this.app.use(morgan('combined', {

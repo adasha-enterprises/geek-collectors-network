@@ -19,9 +19,7 @@ declare module 'express-session' {
 
 export class AuthController {
   // eslint-disable-next-line no-useless-constructor
-  constructor(private readonly resources: Resources) {
-  }
-
+  constructor(private readonly resources: Resources) { }
 
   public async signup(
     email: string,
@@ -72,7 +70,7 @@ export class AuthService extends BaseService {
     super(resources, '/auth');
 
     const controller = new AuthController(resources);
-    this.router.use(resources.session);
+    this.router.use(resources.sessions);
 
     this.router.post('/signup', async (req, res) => {
       const { email, password, firstName, lastName } = req.body;
@@ -123,9 +121,17 @@ export class AuthService extends BaseService {
 
       const userId = await controller.login(email.toString(), password.toString());
       if (userId) {
-        // TODO: refactor to avoid possible race condition
+        // Reason: We don't care that the user can change their
+        // authenticated status mid-way between requests that require
+        // authenticated users.
+        //
+        // If it does occur, then those requests will simply pass as
+        // intended.
+        /* eslint-disable require-atomic-updates */
         req.session.userId = userId;
         req.session.authenticated = true;
+        /* eslint-enable require-atomic-updates */
+
         res.status(200).json({ userId });
       } else {
         res.status(401).json({

@@ -7,13 +7,15 @@ export type SqlError = {
   sqlMessage: string;
 }
 
-export const isSqlError = (err: any): err is SqlError => {
-  const hasMessage = typeof err.message === 'string';
-  const hasCode = typeof err.code === 'string';
-  const hasErrno = typeof err.errno === 'number';
-  const hasSql = typeof err.sql === 'string';
-  const hasSqlState = typeof err.sqlState === 'string';
-  const hasSqlMessage = typeof err.sqlMessage === 'string';
+export const isSqlError = (err: unknown): err is SqlError => {
+  const sqlErr = err as SqlError; // Assume the error is an SqlError
+
+  const hasMessage = typeof sqlErr.message === 'string';
+  const hasCode = typeof sqlErr.code === 'string';
+  const hasErrno = typeof sqlErr.errno === 'number';
+  const hasSql = typeof sqlErr.sql === 'string';
+  const hasSqlState = typeof sqlErr.sqlState === 'string';
+  const hasSqlMessage = typeof sqlErr.sqlMessage === 'string';
 
   return hasMessage && hasCode && hasErrno && hasSql && hasSqlState && hasSqlMessage;
 };

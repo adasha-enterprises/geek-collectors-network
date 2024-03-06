@@ -10,7 +10,7 @@ import express from 'express';
   */
 export type RequiredResources = {
   db: ReturnType<typeof drizzle>;
-  session: ReturnType<typeof session.default>
+  sessions: ReturnType<typeof session.default>
 };
 
 /**
