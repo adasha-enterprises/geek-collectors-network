@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "3ace1e41-61cb-4b1e-9dcd-01ad5a0efc7d",
+  "id": "616a6213-40a5-4591-86fe-33b70ffe4c56",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "tag": {
@@ -30,21 +30,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "tag_creatorId_user_id_fk": {
-          "name": "tag_creatorId_user_id_fk",
-          "tableFrom": "tag",
-          "tableTo": "user",
-          "columnsFrom": [
-            "creatorId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {
         "tag_id": {
           "name": "tag_id",
@@ -212,34 +198,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "userInterestTag_userId_user_id_fk": {
-          "name": "userInterestTag_userId_user_id_fk",
-          "tableFrom": "userInterestTag",
-          "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "userInterestTag_tagId_tag_id_fk": {
-          "name": "userInterestTag_tagId_tag_id_fk",
-          "tableFrom": "userInterestTag",
-          "tableTo": "tag",
-          "columnsFrom": [
-            "tagId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {
         "userInterestTag_id": {
           "name": "userInterestTag_id",

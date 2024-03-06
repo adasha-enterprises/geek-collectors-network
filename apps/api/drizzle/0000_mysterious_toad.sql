@@ -31,7 +31,3 @@ CREATE TABLE `userInterestTag` (
 	`tagId` int,
 	CONSTRAINT `userInterestTag_id` PRIMARY KEY(`id`)
 );
---> statement-breakpoint
-ALTER TABLE `tag` ADD CONSTRAINT `tag_creatorId_user_id_fk` FOREIGN KEY (`creatorId`) REFERENCES `user`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `userInterestTag` ADD CONSTRAINT `userInterestTag_userId_user_id_fk` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `userInterestTag` ADD CONSTRAINT `userInterestTag_tagId_tag_id_fk` FOREIGN KEY (`tagId`) REFERENCES `tag`(`id`) ON DELETE no action ON UPDATE no action;

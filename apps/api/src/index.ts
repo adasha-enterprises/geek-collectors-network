@@ -25,7 +25,12 @@ import { logger } from './modules/logger';
   const DATABASE_NAME = process.env.DATABASE_NAME;
 
   const migrationsFolder = path.join(__dirname, '..', 'drizzle');
-  const connectionString = `mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}`;
+  let connectionString = `mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}`;
+
+  if (process.env.NODE_ENV === 'production') {
+    // PlanetScale requires SSL communication.
+    connectionString += '?ssl={"rejectUnauthorized": true}';
+  }
 
   const client = await mysql.createConnection(connectionString);
   const db = drizzle(client);

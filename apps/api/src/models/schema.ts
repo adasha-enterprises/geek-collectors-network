@@ -1,5 +1,5 @@
 import { boolean, date, int, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core';
-import { InferInsertModel } from 'drizzle-orm';
+import { InferInsertModel, relations } from 'drizzle-orm';
 
 export const user = mysqlTable('user', {
   id: int('id').primaryKey().autoincrement(),
@@ -21,15 +21,34 @@ export const user = mysqlTable('user', {
 export const tag = mysqlTable('tag', {
   id: int('id').primaryKey().autoincrement(),
   createdAt: timestamp('createdAt').notNull().$defaultFn(() => new Date()),
-  creatorId: int('creatorId').references(() => user.id),
+  creatorId: int('creatorId'),
 });
 
 export const userInterestTag = mysqlTable('userInterestTag', {
   id: int('id').primaryKey().autoincrement(),
   createdAt: timestamp('createdAt').notNull().$defaultFn(() => new Date()),
-  userId: int('userId').references(() => user.id),
-  tagId: int('tagId').references(() => tag.id),
+  userId: int('userId'),
+  tagId: int('tagId'),
 });
+
+export const tagRelations = relations(tag, ({ one }) => ({
+  user: one(user, {
+    fields: [tag.creatorId],
+    references: [user.id],
+  }),
+}));
+
+export const userInterestTagRelations = relations(userInterestTag, ({ one }) => ({
+  user: one(user, {
+    fields: [userInterestTag.userId],
+    references: [user.id],
+  }),
+  tag: one(tag, {
+    fields: [userInterestTag.tagId],
+    references: [tag.id],
+  }),
+}));
+
 
 export type UserType = InferInsertModel<typeof user>;
 export type TagType = InferInsertModel<typeof tag>;
