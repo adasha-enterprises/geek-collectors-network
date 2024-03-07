@@ -91,6 +91,10 @@ jobs:
       OWNER_LC: ${{ needs.set-globals.outputs.OWNER_LC }}
       VERSION: ${{ needs.set-globals.outputs.VERSION }}
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Download docker artifacts
         uses: actions/download-artifact@v2
