@@ -1,31 +1,20 @@
 import React from 'react';
 import { VStack } from '@chakra-ui/react';
 
-import UserProfileCard from '../components/UserProfileCard';
-
-import { CheckIcon, SmallCloseIcon } from '@chakra-ui/icons';
-
-const cardButtons = [
-  {
-    label: 'Send email',
-    icon: <CheckIcon boxSize={8}/>,
-  },
-  {
-    label: 'Connect to social media',
-    icon: <SmallCloseIcon boxSize={10}/>,
-  },
-];
+import SearchBar from '../components/SearchBar';
+import PageLayout from './PageLayout';
 
 function TestPage() {
   return (
-    <VStack
-      border={'1px solid'}
-      spacing={4}
-      w={'100%'}
-      justify={'center'}
-    >
-      <UserProfileCard userData={{ name: 'John Smith' }} buttons={cardButtons}/>
-    </VStack>
+    <PageLayout>
+      <VStack
+        bg={'background'}
+        px={10}
+        pt={20}
+      >
+        <SearchBar onSearch={search => console.log(search)} />
+      </VStack>
+    </PageLayout>
   );
 }
 
