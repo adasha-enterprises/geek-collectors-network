@@ -27,7 +27,8 @@ function SearchBar({ onSearch, placeholderText = 'Search...' }: SearchBarProps) 
         value={value}
         placeholder={placeholderText}
         onChange={handleChange}
-        focusBorderColor="brand.600"/>
+        focusBorderColor="brand.600"
+        backgroundColor={'background'}/>
 
       <InputRightElement>
         <Button

@@ -37,7 +37,7 @@ function UserProfileCard({ userData, buttons }: UserProfileCardProps) {
     <HStack
       backgroundColor={'background'}
       justify={'space-between'}
-      px={2}
+      px={0}
       py={2}
       spacing={4}
       w={'100%'}
@@ -48,7 +48,7 @@ function UserProfileCard({ userData, buttons }: UserProfileCardProps) {
         onClick={() => navigateToUserProfile()}>
         <Image
           borderRadius={'full'} // Makes image circular
-          boxSize={['50px', '60px', '70px']} // Dynamically increases image size based on screen width
+          boxSize={['30px', '40px', '50px']} // Dynamically increases image size based on screen width
           src={userData.image || 'https://via.placeholder.com/150'}
           alt={`${userData.name}'s profile photo`}>
         </Image>
@@ -58,7 +58,7 @@ function UserProfileCard({ userData, buttons }: UserProfileCardProps) {
       <Flex
         flex={'1'}
         onClick={() => navigateToUserProfile()}>
-        <Text fontSize={['lg', 'xl']} fontWeight={'bold'}>{userData.name}</Text>
+        <Text fontSize={['md', 'lg']} fontWeight={'bold'}>{userData.name}</Text>
       </Flex>
 
       <HStack spacing={3}>
