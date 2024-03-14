@@ -114,7 +114,7 @@ export class AuthService extends BaseService {
       const { email, password } = req.body;
       if (!email || !password) {
         res.status(400).json({
-          message: 'Missing required fields',
+          message: 'Missing required fields (email, password)',
         });
         return;
       }
