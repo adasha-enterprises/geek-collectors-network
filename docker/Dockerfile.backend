@@ -5,7 +5,6 @@ ARG WORKSPACE=/app
 ARG USER=node
 
 ARG DOCKER_NODE_VERSION=latest
-ARG DOCKER_BUN_VERSION=latest
 ARG DOCKER_UBUNTU_VERSION=latest
 
 # ========================== NODE STAGE ==========================
@@ -74,7 +73,7 @@ CMD ["npm", "run", "start:dev"]
 
 
 # ========================== PRODUCTION STAGE ==========================
-FROM oven/bun:${DOCKER_BUN_VERSION} AS production
+FROM node:${DOCKER_NODE_VERSION} AS production
 ARG NAME
 
 ARG WORKSPACE
@@ -98,4 +97,4 @@ COPY --from=base --chown=${USER}:${USER} ${WORKSPACE}/packages ${WORKSPACE}/pack
 
 WORKDIR ${WORKSPACE}/${NAME}
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["bun", "./src/index.ts"]
+CMD ["npx", "--no-install", "tsx", "./src/index.ts"]

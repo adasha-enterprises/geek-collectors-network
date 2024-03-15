@@ -26,14 +26,15 @@
     "@types/express-session": "^1.17.10",
     "@types/morgan": "^1.9.9",
     "@types/node": "^18.17.14",
-    "bun": "^1.0.29",
+    "dotenv": "^16.4.5",
     "drizzle-kit": "^0.20.14",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.7.1",
     "typescript": "^5.3.3"
   },
   "scripts": {
-    "start": "bun src/index.ts",
-    "start:dev": "bun --hot --inspect=0.0.0.0:9229/gcn src/index.ts",
+    "start": "tsx src/index.ts",
+    "start:dev": "tsx watch --inspect=0.0.0.0:9229 -r dotenv/config src/index.ts",
     "lint": "eslint --ext ts src/ && tsc --noEmit -p tsconfig.json",
     "migrate": "drizzle-kit generate:mysql"
   }

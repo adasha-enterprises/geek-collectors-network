@@ -1,10 +1,14 @@
 {
     "configurations": [
         {
-            "type": "bun",
+            "type": "node",
+            "name": "Attach",
+            "port": 9229,
             "request": "attach",
-            "name": "Bun:debug",
-            "url": "ws://localhost:9229/gcn"
+            "restart": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
         }
     ]
 }
