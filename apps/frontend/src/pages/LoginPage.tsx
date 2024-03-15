@@ -1,14 +1,14 @@
 import React from 'react';
 import { VStack } from '@chakra-ui/react';
 
-import PageLayout from './PageLayout';
+import PageLayout from '../components/PageLayout';
 import PageTitle from '../components/PageTitle';
 import LoginForm from '../components/LoginForm';
 
 // Add Header component created by Toco following rebase / merge
 function LoginPage() {
   return (
-    <PageLayout>
+    <PageLayout showNavigation={false}>
       <VStack
         bg={'background'}
         px={10}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form, Formik } from 'formik';
 import { Button, VStack } from '@chakra-ui/react';
 
@@ -8,12 +9,15 @@ import { loginSchema } from '../schemas/schemas';
 import LoginControls from './LoginControls';
 
 function LoginForm() {
+  const navigate = useNavigate();
+
   return (
     <Formik
       initialValues={{ email: '', password: '' }}
       validationSchema={loginSchema}
       onSubmit={values => {
         console.log(values);
+        navigate('/dashboard');
       }}
     >
       {formik => (

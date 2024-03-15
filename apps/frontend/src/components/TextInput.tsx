@@ -1,6 +1,6 @@
+import React from 'react';
 import { FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
 import { useField } from 'formik';
-import React from 'react';
 
 type TextInputProps = {
     name: string,
