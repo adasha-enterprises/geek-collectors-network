@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "373ce192-9940-4a55-b298-21d91a5682f0",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "e82d0e01-fd44-4bd7-8e56-318d4b7b172a",
+  "prevId": "373ce192-9940-4a55-b298-21d91a5682f0",
   "tables": {
     "tag": {
       "name": "tag",
@@ -37,7 +37,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "tag_creatorId_user_id_fk": {
+          "name": "tag_creatorId_user_id_fk",
+          "tableFrom": "tag",
+          "tableTo": "user",
+          "columnsFrom": [
+            "creatorId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {
         "tag_id": {
           "name": "tag_id",
@@ -147,6 +161,13 @@
         "birthDate": {
           "name": "birthDate",
           "type": "date",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "about": {
+          "name": "about",
+          "type": "varchar(1000)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false

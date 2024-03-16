@@ -12,6 +12,7 @@ import { Server } from './server/server';
 import { Service, type Resources } from './server/services/Service';
 import { AuthService } from './server/services/AuthService';
 import { UserService } from './server/services/UserService';
+import { TestService } from './server/services/TestService';
 
 import { writeDummyToDb } from './models/dummy';
 import { logger } from './modules/logger';
@@ -62,7 +63,7 @@ import { logger } from './modules/logger';
   if (!process.env.API_PORT) logger.warn('No API_PORT environment variable detected. Defaulting to 3000');
 
   const resources: Resources = { db, sessions };
-  const v1Routes: Service[] = [AuthService, UserService];
+  const v1Routes: Service[] = [AuthService, UserService, TestService];
 
   const server = new Server(resources);
   server.addServices(Server.VERSIONS.API_V1, v1Routes, resources);
