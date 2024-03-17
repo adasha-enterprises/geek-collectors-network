@@ -4,6 +4,7 @@ import path from 'path';
 import { drizzle } from 'drizzle-orm/mysql2';
 import { migrate } from 'drizzle-orm/mysql2/migrator';
 import mysql from 'mysql2/promise';
+import * as schema from './models/schema';
 
 import * as expressSession from 'express-session';
 import MySQLStore from 'express-mysql-session';
@@ -27,7 +28,7 @@ import { logger } from './modules/logger';
   const connectionString = `mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}`;
 
   const client = await mysql.createConnection(connectionString);
-  const db = drizzle(client);
+  const db = drizzle(client, { schema, mode: 'default' });
 
   await migrate(db, { migrationsFolder });
   if (process.env.NODE_ENV === 'development') await writeDummyToDb(db);

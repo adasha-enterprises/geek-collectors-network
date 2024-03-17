@@ -1,9 +1,89 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "373ce192-9940-4a55-b298-21d91a5682f0",
+  "id": "6a84ea98-c855-4c7b-9cea-a346ee74585b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "friendship": {
+      "name": "friendship",
+      "columns": {
+        "inviter_id": {
+          "name": "inviter_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "invitee_id": {
+          "name": "invitee_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "text": {
+          "name": "text",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "enum('pending','accepted','rejected','blocked')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'pending'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "friendship_inviter_id_user_id_fk": {
+          "name": "friendship_inviter_id_user_id_fk",
+          "tableFrom": "friendship",
+          "tableTo": "user",
+          "columnsFrom": [
+            "inviter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "friendship_invitee_id_user_id_fk": {
+          "name": "friendship_invitee_id_user_id_fk",
+          "tableFrom": "friendship",
+          "tableTo": "user",
+          "columnsFrom": [
+            "invitee_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "friendship_inviter_id_invitee_id_pk": {
+          "name": "friendship_inviter_id_invitee_id_pk",
+          "columns": [
+            "inviter_id",
+            "invitee_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "friendship_text_unique": {
+          "name": "friendship_text_unique",
+          "columns": [
+            "text"
+          ]
+        }
+      }
+    },
     "tag": {
       "name": "tag",
       "columns": {
@@ -14,15 +94,15 @@
           "notNull": true,
           "autoincrement": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "creatorId": {
-          "name": "creatorId",
+        "creator_id": {
+          "name": "creator_id",
           "type": "int",
           "primaryKey": false,
           "notNull": false,
@@ -30,14 +110,28 @@
         },
         "text": {
           "name": "text",
-          "type": "varchar(50)",
+          "type": "varchar(20)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "tag_creator_id_user_id_fk": {
+          "name": "tag_creator_id_user_id_fk",
+          "tableFrom": "tag",
+          "tableTo": "user",
+          "columnsFrom": [
+            "creator_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {
         "tag_id": {
           "name": "tag_id",
@@ -65,23 +159,23 @@
           "notNull": true,
           "autoincrement": true
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "updatedAt": {
-          "name": "updatedAt",
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
           "onUpdate": true
         },
-        "lastLoginAt": {
-          "name": "lastLoginAt",
+        "last_login_at": {
+          "name": "last_login_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
@@ -94,16 +188,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "isEmailVerified": {
-          "name": "isEmailVerified",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": false
-        },
-        "hashedPassword": {
-          "name": "hashedPassword",
+        "hashed_password": {
+          "name": "hashed_password",
           "type": "varchar(128)",
           "primaryKey": false,
           "notNull": true,
@@ -116,48 +202,68 @@
           "notNull": true,
           "autoincrement": false
         },
-        "firstName": {
-          "name": "firstName",
+        "first_name": {
+          "name": "first_name",
           "type": "varchar(20)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "lastName": {
-          "name": "lastName",
+        "last_name": {
+          "name": "last_name",
           "type": "varchar(20)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "displayName": {
-          "name": "displayName",
+        "display_name": {
+          "name": "display_name",
           "type": "varchar(20)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "profileImageUrl": {
-          "name": "profileImageUrl",
+        "profile_image_url": {
+          "name": "profile_image_url",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "birthDate": {
-          "name": "birthDate",
+        "birth_date": {
+          "name": "birth_date",
           "type": "date",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "isAdmin": {
-          "name": "isAdmin",
-          "type": "boolean",
+        "about": {
+          "name": "about",
+          "type": "varchar(1000)",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
-          "default": false
+          "autoincrement": false
+        },
+        "twitter": {
+          "name": "twitter",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "facebook": {
+          "name": "facebook",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "instagram": {
+          "name": "instagram",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -182,15 +288,15 @@
     "user_to_tag": {
       "name": "user_to_tag",
       "columns": {
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "tagId": {
-          "name": "tagId",
+        "tag_id": {
+          "name": "tag_id",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
@@ -199,12 +305,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_to_tag_userId_user_id_fk": {
-          "name": "user_to_tag_userId_user_id_fk",
+        "user_to_tag_user_id_user_id_fk": {
+          "name": "user_to_tag_user_id_user_id_fk",
           "tableFrom": "user_to_tag",
           "tableTo": "user",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -212,12 +318,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "user_to_tag_tagId_tag_id_fk": {
-          "name": "user_to_tag_tagId_tag_id_fk",
+        "user_to_tag_tag_id_tag_id_fk": {
+          "name": "user_to_tag_tag_id_tag_id_fk",
           "tableFrom": "user_to_tag",
           "tableTo": "tag",
           "columnsFrom": [
-            "tagId"
+            "tag_id"
           ],
           "columnsTo": [
             "id"
@@ -227,11 +333,11 @@
         }
       },
       "compositePrimaryKeys": {
-        "user_to_tag_userId_tagId_pk": {
-          "name": "user_to_tag_userId_tagId_pk",
+        "user_to_tag_user_id_tag_id_pk": {
+          "name": "user_to_tag_user_id_tag_id_pk",
           "columns": [
-            "userId",
-            "tagId"
+            "user_id",
+            "tag_id"
           ]
         }
       },

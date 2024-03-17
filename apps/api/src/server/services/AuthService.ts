@@ -6,7 +6,7 @@ import { pbkdf2, randomBytes, timingSafeEqual } from 'node:crypto';
 
 import { isSqlError } from '../utils';
 import { type Resources } from './Service';
-import { user, UserType } from '../../models/schema';
+import { users, UsersType } from '../../models/schema';
 
 const pbkdf2Promise = promisify(pbkdf2);
 
@@ -30,7 +30,7 @@ export class AuthController {
     const salt = randomBytes(16);
     const hashedPassword = (await pbkdf2Promise(password, salt, 310000, 16, 'sha256'));
 
-    const userValues: UserType = {
+    const userValues: UsersType = {
       email,
       hashedPassword: hashedPassword.toString('hex'),
       salt: salt.toString('hex'),
@@ -40,7 +40,7 @@ export class AuthController {
     };
 
     const insertResults = await this.resources.db
-      .insert(user)
+      .insert(users)
       .values(userValues)
       .execute();
 
@@ -50,8 +50,8 @@ export class AuthController {
   public async login(email: string, password: string) {
     const userRecord = await this.resources.db
       .select()
-      .from(user)
-      .where(eq(user.email, email));
+      .from(users)
+      .where(eq(users.email, email));
 
     if (userRecord.length !== 1) {
       return null;

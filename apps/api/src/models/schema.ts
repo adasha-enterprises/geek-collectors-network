@@ -1,62 +1,74 @@
-import { boolean, date, int, mysqlTable, primaryKey, timestamp, varchar } from 'drizzle-orm/mysql-core';
+import { date, int, mysqlEnum, mysqlTable, primaryKey, timestamp, varchar } from 'drizzle-orm/mysql-core';
 import { InferInsertModel, relations } from 'drizzle-orm';
 
-export const user = mysqlTable('user', {
+export const users = mysqlTable('user', {
   id: int('id').primaryKey().autoincrement(),
-  createdAt: timestamp('createdAt').notNull().$defaultFn(() => new Date()),
-  updatedAt: timestamp('updatedAt').onUpdateNow(),
-  lastLoginAt: timestamp('lastLoginAt'),
+  createdAt: timestamp('created_at').notNull().$defaultFn(() => new Date()),
+  updatedAt: timestamp('updated_at').onUpdateNow(),
+  lastLoginAt: timestamp('last_login_at'),
   email: varchar('email', { length: 255 }).unique().notNull(),
-  isEmailVerified: boolean('isEmailVerified').default(false),
-  hashedPassword: varchar('hashedPassword', { length: 128 }).notNull(),
+  hashedPassword: varchar('hashed_password', { length: 128 }).notNull(),
   salt: varchar('salt', { length: 128 }).notNull(),
-  firstName: varchar('firstName', { length: 20 }),
-  lastName: varchar('lastName', { length: 20 }),
-  displayName: varchar('displayName', { length: 20 }),
-  profileImageUrl: varchar('profileImageUrl', { length: 255 }),
-  birthDate: date('birthDate'),
+  firstName: varchar('first_name', { length: 20 }),
+  lastName: varchar('last_name', { length: 20 }),
+  displayName: varchar('display_name', { length: 20 }),
+  profileImageUrl: varchar('profile_image_url', { length: 255 }),
+  birthDate: date('birth_date'),
   about: varchar('about', { length: 1000 }),
-  isAdmin: boolean('isAdmin').default(false),
+  twitter: varchar('twitter', { length: 50 }),
+  facebook: varchar('facebook', { length: 50 }),
+  instagram: varchar('instagram', { length: 50 }),
 });
 
-export const tag = mysqlTable('tag', {
+export const tags = mysqlTable('tag', {
   id: int('id').primaryKey().autoincrement(),
-  createdAt: timestamp('createdAt').notNull().$defaultFn(() => new Date()),
-  creatorId: int('creatorId').references(() => user.id, { onDelete: 'set null' }),
-  text: varchar('text', { length: 50 }).notNull().unique(),
+  createdAt: timestamp('created_at').notNull().$defaultFn(() => new Date()),
+  creatorId: int('creator_id').references(() => users.id, { onDelete: 'set null' }),
+  text: varchar('text', { length: 20 }).notNull().unique(),
 });
 
-export const userToTag = mysqlTable('user_to_tag', {
-  userId: int('userId').notNull().references(() => user.id, { onDelete: 'cascade' }),
-  tagId: int('tagId').notNull().references(() => tag.id, { onDelete: 'cascade' }),
+export const usersToTags = mysqlTable('user_to_tag', {
+  userId: int('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  tagId: int('tag_id').notNull().references(() => tags.id, { onDelete: 'cascade' }),
 }, table => ({
   pk: primaryKey({ columns: [table.userId, table.tagId] }),
 }));
 
-export const userRelations = relations(user, ({ many }) => ({
-  tags: many(userToTag),
+export const friendships = mysqlTable('friendship', {
+  inviterId: int('inviter_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  inviteeId: int('invitee_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  message: varchar('text', { length: 200 }).notNull().unique(),
+  status: mysqlEnum('status', ['pending', 'accepted', 'rejected', 'blocked']).notNull().default('pending'),
+}, table => ({
+  pk: primaryKey({ columns: [table.inviterId, table.inviteeId] }),
+
 }));
 
-export const tagRelations = relations(tag, ({ one, many }) => ({
-  creator: one(user, {
-    fields: [tag.creatorId],
-    references: [user.id],
-  }),
-  users: many(userToTag),
+export const usersRelations = relations(users, ({ many }) => ({
+  tags: many(usersToTags),
 }));
 
-export const userToTagRelations = relations(userToTag, ({ one }) => ({
-  user: one(user, {
-    fields: [userToTag.userId],
-    references: [user.id],
+export const tagsRelations = relations(tags, ({ one, many }) => ({
+  creator: one(users, {
+    fields: [tags.creatorId],
+    references: [users.id],
   }),
-  tag: one(tag, {
-    fields: [userToTag.tagId],
-    references: [tag.id],
+  users: many(usersToTags),
+}));
+
+export const usersToTagsRelations = relations(usersToTags, ({ one }) => ({
+  user: one(users, {
+    fields: [usersToTags.userId],
+    references: [users.id],
+  }),
+  tag: one(tags, {
+    fields: [usersToTags.tagId],
+    references: [tags.id],
   }),
 }));
 
 
-export type UserType = InferInsertModel<typeof user>;
-export type TagType = InferInsertModel<typeof tag>;
-export type UserToTagType = InferInsertModel<typeof userToTag>;
+export type UsersType = InferInsertModel<typeof users>;
+export type TagsType = InferInsertModel<typeof tags>;
+export type UsersToTagsType = InferInsertModel<typeof usersToTags>;
+export type FriendshipsType = InferInsertModel<typeof friendships>;

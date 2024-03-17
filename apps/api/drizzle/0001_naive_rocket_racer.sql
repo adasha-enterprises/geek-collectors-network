@@ -1,2 +1,0 @@
-ALTER TABLE `user` ADD `about` varchar(1000);--> statement-breakpoint
-ALTER TABLE `tag` ADD CONSTRAINT `tag_creatorId_user_id_fk` FOREIGN KEY (`creatorId`) REFERENCES `user`(`id`) ON DELETE set null ON UPDATE no action;

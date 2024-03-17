@@ -2,7 +2,7 @@ import express from 'express';
 import { eq } from 'drizzle-orm';
 
 import { type Resources } from './Service';
-import { user, UserType } from '../../models/schema';
+import { users, UsersType } from '../../models/schema';
 
 import { z, ZodError } from 'zod';
 
@@ -23,26 +23,26 @@ export class UserController {
   public async getProfile(id: number) {
     const results = await this.resources.db
       .select({
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        displayName: user.displayName,
-        profileImageUrl: user.profileImageUrl,
-        birthDate: user.birthDate,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-        lastLoginAt: user.lastLoginAt,
+        email: users.email,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        displayName: users.displayName,
+        profileImageUrl: users.profileImageUrl,
+        birthDate: users.birthDate,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
+        lastLoginAt: users.lastLoginAt,
       })
-      .from(user)
-      .where(eq(user.id, id));
+      .from(users)
+      .where(eq(users.id, id));
     return results.length !== 1 ? null : results[0];
   }
 
-  public async updateProfile(id: number, updateData: Partial<UserType>) {
+  public async updateProfile(id: number, updateData: Partial<UsersType>) {
     const results = await this.resources.db
-      .update(user)
+      .update(users)
       .set(updateData)
-      .where(eq(user.id, id));
+      .where(eq(users.id, id));
 
     // affectedRows will be 1 even if no data was actually changed;
     // changedRows would show actual db changes (but is deprecated)
@@ -73,7 +73,7 @@ export class UserService {
     const { userId } = req.session;
 
     try {
-      const parsedUpdateData: Partial<UserType> = updateUserProfileSchema.parse(req.body);
+      const parsedUpdateData: Partial<UsersType> = updateUserProfileSchema.parse(req.body);
       const updateProfileResult = await this.controller.updateProfile(userId!, parsedUpdateData);
 
       return updateProfileResult;
