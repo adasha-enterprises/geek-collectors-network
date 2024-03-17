@@ -3,6 +3,7 @@ import express from 'express';
 // Middleware
 import helmet from 'helmet';
 import morgan from 'morgan';
+import cors from 'cors';
 
 import { Service, Resources } from './services/Service';
 
@@ -25,6 +26,7 @@ export class Server {
     this.app.use(resources.sessions);
 
     this.app.use(helmet());
+    this.app.use(cors());
     this.app.use(morgan('combined', {
       stream: {
         write: (msg: string) => logger.info(msg.trim()),

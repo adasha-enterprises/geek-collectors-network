@@ -9,6 +9,7 @@
     "Rhys Mahannah <rmahannah@my.bcit.ca>"
   ],
   "dependencies": {
+    "cors": "^2.8.5",
     "drizzle-orm": "^0.29.3",
     "express": "^4.18.2",
     "express-mysql-session": "^3.0.0",
