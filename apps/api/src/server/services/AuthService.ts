@@ -1,12 +1,12 @@
+import express from 'express';
 import { promisify } from 'util';
 
 import { eq } from 'drizzle-orm';
-import { MySqlInsertValue } from 'drizzle-orm/mysql-core';
 import { pbkdf2, randomBytes, timingSafeEqual } from 'node:crypto';
 
 import { isSqlError } from '../utils';
-import { BaseService, type Resources } from './Service';
-import { user } from '../../models/schema';
+import { type Resources } from './Service';
+import { user, UserType } from '../../models/schema';
 
 const pbkdf2Promise = promisify(pbkdf2);
 
@@ -30,7 +30,7 @@ export class AuthController {
     const salt = randomBytes(16);
     const hashedPassword = (await pbkdf2Promise(password, salt, 310000, 16, 'sha256'));
 
-    const userValues: MySqlInsertValue<typeof user> = {
+    const userValues: UserType = {
       email,
       hashedPassword: hashedPassword.toString('hex'),
       salt: salt.toString('hex'),
@@ -65,84 +65,68 @@ export class AuthController {
   }
 }
 
-export class AuthService extends BaseService {
+export class AuthService {
+  private readonly controller: AuthController;
+
   constructor(resources: Resources) {
-    super(resources, '/auth');
+    this.controller = new AuthController(resources);
+  }
 
-    const controller = new AuthController(resources);
-    this.router.use(resources.sessions);
+  public async handleSignUp(req: express.Request, res: express.Response) {
+    const { email, password, firstName, lastName } = req.body;
 
-    this.router.post('/signup', async (req, res) => {
-      const { email, password, firstName, lastName } = req.body;
-      if (!email || !password || !firstName || !lastName) {
-        res.status(400).json({
-          message: 'Missing required fields',
-        });
-        return;
+    if (!email || !password || !firstName || !lastName) {
+      return new Error('Missing required fields');
+    }
+
+    try {
+      const insertedUser = await this.controller.signup(
+        email.toString(),
+        password.toString(),
+        firstName.toString(),
+        lastName.toString(),
+      );
+
+      return { userId: insertedUser.insertId };
+    } catch (e) {
+      if (isSqlError(e) && e.code === 'ER_DUP_ENTRY') {
+        return new Error('User already exists.');
       }
+    }
 
-      try {
-        const insertedUser = await controller.signup(
-          email.toString(),
-          password.toString(),
-          firstName.toString(),
-          lastName.toString(),
-        );
+    return new Error('Internal Server Error');
+  }
 
-        if (insertedUser) {
-          res.status(200).json({ userId: insertedUser.insertId });
-        } else {
-          res.status(500).json({
-            message: 'User not created',
-          });
-        }
-      } catch (e) {
-        if (isSqlError(e) && e.code === 'ER_DUP_ENTRY') {
-          res.status(500).json({
-            message: 'User already exists',
-          });
-        } else {
-          res.status(500).json({
-            err: e,
-            message: 'An error occurred',
-          });
-        }
-      }
-    });
+  public async handleLogin(req: express.Request, res: express.Response) {
+    const { email, password } = req.body;
 
-    this.router.post('/login', async (req, res) => {
-      const { email, password } = req.body;
-      if (!email || !password) {
-        res.status(400).json({
-          message: 'Missing required fields (email, password)',
-        });
-        return;
-      }
+    if (!email || !password) {
+      return new Error('Missing required fields (email, password)');
+    }
 
-      const userId = await controller.login(email.toString(), password.toString());
-      if (userId) {
-        // Reason: We don't care that the user can change their
-        // authenticated status mid-way between requests that require
-        // authenticated users.
-        //
-        // If it does occur, then those requests will simply pass as
-        // intended.
-        /* eslint-disable require-atomic-updates */
-        req.session.userId = userId;
-        req.session.authenticated = true;
-        /* eslint-enable require-atomic-updates */
+    const userId = await this.controller.login(email.toString(), password.toString());
 
-        res.status(200).json({ userId });
-      } else {
-        res.status(401).json({
-          message: 'Invalid email or password',
-        });
-      }
-    });
+    if (userId) {
+      // Reason: We don't care that the user can change their
+      // authenticated status mid-way between requests that require
+      // authenticated users.
+      //
+      // If it does occur, then those requests will simply pass as
+      // intended.
+      /* eslint-disable require-atomic-updates */
+      req.session.userId = userId;
+      req.session.authenticated = true;
+      /* eslint-enable require-atomic-updates */
 
-    this.router.post('/logout', async (req, res) => {
-      req.session.authenticated = false;
-      res.status(200).json({ message: 'Logged out' });
-    });
+      return { userId };
+    }
+
+    return new Error('Invalid email or password');
+  }
+
+  public async handleLogout(req: express.Request, res: express.Response) {
+    req.session.authenticated = false;
+
+    return 'Logged out';
   }
 }

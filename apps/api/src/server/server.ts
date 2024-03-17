@@ -1,30 +1,25 @@
+import { type Resources } from './services/Service';
+
 import express from 'express';
 
 // Middleware
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
+import { pagination } from './middleware/PaginationMiddleware';
 
-import { Service, Resources } from './services/Service';
-
+import { DEFAULT_PAGE, DEFAULT_LIMIT, sendResponse } from './routes/utils';
 import { logger } from '../modules/logger';
 
-// eslint-disable-next-line no-shadow
-enum VERSIONS {
-  API_V1 = '/api/v1',
-}
-
 export class Server {
-  public static readonly VERSIONS = VERSIONS;
-
   public readonly app: express.Application;
   private server: ReturnType<express.Application['listen']> | null = null;
 
-  constructor(resources: Resources) {
+  constructor(resources: Resources, routes: Record<string, express.Router>) {
     this.app = express();
 
     this.app.use(resources.sessions);
-
+    this.app.use(pagination(DEFAULT_PAGE, DEFAULT_LIMIT));
     this.app.use(helmet());
     this.app.use(cors());
     this.app.use(morgan('combined', {
@@ -35,10 +30,12 @@ export class Server {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 
+    Object.entries(routes).forEach(([route, router]) => {
+      this.app.use(route, router);
+    });
 
-    this.app.get('/health', (_, res) => res.status(200).json({
-      msg: 'OK',
-    }));
+    this.app.get('/health', sendResponse(200, 'OK!'));
+    this.app.use('*', sendResponse(404, new Error('Route Not Found')));
   }
 
   public start(host: string, port: number): void {
@@ -49,14 +46,5 @@ export class Server {
 
   public stop() {
     this.server?.close();
-  }
-
-  public addServices(version: VERSIONS, services: Service[], resources: Resources): void {
-    services.forEach(service => {
-      const serviceInstance = new service(resources);
-      const router = serviceInstance.getRouter();
-
-      this.app.use(version, router);
-    });
   }
 }

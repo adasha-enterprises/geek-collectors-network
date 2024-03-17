@@ -1,8 +1,8 @@
+import express from 'express';
 import { eq } from 'drizzle-orm';
 
-import { BaseService, type Resources } from './Service';
+import { type Resources } from './Service';
 import { user, UserType } from '../../models/schema';
-import { authenticate } from '../middleware/Authenticate';
 
 import { z, ZodError } from 'zod';
 
@@ -50,36 +50,39 @@ export class UserController {
   }
 }
 
-export class UserService extends BaseService {
+export class UserService {
+  private readonly controller: UserController;
+
   constructor(resources: Resources) {
-    super(resources, '/user');
+    this.controller = new UserController(resources);
+  }
 
-    const controller = new UserController(resources);
-    this.router.use(authenticate);
+  public async handleGetProfile(req: express.Request, res: express.Response) {
+    const userId = req.params.userId ? parseInt(req.params.userId, 10) : req.session.userId!;
 
-    this.router.get('/:userId?/profile', async (req, res) => {
-      const userId = req.params.userId ? parseInt(req.params.userId, 10) : req.session.userId!;
-      const getProfileResult = await controller.getProfile(userId);
-      if (getProfileResult) {
-        res.status(200).json(getProfileResult);
-      } else {
-        res.status(404).json({ error: 'User not found' });
+    const getProfileResult = await this.controller.getProfile(userId);
+
+    if (getProfileResult) {
+      return getProfileResult;
+    }
+
+    return new Error('User not found');
+  }
+
+  public async handleEditProfile(req: express.Request, res: express.Response) {
+    const { userId } = req.session;
+
+    try {
+      const parsedUpdateData: Partial<UserType> = updateUserProfileSchema.parse(req.body);
+      const updateProfileResult = await this.controller.updateProfile(userId!, parsedUpdateData);
+
+      return updateProfileResult;
+    } catch (err) {
+      if (err instanceof ZodError) {
+        return new Error(err.errors[0].message);
       }
-    });
 
-    this.router.patch('/profile', async (req, res) => {
-      const { userId } = req.session;
-      try {
-        const parsedUpdateData: Partial<UserType> = updateUserProfileSchema.parse(req.body);
-        const updateProfileResult = await controller.updateProfile(userId!, parsedUpdateData);
-        res.status(200).json(updateProfileResult);
-      } catch (err) {
-        if (err instanceof ZodError) {
-          res.status(400).json({ errors: err.errors });
-        } else {
-          res.status(500).json({ error: 'Internal Server Error' });
-        }
-      }
-    });
+      return new Error('Internal Server Error');
+    }
   }
 }
