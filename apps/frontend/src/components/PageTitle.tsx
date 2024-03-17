@@ -13,7 +13,7 @@ function PageTitle({ title }: PageTitleProps) {
   return (
     <SimpleGrid
       columns={3}
-      width={{ base: '100%', md: '90%', lg: '80%'}}
+      width={{ base: '100%', md: '90%', lg: '80%' }}
       mb={6}
       gridTemplateColumns={'1fr 2fr 1fr'}
     >
