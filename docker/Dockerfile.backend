@@ -97,4 +97,4 @@ COPY --from=base --chown=${USER}:${USER} ${WORKSPACE}/packages ${WORKSPACE}/pack
 
 WORKDIR ${WORKSPACE}/${NAME}
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["npx", "--no-install", "tsx", "./src/index.ts"]
+CMD ["npx", "-y", "tsx", "./src/index.ts"]
