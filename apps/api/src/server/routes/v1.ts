@@ -5,6 +5,8 @@ import { Resources } from '../services/Service';
 import { UserService } from '../services/UserService';
 import { AuthService } from '../services/AuthService';
 
+import { authenticate } from '../middleware/Authenticate';
+
 export class Routes {
   private readonly userService: UserService;
   private readonly authService: AuthService;
@@ -21,8 +23,8 @@ export class Routes {
     router.post('/auth/login', use((req, res) => this.authService.handleLogin(req, res)));
     router.post('/auth/logout', use((req, res) => this.authService.handleLogout(req, res)));
 
-    router.get('/user/:userId?/profile', use((req, res) => this.userService.handleGetProfile(req, res)));
-    router.patch('/user/profile', use((req, res) => this.userService.handleEditProfile(req, res)));
+    router.get('/user/:userId?/profile', authenticate, use((req, res) => this.userService.handleGetProfile(req, res)));
+    router.patch('/user/profile', authenticate, use((req, res) => this.userService.handleEditProfile(req, res)));
 
     return router;
   }

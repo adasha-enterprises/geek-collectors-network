@@ -1,5 +1,7 @@
 import { RequestHandler } from 'express';
 
+import { sendResponse } from '../routes/utils';
+
 export const authenticate: RequestHandler = (req, res, next) => {
   const { authenticated } = req.session;
 
@@ -7,7 +9,5 @@ export const authenticate: RequestHandler = (req, res, next) => {
     return next();
   }
 
-  return res.status(400).json({
-    message: 'User is not authenticated',
-  });
+  return sendResponse(400, new Error('User is not authenticated'))(req, res);
 };
