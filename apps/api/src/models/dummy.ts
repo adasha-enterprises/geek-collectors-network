@@ -284,24 +284,38 @@ for (let userId = 1; userId <= DUMMY_USERS.length; userId++) {
 }
 
 const DUMMY_FRIENDSHIPS: FriendshipsType[] = [
-  // John Doe
+  // John Doe sends requests...
   { inviterId: 2, inviteeId: 3, message: 'Hey Alice, let\'s be friends!', status: 'pending' },
   { inviterId: 2, inviteeId: 4, message: 'Hey Jane, let\'s be friends!', status: 'pending' },
-  { inviterId: 2, inviteeId: 5, message: 'Hey William, let\'s be friends!', status: 'pending' },
 
+  { inviterId: 2, inviteeId: 5, message: 'Hey William, let\'s be friends!', status: 'accepted' },
   { inviterId: 2, inviteeId: 6, message: 'Hey Sherlock, let\'s be friends!', status: 'accepted' },
   { inviterId: 2, inviteeId: 7, message: 'Hey Bruce, let\'s be friends!', status: 'accepted' },
-  { inviterId: 2, inviteeId: 8, message: 'Hey Hermione, let\'s be friends!', status: 'accepted' },
 
-  { inviterId: 2, inviteeId: 9, message: 'Hey Peter, let\'s be friends!', status: 'rejected' },
-  { inviterId: 2, inviteeId: 10, message: 'Hey Tony, let\'s be friends!', status: 'rejected' },
+  { inviterId: 2, inviteeId: 8, message: 'Hey Hermione, let\'s be friends!', status: 'rejected' },
+  { inviterId: 2, inviteeId: 9, message: 'Hey Peter, let\'s be friends!', status: 'blocked' },
 
-  { inviterId: 2, inviteeId: 11, message: 'Hey Clark, let\'s be friends!', status: 'blocked' },
-  { inviterId: 2, inviteeId: 12, message: 'Hey Bruce, let\'s be friends!', status: 'blocked' },
+  // John Doe recieves requests...
+  { inviterId: 10, inviteeId: 2, message: 'Hey John, it\'s Tony, let\'s be friends!', status: 'pending' },
+  { inviterId: 11, inviteeId: 2, message: 'Hey John, it\'s Clark, let\'s be friends!', status: 'pending' },
 
-  { inviterId: 13, inviteeId: 2, message: 'Hey John, it\'s Diana, let\'s be friends!', status: 'pending' },
-  { inviterId: 14, inviteeId: 2, message: 'Hey John, it\'s Thor, let\'s be friends!', status: 'pending' },
-  { inviterId: 15, inviteeId: 2, message: 'Hey John, it\'s Hulk, let\'s be friends!', status: 'pending' },
+  { inviterId: 12, inviteeId: 2, message: 'Hey John, it\'s Bruce, let\'s be friends!', status: 'accepted' },
+  { inviterId: 13, inviteeId: 2, message: 'Hey John, it\'s Diana, let\'s be friends!', status: 'accepted' },
+
+  { inviterId: 14, inviteeId: 2, message: 'Hey John, it\'s Thor, let\'s be friends!', status: 'rejected' },
+  { inviterId: 15, inviteeId: 2, message: 'Hey John, it\'s Hulk, let\'s be friends!', status: 'blocked' },
+
+  // John Doe has 5 current friends total
+
+  // 2 mutual friends with Alice (NOT current friends with John)
+  { inviterId: 3, inviteeId: 4, message: '', status: 'accepted' },
+  { inviterId: 3, inviteeId: 5, message: '', status: 'accepted' },
+  { inviterId: 3, inviteeId: 6, message: '', status: 'accepted' },
+
+  // 3 mutual friends with William (IS current friends with John)
+  { inviterId: 5, inviteeId: 6, message: '', status: 'accepted' },
+  { inviterId: 5, inviteeId: 7, message: '', status: 'accepted' },
+  { inviterId: 5, inviteeId: 12, message: '', status: 'accepted' },
 
 ];
 

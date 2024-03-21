@@ -1,11 +1,14 @@
 import express from 'express';
-import { eq } from 'drizzle-orm';
+import { and, eq, inArray, or } from 'drizzle-orm';
 
 import { type Resources } from './Service';
-import { users, UsersType } from '../../models/schema';
+import { friendships, users, UsersType } from '../../models/schema';
 
 import { z, ZodError } from 'zod';
 
+interface FriendProfile extends UsersType {
+  mutualFriends: number;
+}
 
 const updateUserProfileSchema = z.object({
   email: z.string().email().toLowerCase(),
@@ -48,6 +51,51 @@ export class UserController {
     // changedRows would show actual db changes (but is deprecated)
     return { updated: results[0].affectedRows === 1 };
   }
+
+  public async getFriendshipIds(id: number) {
+    const friendshipIds = await this.resources.db
+      .select({
+        inviterId: friendships.inviterId,
+        inviteeId: friendships.inviteeId,
+      })
+      .from(friendships)
+      .where(and(
+        eq(friendships.status, 'accepted'),
+        or(eq(friendships.inviterId, id), eq(friendships.inviteeId, id)),
+      ));
+    // get ids just of the other users in the friendship
+    return friendshipIds.map(friend => (friend.inviterId === id ? friend.inviteeId : friend.inviterId));
+  }
+
+  public async getFriendProfiles(friendIds: number[]) {
+    return await this.resources.db
+      .select({
+        id: users.id,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        displayName: users.displayName,
+        profileImageUrl: users.profileImageUrl,
+        email: users.email,
+        twitter: users.twitter,
+        facebook: users.facebook,
+        instagram: users.instagram,
+      })
+      .from(users)
+      .where(inArray(users.id, friendIds)) as FriendProfile[];
+  }
+
+  public async getFriendslist(id: number) {
+    const friendIds = await this.getFriendshipIds(id);
+    const friendProfiles = await this.getFriendProfiles(friendIds);
+    const friendsOfFriends = await Promise.all(friendProfiles.map(friend => this.getFriendshipIds(friend.id!)));
+
+    friendProfiles.forEach((friend, index) => {
+      const mutualFriendsCount = friendsOfFriends[index].filter(friendId => friendIds.includes(friendId)).length;
+      friend.mutualFriends = mutualFriendsCount;
+    });
+
+    return friendProfiles;
+  }
 }
 
 export class UserService {
@@ -82,6 +130,16 @@ export class UserService {
         return new Error(err.errors[0].message);
       }
 
+      return new Error('Internal Server Error');
+    }
+  }
+
+  public async handleGetFriendslist(req: express.Request, res: express.Response) {
+    const { userId } = req.session;
+
+    try {
+      return await this.controller.getFriendslist(userId!);
+    } catch (err) {
       return new Error('Internal Server Error');
     }
   }
