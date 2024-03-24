@@ -21,6 +21,7 @@ function App() {
 
       <Route path="/dashboard" element={<UserDashboard />} />
       <Route path="/account" element={<AccountInfo />} />
+
       {/* Profile page and profile edit page */}
       <Route path="/profile" >
         <Route index element={<ProfileInfo />} />
