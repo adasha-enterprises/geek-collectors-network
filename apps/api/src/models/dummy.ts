@@ -275,11 +275,11 @@ const DUMMY_TAGS: TagsType[] = tagsText.map((text, index) => ({
   text,
 }));
 
-const DUMMY_INTERESTS: UsersToTagsType[] = [];
+const DUMMY_USER_TAGS: UsersToTagsType[] = [];
 for (let userId = 1; userId <= DUMMY_USERS.length; userId++) {
   for (let i = 0; i < userId; i++) {
     const tagId = ((userId + i) % DUMMY_TAGS.length) + 1;
-    DUMMY_INTERESTS.push({ userId, tagId });
+    DUMMY_USER_TAGS.push({ userId, tagId });
   }
 }
 
@@ -347,13 +347,13 @@ export const writeDummyToDb = async (db: ReturnType<typeof drizzle>) => {
     // Likely to throw "duplicate entry", we'll just ignore it
   }
 
-  const interestPromises = DUMMY_INTERESTS.map(dummy => db
+  const userTagsPromises = DUMMY_USER_TAGS.map(dummy => db
     .insert(usersToTags)
     .values(dummy)
     .onDuplicateKeyUpdate({ set: { userId: sql`user_id` } })
     .execute());
   try {
-    await Promise.all(interestPromises);
+    await Promise.all(userTagsPromises);
   } catch (e) {
     // Likely to throw "duplicate entry", we'll just ignore it
   }
