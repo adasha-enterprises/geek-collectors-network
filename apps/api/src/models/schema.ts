@@ -1,5 +1,7 @@
-import { date, int, mysqlEnum, mysqlTable, primaryKey, timestamp, varchar } from 'drizzle-orm/mysql-core';
+import { boolean, date, decimal, int, mysqlEnum, mysqlTable, primaryKey, text, timestamp, varchar } from 'drizzle-orm/mysql-core';
 import { InferInsertModel, relations } from 'drizzle-orm';
+
+/*        ENTITY DEFINITIONS        */
 
 export const users = mysqlTable('user', {
   id: int('id').primaryKey().autoincrement(),
@@ -44,6 +46,46 @@ export const friendships = mysqlTable('friendship', {
   // TODO: prevent duplicate rows with inviterId and inviteeId swapped
 }));
 
+export const items = mysqlTable('item', {
+  id: int('id').primaryKey().autoincrement(),
+  createdAt: timestamp('created_at').notNull().$defaultFn(() => new Date()),
+  updatedAt: timestamp('updated_at').onUpdateNow(),
+  creatorId: int('creator_id').references(() => users.id, { onDelete: 'set null' }),
+  name: varchar('name', { length: 50 }).notNull(),
+  description: text('description'),
+  imageUrl: varchar('image_url', { length: 255 }),
+  brand: varchar('brand', { length: 50 }),
+  price: decimal('price', { precision: 2 }),
+  isForSale: boolean('is_for_sale').notNull().default(false),
+  isForTrade: boolean('is_for_trade').notNull().default(false),
+  soldAt: timestamp('sold_at'),
+});
+
+export const itemsToUsersCollections = mysqlTable('item_to_user_collection', {
+  itemId: int('item_id').unique().notNull().references(() => items.id, { onDelete: 'cascade' }),
+  userId: int('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  isPublic: boolean('is_visible').notNull().default(true),
+}, table => ({
+  pk: primaryKey({ columns: [table.itemId, table.userId] }),
+}));
+
+export const itemsToUsersWishlists = mysqlTable('item_to_user_wishlist', {
+  itemId: int('item_id').notNull().references(() => items.id, { onDelete: 'cascade' }),
+  userId: int('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  isPublic: boolean('is_visible').notNull().default(true),
+}, table => ({
+  pk: primaryKey({ columns: [table.itemId, table.userId] }),
+}));
+
+export const itemsToTags = mysqlTable('user_to_tag', {
+  itemId: int('user_id').notNull().references(() => items.id, { onDelete: 'cascade' }),
+  tagId: int('tag_id').notNull().references(() => tags.id, { onDelete: 'cascade' }),
+}, table => ({
+  pk: primaryKey({ columns: [table.itemId, table.tagId] }),
+}));
+
+/*        ENTITY RELATIONS        */
+
 export const usersRelations = relations(users, ({ many }) => ({
   tags: many(usersToTags),
 }));
@@ -67,8 +109,59 @@ export const usersToTagsRelations = relations(usersToTags, ({ one }) => ({
   }),
 }));
 
+export const itemsRelations = relations(items, ({ one, many }) => ({
+  creator: one(users, {
+    fields: [items.creatorId],
+    references: [users.id],
+  }),
+  collection: one(itemsToUsersCollections, {
+    fields: [items.id],
+    references: [itemsToUsersCollections.itemId],
+  }),
+  wishlists: many(itemsToUsersWishlists),
+  tags: many(itemsToTags),
+}));
+
+export const itemsToUsersCollectionsRelations = relations(itemsToUsersCollections, ({ one }) => ({
+  item: one(items, {
+    fields: [itemsToUsersCollections.itemId],
+    references: [items.id],
+  }),
+  user: one(users, {
+    fields: [itemsToUsersCollections.userId],
+    references: [users.id],
+  }),
+}));
+
+export const itemsToUsersWishlistsRelations = relations(itemsToUsersWishlists, ({ one }) => ({
+  item: one(items, {
+    fields: [itemsToUsersWishlists.itemId],
+    references: [items.id],
+  }),
+  user: one(users, {
+    fields: [itemsToUsersWishlists.userId],
+    references: [users.id],
+  }),
+}));
+
+export const itemsToTagsRelations = relations(itemsToTags, ({ one }) => ({
+  item: one(items, {
+    fields: [itemsToTags.itemId],
+    references: [items.id],
+  }),
+  tag: one(tags, {
+    fields: [itemsToTags.tagId],
+    references: [tags.id],
+  }),
+}));
+
+/*        ENTITY TYPES        */
 
 export type UsersType = InferInsertModel<typeof users>;
 export type TagsType = InferInsertModel<typeof tags>;
 export type UsersToTagsType = InferInsertModel<typeof usersToTags>;
 export type FriendshipsType = InferInsertModel<typeof friendships>;
+export type ItemsType = InferInsertModel<typeof items>;
+export type ItemsToUsersCollectionsType = InferInsertModel<typeof itemsToUsersCollections>;
+export type ItemsToUsersWishlistsType = InferInsertModel<typeof itemsToUsersWishlists>;
+export type ItemsToTagsType = InferInsertModel<typeof itemsToTags>;
