@@ -34,6 +34,10 @@ export class Routes {
 
     router.get('/user/friends', authenticate, use((req, res) => this.userService.handleGetFriendslist(req, res)));
 
+    router.get('/friendship/requests', authenticate, use((req, res) => this.userService.handleGetFriendRequests(req, res)));
+    router.post('/friendship/:userId', authenticate, use((req, res) => this.userService.handleCreateFriendRequest(req, res)));
+    router.patch('/friendship/:userId', authenticate, use((req, res) => this.userService.handleUpdateFriendRequest(req, res)));
+
     return router;
   }
 }
