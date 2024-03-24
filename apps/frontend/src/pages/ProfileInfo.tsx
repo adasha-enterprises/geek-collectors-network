@@ -1,20 +1,64 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { VStack, StackDivider, Avatar, Button, FormControl, FormLabel, FormErrorMessage, Input, AvatarBadge, Textarea, Select } from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
 import { profileSchema } from '../schemas/schemas';
 import PageLayout from '../components/PageLayout';
 import PageTitle from '../components/PageTitle';
 
+const cities = ['Vancouver', 'Burnaby', 'Richmond', 'Surrey', 'Coquitlam', 'Langley', 'Abbotsford', 'Chilliwack', 'Kelowna'];
+
+type ProfileInfo = {
+  email: string;
+  birthDate: string;
+  city: string;
+  about: string;
+}
+
+
+function formatDate(date: Date) {
+  const month = date.getUTCMonth() + 1; // Months are zero-indexed, so add 1
+  const day = date.getUTCDate();
+  const year = date.getUTCFullYear();
+
+  // Format the date as MM/DD/YYYY
+  const formattedDate = `${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`;
+
+  return formattedDate;
+}
 
 function ProfileInfo() {
-  const profileInfo = {
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'email@email.com',
-    password: 'password',
-  };
+  const [initialValues, setInitialValues] = useState<ProfileInfo | null>(null);
 
-  const cities = ['Vancouver', 'Burnaby', 'Richmond', 'Surrey', 'Coquitlam', 'Langley', 'Abbotsford', 'Chilliwack', 'Kelowna'];
+  useEffect(() => {
+    fetch('/api/v1/user/profile', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(({ data }) => setInitialValues({
+        ...data,
+        birthDate: formatDate(new Date(data.birthDate)),
+      }))
+      .catch(error => console.error(error));
+  }, []);
+
+  if (!initialValues) {
+    return (
+      <PageLayout showNavigation={true}>
+        <VStack
+          bg={'background'}
+          spacing={2}
+          px={10}
+          pt={20}
+        >
+          <PageTitle title={'Edit Profile'} />
+          <div>Loading...</div>
+        </VStack>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout showNavigation={true}>
@@ -26,12 +70,7 @@ function ProfileInfo() {
       >
         <PageTitle title={'Edit Profile'} />
         <Formik
-          initialValues={{
-            username: '',
-            dateOfBirth: null,
-            city: '',
-            about: '',
-          }}
+          initialValues={initialValues}
           validationSchema={profileSchema}
           onSubmit={values => {
             console.log(values);
@@ -40,18 +79,18 @@ function ProfileInfo() {
           {formik => (
             <Form style={{ width: '100%' }}>
               <VStack gap={1} divider={<StackDivider/>} >
-                <Avatar size={'lg'} mb={4} name={`${profileInfo.firstName} ${profileInfo.lastName}`}>
+                <Avatar size={'lg'} mb={4} name={'J D'}>
                   <AvatarBadge boxSize={'1em'} bg="brand.500" border={'1px'} >+</AvatarBadge>
                 </Avatar>
-                <FormControl id={'username'} isInvalid={!!(formik.errors.username && formik.touched.username)}>
-                  <FormLabel color={'gray.500'}>Username:</FormLabel>
-                  <Field as={Input} name={'username'} border={'none'} focusBorderColor={'transparent'}></Field>
-                  <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
+                <FormControl id={'email'} isInvalid={!!(formik.errors.email && formik.touched.email)}>
+                  <FormLabel color={'gray.500'}>Email:</FormLabel>
+                  <Field as={Input} name={'email'} border={'none'} focusBorderColor={'transparent'}></Field>
+                  <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
                 </FormControl>
-                <FormControl id={'dateOfBirth'} isInvalid={!!(formik.errors.dateOfBirth && formik.touched.dateOfBirth)}>
+                <FormControl id={'birthDate'} isInvalid={!!(formik.errors.birthDate && formik.touched.birthDate)}>
                   <FormLabel color={'gray.500'}>Date of Birth:</FormLabel>
-                  <Field as={Input} name={'dateOfBirth'} border={'none'} focusBorderColor={'transparent'} placeholder={'MM/DD/YYYY'}></Field>
-                  <FormErrorMessage>{formik.errors.dateOfBirth}</FormErrorMessage>
+                  <Field as={Input} name={'birthDate'} border={'none'} focusBorderColor={'transparent'} placeholder={'MM/DD/YYYY'}></Field>
+                  <FormErrorMessage>{formik.errors.birthDate}</FormErrorMessage>
                 </FormControl>
                 <FormControl id={'city'} isInvalid={!!(formik.errors.city && formik.touched.city)}>
                   <FormLabel color={'gray.500'}>City:</FormLabel>
@@ -79,7 +118,7 @@ function ProfileInfo() {
             </Form>
           )}
         </Formik>
-        
+
       </VStack>
 
     </PageLayout>

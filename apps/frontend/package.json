@@ -32,7 +32,6 @@
   },
   "scripts": {
     "build": "webpack",
-    "start:dev": "webpack serve",
     "lint": "eslint --ext ts,tsx src/ && tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {

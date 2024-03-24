@@ -4,11 +4,6 @@ x-api-args: &api-args
   DOCKER_NODE_VERSION: 18.17.0-slim
   DOCKER_UBUNTU_VERSION: jammy-20230624
 
-x-frontend-args: &frontend-args
-  NAME: frontend
-  DOCKER_NODE_VERSION: 18.17.0-slim
-  DOCKER_UBUNTU_VERSION: jammy-20230624
-
 
 services:
 # ========================== PRODUCTION ==========================
@@ -17,12 +12,6 @@ services:
       dockerfile: ./docker/Dockerfile.backend
       target: production
       args: *api-args
-
-  frontend-prod:
-    build:
-      dockerfile: ./docker/Dockerfile.web
-      target: production
-      args: *frontend-args
 
 
 # ========================== DEVELOPMENT ==========================
@@ -39,29 +28,16 @@ services:
       DATABASE_USER: root
       DATABASE_PASSWORD: dev
       DATABASE_NAME: GeekCollectorsNetwork
+      WEB_ROOT: /app/frontend
     ports:
       - ${API_PORT:-3000}:${API_PORT:-3000}
     restart: unless-stopped
     volumes:
       - ./apps/api:/app/api:ro
+      - ./apps/frontend/dist:/app/frontend:ro
     depends_on:
       mysql-resource:
         condition: service_healthy
-
-  frontend-dev:
-    build:
-      dockerfile: ./docker/Dockerfile.web
-      target: development
-      args: *frontend-args
-    env_file:
-      - ./apps/frontend/.env
-    environment:
-      PORT: ${FE_PORT:-80}
-    ports:
-      - ${FE_PORT:-80}:${FE_PORT:-80}
-    restart: unless-stopped
-    volumes:
-      - ./apps/frontend:/app/frontend:ro
 
   mysql-resource:
     image: mysql:8.3.0

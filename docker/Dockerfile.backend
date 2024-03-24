@@ -11,6 +11,18 @@ ARG DOCKER_UBUNTU_VERSION=latest
 FROM node:${DOCKER_NODE_VERSION} AS node
 
 
+# ========================== FRONTEND STAGE ==========================
+FROM node:${DOCKER_NODE_VERSION} AS frontend
+ARG USER
+ARG WORKSPACE
+WORKDIR ${WORKSPACE}/apps/frontend
+COPY --chown=${USER}:${USER} ./apps/frontend/package*.json .
+RUN npm install
+
+COPY --chown=${USER}:${USER} ./apps/frontend .
+RUN npm run build
+
+
 # ========================== PACKAGES STAGE ==========================
 FROM node:${DOCKER_NODE_VERSION} AS packages
 ARG USER
@@ -60,9 +72,13 @@ FROM base AS development
 ARG NAME
 
 ENV NODE_ENV=development
+ENV WEB_ROOT=${WORKSPACE}/frontend
 
 # Install all dependencies
 RUN npm install && npm cache clean --force
+
+WORKDIR ${WORKSPACE}/frontend
+COPY --from=frontend --chown=${USER}:${USER} ${WORKSPACE}/apps/frontend/dist ${WORKSPACE}/frontend
 
 # Copy source code for cases where the image is run outside of a docker-compose environment
 WORKDIR ${WORKSPACE}/${NAME}
@@ -80,6 +96,7 @@ ARG WORKSPACE
 WORKDIR ${WORKSPACE}
 
 ENV NODE_ENV=production
+ENV WEB_ROOT=${WORKSPACE}/frontend
 
 # Copy Tini
 COPY --from=base /usr/bin/tini /usr/bin/tini
@@ -91,6 +108,9 @@ COPY --chown=${USER}:${USER} ./apps/${NAME}/tsconfig.json ${WORKSPACE}/${NAME}/t
 
 # Copy production dependencies
 COPY --from=base --chown=${USER}:${USER} ${WORKSPACE}/node_modules ${WORKSPACE}/node_modules
+
+# Copy frontend files
+COPY --from=frontend --chown=${USER}:${USER} ${WORKSPACE}/apps/frontend/dist ${WORKSPACE}/frontend
 
 # Copy local packages
 COPY --from=base --chown=${USER}:${USER} ${WORKSPACE}/packages ${WORKSPACE}/packages

@@ -26,10 +26,10 @@ export const loginSchema = Yup.object({
 });
 
 export const profileSchema = Yup.object({
-  username: Yup.string()
+  email: Yup.string()
     .required('Please enter your username.'),
 
-  dateOfBirth: Yup.string()
+  birthDate: Yup.string()
     .matches(/^\d{2}\/\d{2}\/\d{4}$/, 'Invalid date format (MM/DD/YYYY)')
     .required('Please enter your date of birth.'),
 
