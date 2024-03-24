@@ -5,12 +5,12 @@ import { EmailIcon, InfoIcon } from '@chakra-ui/icons';
 import PageTitle from '../components/PageTitle';
 import UserProfileCard from '../components/UserProfileCard';
 import SearchBar from '../components/SearchBar';
-import useFetchAndFilter from '../hooks/useFetchData';
+import useFetchData from '../hooks/useFetchData';
 import loadingAnimation from '../components/LoadingAnimation';
 import { Friend } from '../types/types';
 
 function FriendsList() {
-  const { data: friends, isLoading } = useFetchAndFilter<Friend>('https://dummyjson.com/users?limit=8', 'users');
+  const { data: friends, isLoading } = useFetchData<Friend>('https://dummyjson.com/users?limit=8', 'users');
   const [filteredFriends, setFilteredFriends] = useState<Friend[]>([]);
 
   // Ensures `filteredFriends` list is updated when original `friends` list changes.
