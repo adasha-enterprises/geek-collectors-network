@@ -3,7 +3,7 @@ type Friend = {
     id: string,
     firstName: string,
     lastName: string,
-    image: string,
+    profileImageUrl: string,
   }
 
   type User = {

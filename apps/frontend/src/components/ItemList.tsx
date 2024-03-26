@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
-import SearchBar from '../components/SearchBar';
+import SearchBar from './SearchBar';
 import useFetchData from '../hooks/useFetchData';
-import loadingAnimation from '../components/LoadingAnimation';
-import ItemCard from '../components/ItemCard';
+import loadingAnimation from './LoadingAnimation';
+import ItemCard from './ItemCard';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { SimpleGrid, VStack, Container } from '@chakra-ui/react';
-import PageTitle from '../components/PageTitle';
+import PageTitle from './PageTitle';
 
 type Item = {
     id: string,
-    title: string,
+    name: string,
     description: string,
-    thumbnail: string
+    imageUrl: string
 }
 
 function ItemList() {
+  // TODO: Replace URL with actual API endpoint
   const { data: items, isLoading } = useFetchData<Item>('https://dummyjson.com/products/category/smartphones?limit=8', 'products');
   const [filteredItems, setFilteredItems] = useState<Item[]>([]);
 
@@ -27,7 +28,7 @@ function ItemList() {
   // Filter function for Item Search Bar
   const handleItemSearch = (query: string) => {
     const lowercaseQuery = query.toLowerCase();
-    const filteredQueries = items.filter(item => item.title.toLowerCase().includes(lowercaseQuery) ||
+    const filteredQueries = items.filter(item => item.name.toLowerCase().includes(lowercaseQuery) ||
       item.description.toLowerCase().includes(lowercaseQuery));
     setFilteredItems(filteredQueries);
   };
@@ -48,7 +49,7 @@ function ItemList() {
         : filteredItems.map(item => (
           <ItemCard
             key={item.id}
-            itemData={{ title: item.title, description: item.description, itemImage: item.thumbnail }}
+            itemData={{ title: item.name, description: item.description, itemImage: item.imageUrl }}
             button={button}
           />
         ))

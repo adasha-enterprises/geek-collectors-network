@@ -2,7 +2,7 @@ import React from 'react';
 
 // import FriendsList from './FriendsList';
 import PageLayout from '../components/PageLayout';
-import ItemList from './ItemList';
+import ItemList from '../components/ItemList';
 
 function TestPage() {
   return (
