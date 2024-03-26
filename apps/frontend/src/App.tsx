@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import UserDashboard from './pages/UserDashboard';
 import AccountInfo from './pages/AccountInfo';
 import ProfileInfo from './pages/ProfileInfo';
+import UserProfile from './pages/UserProfile';
 import Test from './pages/TestPage';
 import UserListTestPage from './pages/UserListTestPage';
 
@@ -26,6 +27,7 @@ function App() {
       <Route path="/profile" >
         <Route index element={<ProfileInfo />} />
         <Route path="edit" element={<ProfileInfo />} />
+        <Route path=":username" element={<UserProfile />} />
       </Route>
 
       {/* 404 */}
