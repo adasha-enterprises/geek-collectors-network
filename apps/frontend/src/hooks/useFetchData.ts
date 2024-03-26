@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function useFetchData<T>(endpoint: string, dataKey?: string) {
+function useFetchData<T>(endpoint: string, dataKey = 'data') {
   const [data, setData] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(Error || null);
@@ -14,7 +14,8 @@ function useFetchData<T>(endpoint: string, dataKey?: string) {
         if (receivedData.isError) {
           throw new Error('Error fetching data');
         }
-        const formattedData = dataKey ? receivedData.data[dataKey] : receivedData.data;
+
+        const formattedData = receivedData[dataKey];
         setData(formattedData);
       })
 
