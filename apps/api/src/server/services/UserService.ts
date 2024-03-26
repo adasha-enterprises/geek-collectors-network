@@ -9,6 +9,7 @@ import { z, ZodError } from 'zod';
 interface FriendProfile extends UsersType {
   mutualFriends?: number;
   message?: string;
+  tags?: string[];
 }
 
 type FriendshipStatus = 'pending' | 'accepted' | 'rejected' | 'blocked';
@@ -28,21 +29,54 @@ export class UserController {
   constructor(private readonly resources: Resources) { }
 
   public async getProfile(id: number) {
+    // const results = await this.resources.db
+    //   .select({
+    //     email: users.email,
+    //     firstName: users.firstName,
+    //     lastName: users.lastName,
+    //     displayName: users.displayName,
+    //     profileImageUrl: users.profileImageUrl,
+    //     birthDate: users.birthDate,
+    //     createdAt: users.createdAt,
+    //     updatedAt: users.updatedAt,
+    //     lastLoginAt: users.lastLoginAt,
+    //   })
+    //   .from(users)
+    //   .where(eq(users.id, id));
+
+
     const results = await this.resources.db
-      .select({
-        email: users.email,
-        firstName: users.firstName,
-        lastName: users.lastName,
-        displayName: users.displayName,
-        profileImageUrl: users.profileImageUrl,
-        birthDate: users.birthDate,
-        createdAt: users.createdAt,
-        updatedAt: users.updatedAt,
-        lastLoginAt: users.lastLoginAt,
-      })
-      .from(users)
-      .where(eq(users.id, id));
-    return results.length !== 1 ? null : results[0];
+      .query
+      .users
+      .findFirst({
+        where: user_ => eq(user_.id, id),
+        columns: {
+          createdAt: false,
+          updatedAt: false,
+          lastLoginAt: false,
+          hashedPassword: false,
+          salt: false,
+        },
+        with: {
+          tags: {
+            columns: {
+              tagId: false,
+              userId: false,
+            },
+            with: {
+              tag: {
+                columns: {
+                  text: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    if (results) {
+      results.tags = results.tags.map(tag => tag.tag.text);
+    }
+    return results;
   }
 
   public async updateProfile(id: number, updateData: Partial<UsersType>) {
