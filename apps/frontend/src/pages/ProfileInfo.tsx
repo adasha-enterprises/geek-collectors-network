@@ -4,6 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import { profileSchema } from '../schemas/schemas';
 import PageLayout from '../components/PageLayout';
 import PageTitle from '../components/PageTitle';
+import TagInput from '../components/TagInput';
 
 const cities = ['Vancouver', 'Burnaby', 'Richmond', 'Surrey', 'Coquitlam', 'Langley', 'Abbotsford', 'Chilliwack', 'Kelowna'];
 
@@ -13,7 +14,6 @@ type ProfileInfo = {
   city: string;
   about: string;
 }
-
 
 function formatDate(date: Date) {
   const month = date.getUTCMonth() + 1; // Months are zero-indexed, so add 1
@@ -28,6 +28,7 @@ function formatDate(date: Date) {
 
 function ProfileInfo() {
   const [initialValues, setInitialValues] = useState<ProfileInfo | null>(null);
+  const [tags, setTags] = useState<string[]>(['Interest', 'Another Interest', 'One More Interest', 'Last Interest']);
 
   useEffect(() => {
     fetch('/api/v1/user/profile', {
@@ -66,7 +67,7 @@ function ProfileInfo() {
         bg={'background'}
         spacing={2}
         px={10}
-        pt={20}
+        py={20}
       >
         <PageTitle title={'Edit Profile'} />
         <Formik
@@ -102,8 +103,18 @@ function ProfileInfo() {
                 </FormControl>
                 <FormControl id={'about'} isInvalid={!!(formik.errors.about && formik.touched.about)}>
                   <FormLabel color={'gray.500'}>About:</FormLabel>
-                  <Field as={Textarea} name={'about'} border={'none'} focusBorderColor={'transparent'}></Field>
+                  <Field
+                    as={Textarea}
+                    name={'about'}
+                    border={'none'}
+                    focusBorderColor={'transparent'}
+                    resize={'none'}
+                    placeholder="Tell us about yourself..."/>
                   <FormErrorMessage>{formik.errors.about}</FormErrorMessage>
+                </FormControl>
+                <FormControl>
+                  <FormLabel color={'gray.500'}>Interests:</FormLabel>
+                  <TagInput tags={tags} setTags={setTags} />
                 </FormControl>
                 <Button
                   type="submit"
