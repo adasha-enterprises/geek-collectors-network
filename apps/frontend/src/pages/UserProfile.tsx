@@ -4,18 +4,13 @@ import { Box, Stack, VStack, StackDivider, Avatar, Heading, Text, Tag, Button } 
 import PageLayout from '../components/PageLayout';
 
 type UserProfileProps = {
-    avatar: string;
-    username: string;
-    about: string;
-    interests: string[];
+  avatar: string;
+  username: string;
+  about: string;
+  interests: string[];
 };
 
-function UserProfile({
-  avatar = 'https://bit.ly/broken-link',
-  username = 'John Doe',
-  about = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-  interests = ['Interest', 'Another Interest', 'One More Interest', 'Last Interest'],
-}: UserProfileProps) {
+function UserProfile({ avatar, username, about, interests }: UserProfileProps) {
   const navigate = useNavigate();
 
   return (
