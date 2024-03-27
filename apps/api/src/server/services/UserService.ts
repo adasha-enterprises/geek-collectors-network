@@ -21,6 +21,9 @@ const updateUserProfileSchema = z.object({
   displayName: z.string().max(20),
   profileImageUrl: z.string().url().max(255),
   birthDate: z.coerce.date(),
+  country: z.string().max(100),
+  region: z.string().max(100),
+  city: z.string().max(100),
 }).partial();
 
 
@@ -229,7 +232,7 @@ export class UserController {
     return { created: results[0].affectedRows === 1 };
   }
 
-  public async updateFriendRequest(id:number, friendId: number, status:FriendshipStatus) {
+  public async updateFriendRequest(id: number, friendId: number, status: FriendshipStatus) {
     const results = await this.resources.db
       .update(friendships)
       .set({ status })

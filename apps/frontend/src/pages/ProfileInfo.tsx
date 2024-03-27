@@ -6,13 +6,13 @@ import PageLayout from '../components/PageLayout';
 import PageTitle from '../components/PageTitle';
 import TagInput from '../components/TagInput';
 
-const cities = ['Vancouver', 'Burnaby', 'Richmond', 'Surrey', 'Coquitlam', 'Langley', 'Abbotsford', 'Chilliwack', 'Kelowna'];
-
 type ProfileInfo = {
   email: string;
   birthDate: string;
-  city: string;
   about: string;
+  country: string;
+  region: string;
+  city: string;
 }
 
 function formatDate(date: Date) {
@@ -93,12 +93,19 @@ function ProfileInfo() {
                   <Field as={Input} name={'birthDate'} border={'none'} focusBorderColor={'transparent'} placeholder={'MM/DD/YYYY'}></Field>
                   <FormErrorMessage>{formik.errors.birthDate}</FormErrorMessage>
                 </FormControl>
+                <FormControl id={'country'} isInvalid={!!(formik.errors.country && formik.touched.country)}>
+                  <FormLabel color={'gray.500'}>Country:</FormLabel>
+                  <Field as={Input} name={'country'} border={'none'} focusBorderColor={'transparent'}></Field>
+                  <FormErrorMessage>{formik.errors.country}</FormErrorMessage>
+                </FormControl>
+                <FormControl id={'region'} isInvalid={!!(formik.errors.region && formik.touched.region)}>
+                  <FormLabel color={'gray.500'}>Province/State:</FormLabel>
+                  <Field as={Input} name={'region'} border={'none'} focusBorderColor={'transparent'}></Field>
+                  <FormErrorMessage>{formik.errors.region}</FormErrorMessage>
+                </FormControl>
                 <FormControl id={'city'} isInvalid={!!(formik.errors.city && formik.touched.city)}>
                   <FormLabel color={'gray.500'}>City:</FormLabel>
-                  <Field as={Select} name={'city'} border={'none'} focusBorderColor={'transparent'}>
-                    <option value={''}>Select a city</option>
-                    {cities.map(city => <option key={city} value={city}>{city}</option>)}
-                  </Field>
+                  <Field as={Input} name={'city'} border={'none'} focusBorderColor={'transparent'}></Field>
                   <FormErrorMessage>{formik.errors.city}</FormErrorMessage>
                 </FormControl>
                 <FormControl id={'about'} isInvalid={!!(formik.errors.about && formik.touched.about)}>

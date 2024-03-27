@@ -320,7 +320,6 @@ const DUMMY_FRIENDSHIPS: FriendshipsType[] = [
   { inviterId: 5, inviteeId: 6, message: '', status: 'accepted' },
   { inviterId: 5, inviteeId: 7, message: '', status: 'accepted' },
   { inviterId: 5, inviteeId: 12, message: '', status: 'accepted' },
-
 ];
 
 const DUMMY_ITEMS: ItemsType[] = [
@@ -517,6 +516,20 @@ const DUMMY_WISHLIST_ITEMS: ItemsToUsersWishlistsType[] = [
   { userId: 3, itemId: 5 },
 
 ];
+
+function populateUsersWithLocations(users: UsersType[], locations: Record<'country' | 'region' | 'city', string>[]) {
+  for (let i = 0; i < users.length; i++) {
+    users[i].country = locations[i % locations.length].country;
+    users[i].region = locations[i % locations.length].region;
+    users[i].city = locations[i % locations.length].city;
+  }
+}
+populateUsersWithLocations(DUMMY_USERS, [
+  { country: 'Canada', region: 'British Columbia', city: 'Vancouver' },
+  { country: 'United States', region: 'California', city: 'Los Angeles' },
+  { country: 'United States', region: 'Texas', city: 'Houston' },
+  { country: 'United States', region: 'Florida', city: 'Miami' },
+]);
 
 export const writeDummyToDb = async (db: ReturnType<typeof drizzle>) => {
   logger.info('Writing dummy data to database if it doesn\'t exist.');
