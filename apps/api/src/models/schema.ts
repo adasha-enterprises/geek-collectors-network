@@ -51,20 +51,21 @@ export const items = mysqlTable('item', {
   createdAt: timestamp('created_at').notNull().$defaultFn(() => new Date()),
   updatedAt: timestamp('updated_at').onUpdateNow(),
   creatorId: int('creator_id').references(() => users.id, { onDelete: 'set null' }),
-  name: varchar('name', { length: 50 }).notNull(),
+  name: varchar('name', { length: 100 }).notNull(),
   description: text('description'),
-  imageUrl: varchar('image_url', { length: 255 }),
-  brand: varchar('brand', { length: 50 }),
-  price: decimal('price', { precision: 2 }),
+  url: varchar('url', { length: 1000 }),
+  imageUrl: varchar('image_url', { length: 500 }),
+  company: varchar('brand', { length: 100 }),
+  price: decimal('price', { precision: 8, scale: 2 }).$type<number>(),
   isForSale: boolean('is_for_sale').notNull().default(false),
   isForTrade: boolean('is_for_trade').notNull().default(false),
-  soldAt: timestamp('sold_at'),
 });
 
 export const itemsToUsersCollections = mysqlTable('item_to_user_collection', {
-  itemId: int('item_id').unique().notNull().references(() => items.id, { onDelete: 'cascade' }),
+  itemId: int('item_id').notNull().references(() => items.id, { onDelete: 'cascade' }),
   userId: int('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  isPublic: boolean('is_visible').notNull().default(true),
+  isHidden: boolean('is_visible').notNull().default(false),
+  notes: text('notes'),
 }, table => ({
   pk: primaryKey({ columns: [table.itemId, table.userId] }),
 }));
@@ -72,13 +73,14 @@ export const itemsToUsersCollections = mysqlTable('item_to_user_collection', {
 export const itemsToUsersWishlists = mysqlTable('item_to_user_wishlist', {
   itemId: int('item_id').notNull().references(() => items.id, { onDelete: 'cascade' }),
   userId: int('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  isPublic: boolean('is_visible').notNull().default(true),
+  isHidden: boolean('is_visible').notNull().default(false),
+  notes: text('notes'),
 }, table => ({
   pk: primaryKey({ columns: [table.itemId, table.userId] }),
 }));
 
-export const itemsToTags = mysqlTable('user_to_tag', {
-  itemId: int('user_id').notNull().references(() => items.id, { onDelete: 'cascade' }),
+export const itemsToTags = mysqlTable('item_to_tag', {
+  itemId: int('item_id').notNull().references(() => items.id, { onDelete: 'cascade' }),
   tagId: int('tag_id').notNull().references(() => tags.id, { onDelete: 'cascade' }),
 }, table => ({
   pk: primaryKey({ columns: [table.itemId, table.tagId] }),

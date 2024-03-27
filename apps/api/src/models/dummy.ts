@@ -1,9 +1,9 @@
 import { drizzle } from 'drizzle-orm/mysql2';
 import { sql } from 'drizzle-orm';
 
-import type { FriendshipsType, UsersType, TagsType, UsersToTagsType } from './schema';
+import type { FriendshipsType, ItemsType, ItemsToTagsType, ItemsToUsersCollectionsType, ItemsToUsersWishlistsType, UsersType, TagsType, UsersToTagsType } from './schema';
 // eslint-disable-next-line no-duplicate-imports
-import { friendships, users, tags, usersToTags } from './schema';
+import { friendships, items, itemsToTags, itemsToUsersCollections, itemsToUsersWishlists, users, tags, usersToTags } from './schema';
 
 import { logger } from '../modules/logger';
 
@@ -248,25 +248,29 @@ const DUMMY_USERS: UsersType[] = [
 
 const tagsText: string[] = [
   'Star Wars',
-  'Star Trek',
   'Marvel',
-  'Lord of the Rings',
-  'Transformers',
-  'Minecraft',
-  'Harry Potter',
+  'The Avengers',
+  'Iron Man',
   'DC Comics',
-  'Nintendo',
-  'Game of Thrones',
-  'Pokemon',
-  'Doctor Who',
-  'The Simpsons',
-  'Dungeons & Dragons',
-  'Back to the Future',
   'Batman',
+  'Superman',
+  'Nintendo',
+  'Pokemon',
   'Super Mario Bros',
   'The Legend of Zelda',
-  'The Avengers',
-  'Ghostbusters',
+  'Transformers',
+  'Warhammer 40k',
+  'robots',
+  'models',
+  'action figures',
+  'movies',
+  'books',
+  'comics',
+  'video games',
+  'board games',
+  'LEGO',
+  'sci-fi',
+  'space',
 ];
 
 const DUMMY_TAGS: TagsType[] = tagsText.map((text, index) => ({
@@ -319,6 +323,201 @@ const DUMMY_FRIENDSHIPS: FriendshipsType[] = [
 
 ];
 
+const DUMMY_ITEMS: ItemsType[] = [
+  {
+    'id': 1,
+    'creatorId': 1,
+    'name': 'Millennium Falcon LEGO Set',
+    'description': 'Recreate iconic Star Wars scenes with this detailed LEGO Millennium Falcon set.',
+    'url': 'https://www.lego.com/en-us/themes/star-wars',
+    'imageUrl': 'https://i.ibb.co/QQhj9V1/lego-millenium-falcon.jpg',
+    'company': 'LEGO',
+    'price': 199.99,
+    'isForSale': true,
+    // 'isForTrade': false,
+  },
+  {
+    'id': 2,
+    'creatorId': 1,
+    'name': 'Iron Man Mark XLIII Action Figure',
+    'description': 'Highly detailed Iron Man action figure from Marvel Comics.',
+    'url': 'https://www.marvel.com/',
+    'imageUrl': 'https://i.ibb.co/VJyXJjJ/iron-man-action-figure.jpg',
+    'company': 'Hasbro',
+    'price': 29.99,
+    'isForSale': true,
+    'isForTrade': true,
+  },
+  {
+    'id': 3,
+    'creatorId': 1,
+    'name': 'Optimus Prime Masterpiece Edition',
+    'description': 'Transformers Masterpiece Edition figure of Optimus Prime, leader of the Autobots.',
+    'url': 'https://www.transformers.com/',
+    'imageUrl': 'https://i.ibb.co/SDTM3jZ/optimus-prime.webp',
+    'company': 'Hasbro',
+    'price': 99.99,
+    'isForSale': true,
+    'isForTrade': false,
+  },
+  {
+    'id': 4,
+    'creatorId': 1,
+    'name': 'Darth Vader Helmet Replica',
+    'description': "Authentic replica of Darth Vader's iconic helmet from Star Wars.",
+    'url': 'https://www.sideshow.com/',
+    'imageUrl': 'https://i.ibb.co/zX4JHYd/darth-vader.jpg',
+    'company': 'Sideshow Collectibles',
+    'price': 299.99,
+    'isForSale': false,
+    'isForTrade': false,
+  },
+  {
+    'id': 5,
+    'creatorId': 1,
+    'name': 'Captain America Shield Prop Replica',
+    'description': "Officially licensed replica of Captain America's shield from Marvel Comics.",
+    'url': 'https://www.shopdisney.com/',
+    'imageUrl': 'https://example.com/captain-america-shield.jpg',
+    'company': 'Marvel',
+    'price': 199.99,
+    'isForSale': true,
+    'isForTrade': true,
+  },
+  {
+    'id': 6,
+    'creatorId': 1,
+    'name': 'Transformers G1 Soundwave Figure',
+    'description': 'Vintage Transformers Generation 1 Soundwave action figure.',
+    'url': 'https://www.hasbro.com/en-us/brands/transformers',
+    'imageUrl': 'https://i.ibb.co/jGXCDS5/shockwave.webp',
+    'company': 'Hasbro',
+    'price': 49.99,
+    'isForSale': true,
+    'isForTrade': false,
+  },
+  {
+    'id': 7,
+    'creatorId': 1,
+    'name': 'Legend of Zelda: Breath of the Wild - Link Nendoroid Figure',
+    'description': 'Adorable Nendoroid figure of Link from The Legend of Zelda: Breath of the Wild.',
+    'url': 'https://www.goodsmile.info/en/',
+    'imageUrl': 'https://i.ibb.co/W2BphpM/link.webp',
+    'company': 'Good Smile Company',
+    'price': 69.99,
+    'isForSale': true,
+    'isForTrade': true,
+  },
+  {
+    'id': 8,
+    'creatorId': 1,
+    'name': 'Samus Aran Figma Action Figure',
+    'description': 'Highly articulated Figma action figure of Samus Aran, the iconic bounty hunter from Metroid.',
+    'url': 'https://www.goodsmile.info/en/',
+    'imageUrl': 'https://i.ibb.co/0hTqKr9/samus.jpg',
+    'company': 'Good Smile Company',
+    'price': 59.99,
+    'isForSale': true,
+    'isForTrade': false,
+  },
+  {
+    'id': 9,
+    'creatorId': 1,
+    'name': 'Warhammer 40,000: Indomitus Box Set',
+    'description': 'The ultimate Warhammer 40k starter set featuring Space Marines and Necrons.',
+    'url': 'https://www.games-workshop.com/en-US/Warhammer-40000',
+    'imageUrl': 'https://i.ibb.co/d4T8BnJ/warhammer-40000-indomitus.jpg',
+    'company': 'Games Workshop',
+    'price': 199.99,
+    'isForSale': true,
+    'isForTrade': false,
+  },
+  {
+    'id': 10,
+    'creatorId': 1,
+    'name': 'Warhammer 40,000: Space Marine Primaris Intercessors Squad',
+    'description': 'A set of highly detailed Space Marine Primaris Intercessors for your Warhammer 40k army.',
+    'url': 'https://www.games-workshop.com/en-US/Warhammer-40000',
+    'imageUrl': 'https://i.ibb.co/Ry1QHK1/warhammer-40k-intercessors.jpg',
+    'company': 'Games Workshop',
+    'price': 59.99,
+    'isForSale': true,
+    'isForTrade': true,
+  },
+];
+
+const DUMMY_ITEMS_TAGS: ItemsToTagsType[] = [
+  { itemId: 1, tagId: 1 },
+  { itemId: 1, tagId: 15 },
+  { itemId: 1, tagId: 22 },
+  { itemId: 1, tagId: 23 },
+  { itemId: 1, tagId: 24 },
+
+  { itemId: 2, tagId: 2 },
+  { itemId: 2, tagId: 3 },
+  { itemId: 2, tagId: 4 },
+  { itemId: 2, tagId: 16 },
+
+  { itemId: 3, tagId: 12 },
+  { itemId: 3, tagId: 54 },
+  { itemId: 3, tagId: 16 },
+
+  { itemId: 4, tagId: 1 },
+  { itemId: 4, tagId: 17 },
+  { itemId: 4, tagId: 23 },
+
+  { itemId: 5, tagId: 2 },
+  { itemId: 5, tagId: 3 },
+  { itemId: 5, tagId: 19 },
+
+  { itemId: 6, tagId: 12 },
+  { itemId: 6, tagId: 14 },
+  { itemId: 6, tagId: 16 },
+
+  { itemId: 7, tagId: 8 },
+  { itemId: 7, tagId: 11 },
+  { itemId: 7, tagId: 15 },
+  { itemId: 7, tagId: 20 },
+
+  { itemId: 8, tagId: 8 },
+  { itemId: 8, tagId: 11 },
+  { itemId: 8, tagId: 15 },
+  { itemId: 8, tagId: 20 },
+  { itemId: 8, tagId: 23 },
+
+  { itemId: 9, tagId: 13 },
+  { itemId: 9, tagId: 15 },
+  { itemId: 9, tagId: 23 },
+
+  { itemId: 10, tagId: 13 },
+  { itemId: 10, tagId: 15 },
+  { itemId: 10, tagId: 24 },
+];
+
+const DUMMY_COLLECTION_ITEMS: ItemsToUsersCollectionsType[] = [
+  { userId: 2, itemId: 1, notes: 'I love Star Wars!' },
+  { userId: 2, itemId: 2 },
+  { userId: 2, itemId: 3 },
+
+  { userId: 3, itemId: 7 },
+  { userId: 3, itemId: 8, notes: 'She\'s my hero' },
+  { userId: 3, itemId: 9 },
+  { userId: 3, itemId: 10 },
+
+];
+
+const DUMMY_WISHLIST_ITEMS: ItemsToUsersWishlistsType[] = [
+  { userId: 2, itemId: 7 },
+  { userId: 2, itemId: 8 },
+  { userId: 2, itemId: 9, notes: 'I need some paint for these' },
+
+  { userId: 3, itemId: 1, notes: 'I want this so bad!' },
+  { userId: 3, itemId: 2 },
+  { userId: 3, itemId: 4 },
+  { userId: 3, itemId: 5 },
+
+];
+
 export const writeDummyToDb = async (db: ReturnType<typeof drizzle>) => {
   logger.info('Writing dummy data to database if it doesn\'t exist.');
 
@@ -365,6 +564,51 @@ export const writeDummyToDb = async (db: ReturnType<typeof drizzle>) => {
     .execute());
   try {
     await Promise.all(friendshipPromises);
+  } catch (e) {
+    // Likely to throw "duplicate entry", we'll just ignore it
+  }
+
+  const itemPromises = DUMMY_ITEMS.map(dummy => db
+    .insert(items)
+    .values(dummy)
+    .onDuplicateKeyUpdate({ set: { id: sql`id` } })
+    .execute());
+  try {
+    await Promise.all(itemPromises);
+  } catch (e) {
+    // Likely to throw "duplicate entry", we'll just ignore it
+  }
+
+  const itemTagPromises = DUMMY_ITEMS_TAGS.map(dummy => db
+    .insert(itemsToTags)
+    .values(dummy)
+    // .onDuplicateKeyUpdate({ set: { itemId: sql`item_id` } })
+    .execute());
+  try {
+    await Promise.all(itemTagPromises);
+  } catch (e) {
+    // Likely to throw "duplicate entry", we'll just ignore it
+  }
+
+
+  const collectionItemPromises = DUMMY_COLLECTION_ITEMS.map(dummy => db
+    .insert(itemsToUsersCollections)
+    .values(dummy)
+    .onDuplicateKeyUpdate({ set: { itemId: sql`item_id` } })
+    .execute());
+  try {
+    await Promise.all(collectionItemPromises);
+  } catch (e) {
+    // Likely to throw "duplicate entry", we'll just ignore it
+  }
+
+  const wishlistItemPromises = DUMMY_WISHLIST_ITEMS.map(dummy => db
+    .insert(itemsToUsersWishlists)
+    .values(dummy)
+    .onDuplicateKeyUpdate({ set: { itemId: sql`item_id` } })
+    .execute());
+  try {
+    await Promise.all(wishlistItemPromises);
   } catch (e) {
     // Likely to throw "duplicate entry", we'll just ignore it
   }
