@@ -8,6 +8,7 @@ import SearchBar from '../components/SearchBar';
 import useFetchData from '../hooks/useFetchData';
 import loadingAnimation from '../components/LoadingAnimation';
 import { Friend } from '../types/types';
+import PageLayout from './PageLayout';
 
 function FriendsList() {
   const { data: friends, isLoading } = useFetchData<Friend>('/api/v1/user/friends', 'data');
@@ -43,7 +44,14 @@ function FriendsList() {
   );
 
   return (
-    <VStack bg={'background'} px={10} pt={14} alignItems={'center'}>
+    <VStack
+      bg={'background'}
+      px={10}
+      pt={14}
+      spacing={4}
+      width={{ base: '100%', md: '90%', lg: '80%' }}
+      alignItems={'center'}
+    >
 
       <PageTitle title={'Friends Lists'} />
       <SearchBar onSearch={handleUserSearch} />

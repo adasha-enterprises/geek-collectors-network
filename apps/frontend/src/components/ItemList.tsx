@@ -5,7 +5,7 @@ import useFetchData from '../hooks/useFetchData';
 import loadingAnimation from './LoadingAnimation';
 import ItemCard from './ItemCard';
 import { DeleteIcon } from '@chakra-ui/icons';
-import { SimpleGrid, VStack, Container } from '@chakra-ui/react';
+import { SimpleGrid, VStack, Container, Center } from '@chakra-ui/react';
 import PageTitle from './PageTitle';
 
 type Item = {
@@ -42,31 +42,34 @@ function ItemList() {
 
   };
 
-  // Create a list of ItemCards based on filteredItems
-  const renderItemList = (
+  // Choose layout based on whether there are items to display
+  const itemListLayout = filteredItems.length <= 0 ? (
+    <Center w="full">No items found</Center>
+  ) : (
     <SimpleGrid columns={[1, 2, 3]} spacing={4}>
-      {filteredItems.length <= 0 ? <p>No items found</p>
-        : filteredItems.map(item => (
-          <ItemCard
-            key={item.id}
-            itemData={{ title: item.name, description: item.description, itemImage: item.imageUrl }}
-            button={button}
-          />
-        ))
-      }
+      {filteredItems.map(item => (
+        <ItemCard
+          key={item.id}
+          itemData={{ title: item.name, description: item.description, itemImage: item.imageUrl }}
+          button={button}
+        />
+      ))}
     </SimpleGrid>
   );
 
-  // Display ItemCards in a grid format
+  // Display the chosen layout
   return (
     <Container maxW="container.xl" centerContent p={'0'}>
-      <VStack bg={'background'} px={10} pt={14} alignItems={'center'} pb={10} spacing={4}>
-
-        <PageTitle title={'Your Wishlist'}></PageTitle>
+      <VStack
+        bg={'background'}
+        px={10}
+        pt={14}
+        spacing={4}
+        width={{ base: '100%', md: '90%', lg: '80%' }}
+      >
+        <PageTitle title={'Your Wishlist'} />
         <SearchBar onSearch={handleItemSearch} />
-
-        {isLoading ? loadingAnimation : renderItemList}
-
+        {isLoading ? loadingAnimation : itemListLayout}
       </VStack>
     </Container>
   );

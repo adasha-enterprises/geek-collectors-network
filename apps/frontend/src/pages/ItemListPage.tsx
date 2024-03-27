@@ -2,19 +2,18 @@ import React from 'react';
 import { VStack } from '@chakra-ui/react';
 
 import ItemList from '../components/ItemList';
+import PageLayout from '../components/PageLayout';
 
 
 function ItemListPage() {
-  console.log('FriendsListPage');
   return (
-    <VStack
-      border={'1px solid'}
-      spacing={4}
-      w={'100%'}
-      justify={'center'}
-    >
-      <ItemList />
-    </VStack>
+    <PageLayout showNavigation={true}>
+      <VStack
+        justify={'center'}
+      >
+        <ItemList />
+      </VStack>
+    </PageLayout>
   );
 }
 
