@@ -37,9 +37,15 @@ function UserDashboard() {
             <ArrowRightIcon w={4} h={4} color="brand.500" />
           </HStack>
         </Link>
-        <Link to={'/itemlist'} style={{ width: '100%' }}>
+        <Link to={'/collection'} style={{ width: '100%' }}>
           <HStack w={'100%'} justify={'space-between'}>
-            <Text>Item Collection</Text>
+            <Text>Personal Collection</Text>
+            <ArrowRightIcon w={4} h={4} color="brand.500" />
+          </HStack>
+        </Link>
+        <Link to={'/wishlist'} style={{ width: '100%' }}>
+          <HStack w={'100%'} justify={'space-between'}>
+            <Text>Wishlist</Text>
             <ArrowRightIcon w={4} h={4} color="brand.500" />
           </HStack>
         </Link>

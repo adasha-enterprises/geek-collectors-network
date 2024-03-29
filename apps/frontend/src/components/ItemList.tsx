@@ -15,9 +15,13 @@ type Item = {
     imageUrl: string
 }
 
-function ItemList() {
-  // TODO: Replace URL with actual API endpoint
-  const { data: items, isLoading } = useFetchData<Item>('https://dummyjson.com/products/category/smartphones?limit=8', 'products');
+type ItemListProps = {
+  url: string
+}
+
+
+function ItemList({ url }: ItemListProps) {
+  const { data: items, isLoading } = useFetchData<Item>(url);
   const [filteredItems, setFilteredItems] = useState<Item[]>([]);
 
   // Update `filteredItems` list whenever `items` updated
