@@ -25,6 +25,9 @@ module.exports = {
     hot: true,
     port: process.env.PORT,
     historyApiFallback: true,
+    proxy: {
+      '/api/v1': 'http://localhost:3000/',
+    },
   },
   module: {
     rules: [
@@ -47,4 +50,4 @@ module.exports = {
     //   patterns: [{ from: PUBLIC_PATH, to: DIST_PATH }],
     // }),
   ],
-}
+};
