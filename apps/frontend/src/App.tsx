@@ -8,7 +8,6 @@ import UserDashboard from './pages/UserDashboard';
 import AccountInfo from './pages/AccountInfo';
 import ProfileInfo from './pages/ProfileInfo';
 import UserProfile from './pages/UserProfile';
-import Test from './pages/TestPage';
 import UserListTestPage from './pages/UserListTestPage';
 import FriendsListPage from './pages/FriendsListPage';
 import { ItemCollectionPage, ItemWishlistPage } from './pages/ItemListPage';
@@ -19,7 +18,6 @@ function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/register" element={<Registration />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/test" element={<Test />} />
       <Route path="/userlist" element={<UserListTestPage />} />
       <Route path="/friendslist" element={<FriendsListPage />} />
       <Route path="/collection" element={<ItemCollectionPage />} />
