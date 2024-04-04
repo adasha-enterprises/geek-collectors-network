@@ -1,52 +1,64 @@
 import React, { useEffect, useState } from 'react';
-
 import SearchBar from './SearchBar';
 import useFetchData from '../hooks/useFetchData';
 import loadingAnimation from './LoadingAnimation';
 import ItemCard from './ItemCard';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon, ViewIcon } from '@chakra-ui/icons'; // Assuming ViewIcon for opening modal
 import { SimpleGrid, VStack, Container, Center } from '@chakra-ui/react';
 import PageTitle from './PageTitle';
+import ItemModal from './ItemModal';
 
 type Item = {
-    id: string,
+    id: number,
     name: string,
     description: string,
     imageUrl: string
+    url: string
+    tags: string[]
 }
 
 type ItemListProps = {
   url: string
 }
 
-
 function ItemList({ url }: ItemListProps) {
   const { data: items, isLoading } = useFetchData<Item>(url);
   const [filteredItems, setFilteredItems] = useState<Item[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null); // Changed to store an Item or null
 
-  // Update `filteredItems` list whenever `items` updated
   useEffect(() => {
     setFilteredItems(items);
   }, [items]);
 
-  // Filter function for Item Search Bar
   const handleItemSearch = (query: string) => {
     const lowercaseQuery = query.toLowerCase();
-    const filteredQueries = items.filter(item => item.name.toLowerCase().includes(lowercaseQuery) ||
+    const filtered = items.filter(item => item.name.toLowerCase().includes(lowercaseQuery) ||
       item.description.toLowerCase().includes(lowercaseQuery));
-    setFilteredItems(filteredQueries);
+    setFilteredItems(filtered);
   };
 
-  const button = {
+  // Adjusted to accept itemId and return a configuration object
+  const openItemModal = (itemId: number) => ({
+    label: 'Open Item',
+    icon: <ViewIcon />,
+    variant: 'solid',
+    colorScheme: 'brand',
+    onClick: () => { // Updated to find and set the selected item based on itemId
+      const item = items.find(listedItem => listedItem.id === itemId);
+      setSelectedItem(item || null);
+      setModalOpen(true);
+    },
+  });
+
+  const deleteItem = {
     label: 'Delete Item',
     icon: <DeleteIcon />,
-    variant: 'solid',
-    colorScheme: '',
-    onClick: () => console.log('Deleting item from list...'),
-
+    variant: 'outline',
+    colorScheme: 'brand',
+    onClick: () => console.log('Deleting item...'), // Placeholder functionality
   };
 
-  // Choose layout based on whether there are items to display
   const itemListLayout = filteredItems.length <= 0 ? (
     <Center w="full">No items found</Center>
   ) : (
@@ -55,13 +67,13 @@ function ItemList({ url }: ItemListProps) {
         <ItemCard
           key={item.id}
           itemData={{ title: item.name, description: item.description, itemImage: item.imageUrl }}
-          button={button}
+          // Dynamically configure buttons for each item
+          buttons={[openItemModal(item.id), deleteItem]}
         />
       ))}
     </SimpleGrid>
   );
 
-  // Display the chosen layout
   return (
     <Container maxW="container.xl" centerContent p={'0'}>
       <VStack
@@ -74,6 +86,27 @@ function ItemList({ url }: ItemListProps) {
         <PageTitle title={'Your Wishlist'} />
         <SearchBar onSearch={handleItemSearch} />
         {isLoading ? loadingAnimation : itemListLayout}
+        {selectedItem && ( // Render ItemModal conditionally based on selectedItem
+          <ItemModal
+            isOpen={modalOpen}
+            onClose={() => { setModalOpen(false); setSelectedItem(null); }} // Also reset selectedItem on close
+            bodyProps={{
+              id: selectedItem.id,
+              name: selectedItem.name,
+              description: selectedItem.description,
+              imageUrl: selectedItem.imageUrl,
+              url: selectedItem.url,
+              tags: selectedItem.tags,
+            }}
+            footerActions={[
+              {
+                label: 'Close',
+                onClick: () => setModalOpen(false),
+                variant: 'outline',
+              },
+            ]}
+          />
+        )}
       </VStack>
     </Container>
   );

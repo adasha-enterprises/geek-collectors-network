@@ -8,7 +8,6 @@ import SearchBar from '../components/SearchBar';
 import useFetchData from '../hooks/useFetchData';
 import loadingAnimation from '../components/LoadingAnimation';
 import { Friend } from '../types/types';
-import PageLayout from './PageLayout';
 
 function FriendsList() {
   const { data: friends, isLoading } = useFetchData<Friend>('/api/v1/user/friends', 'data');

@@ -17,9 +17,13 @@ function GeneralModal({ onClose, isOpen, headerContent, bodyContent, footerConte
 
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
-      <ModalContent maxWidth={{ base: '90%', sm: '80%', md: '70%', lg: '50%', xl: '40%' }}>
+      <ModalContent maxWidth={{ base: '90%', lg: '50%', xl: '40%' }}>
 
-        <ModalHeader>{headerContent}</ModalHeader>
+        <ModalHeader
+          sx={{
+            paddingBottom: 0,
+          }}
+        >{headerContent}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>{bodyContent}</ModalBody>
