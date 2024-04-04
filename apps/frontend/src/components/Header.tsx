@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Flex, IconButton } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { Box, Flex } from '@chakra-ui/react';
+import Hamburger from './Hamburger';
 
 type HeaderProps = {
   showNavigation: boolean;
@@ -12,11 +12,7 @@ function Header({ showNavigation }: HeaderProps) {
       <Flex justify="end" align="center">
         {/* Conditional rendering of HamburgerIcon. */}
         {showNavigation ? (
-          <IconButton
-            colorScheme="brand"
-            aria-label="Hamburger Menu"
-            icon={<HamburgerIcon w={8} h={8} color="white" />}
-          />
+          <Hamburger />
         ) : <Box w={8} h={8} />}
       </Flex>
     </Box>

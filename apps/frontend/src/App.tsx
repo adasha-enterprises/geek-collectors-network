@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage';
 import Registration from './pages/Registration';
@@ -35,7 +35,7 @@ function App() {
       </Route>
 
       {/* 404 */}
-      {/* <Route path="*" element={<Navigate to="/" />} /> */}
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }
