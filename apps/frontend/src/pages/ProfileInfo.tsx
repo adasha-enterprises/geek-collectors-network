@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { VStack, StackDivider, Avatar, Button, FormControl, FormLabel, FormErrorMessage, Input, AvatarBadge, Textarea, Select } from '@chakra-ui/react';
+import {
+  VStack,
+  StackDivider,
+  Avatar,
+  Button,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  Input,
+  Textarea,
+} from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
 import { profileSchema } from '../schemas/schemas';
 import PageLayout from '../components/PageLayout';
@@ -7,6 +17,8 @@ import PageTitle from '../components/PageTitle';
 import TagInput from '../components/TagInput';
 
 type ProfileInfo = {
+  name: string;
+  profileImageUrl: string;
   email: string;
   birthDate: string;
   about: string;
@@ -80,8 +92,8 @@ function ProfileInfo() {
           {formik => (
             <Form style={{ width: '100%' }}>
               <VStack gap={1} divider={<StackDivider/>} >
-                <Avatar size={'lg'} mb={4} name={'J D'}>
-                  <AvatarBadge boxSize={'1em'} bg="brand.500" border={'1px'} >+</AvatarBadge>
+                <Avatar border={'1px'} bg="brand.100" size={'2xl'} mb={4} name={'J D'} src={initialValues.profileImageUrl}>
+                  {/* <AvatarBadge boxSize={'1em'} bg="brand.500" border={'1px'} >+</AvatarBadge> */}
                 </Avatar>
                 <FormControl id={'email'} isInvalid={!!(formik.errors.email && formik.touched.email)}>
                   <FormLabel color={'gray.500'}>Email:</FormLabel>
