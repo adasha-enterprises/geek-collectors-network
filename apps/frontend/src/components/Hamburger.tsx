@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   IconButton,
   useDisclosure,
@@ -15,12 +15,34 @@ import {
   ListItem,
   Button,
 } from '@chakra-ui/react';
+
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Hamburger() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const [user, setUser] = useState({ name: '', profileImageUrl: '' });
+
+  // Fetch profile data; if the data changes -- name
+  // or image -- update the user state
+  useEffect(() => {
+    fetch('/api/v1/user/profile', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(({ data }) => {
+        console.log(data);
+        setUser({
+          name: `${data.firstName} ${data.lastName}`,
+          profileImageUrl: data.profileImageUrl,
+        });
+      })
+      .catch(error => console.error(error));
+  }, [user.name, user.profileImageUrl]);
 
   return (
     <>
@@ -53,11 +75,13 @@ function Hamburger() {
               }}
             >
               <Flex align={'center'} direction={'column'}>
-                <Avatar size={'lg'} mb={4} />
+
+                {/* Add src tag with user image and name */}
+                <Avatar size={'lg'} mb={4} src={user.profileImageUrl} />
                 <Heading
                   size={'md'}
                   color={'white'}
-                >John Doe</Heading>
+                >{user.name}</Heading>
               </Flex>
             </DrawerHeader>
             <DrawerBody>
