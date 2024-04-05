@@ -26,9 +26,6 @@ export class AuthController {
     password: string,
     firstName: string,
     lastName: string,
-    country: string,
-    region: string,
-    city: string,
   ) {
     const salt = randomBytes(16);
     const hashedPassword = (await pbkdf2Promise(password, salt, 310000, 16, 'sha256'));
@@ -39,9 +36,6 @@ export class AuthController {
       salt: salt.toString('hex'),
       firstName,
       lastName,
-      country,
-      region,
-      city,
       createdAt: new Date(),
     };
 
@@ -91,9 +85,6 @@ export class AuthService {
         password.toString(),
         firstName.toString(),
         lastName.toString(),
-        country.toString(),
-        region.toString(),
-        city.toString(),
       );
 
       return { userId: insertedUser.insertId };
