@@ -3,6 +3,7 @@ import { eq, sql } from 'drizzle-orm';
 
 import { type Resources } from './Service';
 import { items, ItemsType, itemsToTags } from '../../models/schema';
+import { desc } from 'drizzle-orm';
 
 
 export class ItemController {
@@ -18,6 +19,21 @@ export class ItemController {
       item.tags = item.tags.map(tag => tag.tag.text);
     }
     return item;
+  }
+
+  public async getItemFeed(req: express.Request, res: express.Response) {
+    const results = await this.resources.db.query.items.findMany({
+      with: { tags: { with: { tag: true } } },
+      orderBy: desc(items.createdAt),
+    });
+    console.log(results);
+    if (results) {
+      return results.map(item => ({
+        ...item,
+        tags: item.tags.map(tag => tag.tag.text),
+      }));
+    }
+    return results;
   }
 
   public async getUserCollection(id: number) {
@@ -73,6 +89,14 @@ export class ItemService {
         return item;
       }
       return new Error('Item not found');
+    } catch (err) {
+      return new Error('Internal Server Error');
+    }
+  }
+
+  public async handleGetItemFeed(req: express.Request, res: express.Response) {
+    try {
+      return await this.controller.getItemFeed(req, res);
     } catch (err) {
       return new Error('Internal Server Error');
     }

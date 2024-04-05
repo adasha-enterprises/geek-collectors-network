@@ -43,8 +43,11 @@ export class Routes {
 
     // Item routes
 
+    router.get('/item/feed', authenticate, use((req, res) => this.itemService.handleGetItemFeed(req, res)));
+
     // search for items
     // router.get('/items', authenticate, use((req, res) => this.itemService.handleSearchItems(req, res)));
+
     // item crud operations
     // router.post('/item/', authenticate, use((req, res) => this.itemService.handleCreateItem(req, res)));
     router.get('/item/:itemId', authenticate, use((req, res) => this.itemService.handleGetItem(req, res)));
@@ -59,7 +62,6 @@ export class Routes {
 
     // User Wishlist Items routes
     router.get('/user/:userId?/wishlist', authenticate, use((req, res) => this.itemService.handleGetUserWishlist(req, res)));
-
 
     return router;
   }

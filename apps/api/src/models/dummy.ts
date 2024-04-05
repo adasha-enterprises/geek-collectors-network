@@ -325,6 +325,7 @@ const DUMMY_FRIENDSHIPS: FriendshipsType[] = [
 const DUMMY_ITEMS: ItemsType[] = [
   {
     'id': 1,
+    'createdAt': new Date('2023-01-01 10:00:00'),
     'creatorId': 1,
     'name': 'Millennium Falcon LEGO Set',
     'description': 'Recreate iconic Star Wars scenes with this detailed LEGO Millennium Falcon set.',
@@ -337,6 +338,7 @@ const DUMMY_ITEMS: ItemsType[] = [
   },
   {
     'id': 2,
+    'createdAt': new Date('2023-02-01 10:00:00'),
     'creatorId': 1,
     'name': 'Iron Man Mark XLIII Action Figure',
     'description': 'Highly detailed Iron Man action figure from Marvel Comics.',
@@ -349,6 +351,7 @@ const DUMMY_ITEMS: ItemsType[] = [
   },
   {
     'id': 3,
+    'createdAt': new Date('2023-03-01 10:00:00'),
     'creatorId': 1,
     'name': 'Optimus Prime Masterpiece Edition',
     'description': 'Transformers Masterpiece Edition figure of Optimus Prime, leader of the Autobots.',
@@ -361,6 +364,7 @@ const DUMMY_ITEMS: ItemsType[] = [
   },
   {
     'id': 4,
+    'createdAt': new Date('2023-04-01 10:00:00'),
     'creatorId': 1,
     'name': 'Darth Vader Helmet Replica',
     'description': "Authentic replica of Darth Vader's iconic helmet from Star Wars.",
@@ -373,6 +377,7 @@ const DUMMY_ITEMS: ItemsType[] = [
   },
   {
     'id': 5,
+    'createdAt': new Date('2023-05-01 10:00:00'),
     'creatorId': 1,
     'name': 'Captain America Shield Prop Replica',
     'description': "Officially licensed replica of Captain America's shield from Marvel Comics.",
@@ -385,6 +390,7 @@ const DUMMY_ITEMS: ItemsType[] = [
   },
   {
     'id': 6,
+    'createdAt': new Date('2023-06-01 10:00:00'),
     'creatorId': 1,
     'name': 'Transformers G1 Soundwave Figure',
     'description': 'Vintage Transformers Generation 1 Soundwave action figure.',
@@ -397,6 +403,7 @@ const DUMMY_ITEMS: ItemsType[] = [
   },
   {
     'id': 7,
+    'createdAt': new Date('2023-07-01 10:00:00'),
     'creatorId': 1,
     'name': 'Legend of Zelda: Breath of the Wild - Link Nendoroid Figure',
     'description': 'Adorable Nendoroid figure of Link from The Legend of Zelda: Breath of the Wild.',
@@ -409,6 +416,7 @@ const DUMMY_ITEMS: ItemsType[] = [
   },
   {
     'id': 8,
+    'createdAt': new Date('2023-08-01 10:00:00'),
     'creatorId': 1,
     'name': 'Samus Aran Figma Action Figure',
     'description': 'Highly articulated Figma action figure of Samus Aran, the iconic bounty hunter from Metroid.',
@@ -421,6 +429,7 @@ const DUMMY_ITEMS: ItemsType[] = [
   },
   {
     'id': 9,
+    'createdAt': new Date('2023-09-01 10:00:00'),
     'creatorId': 1,
     'name': 'Warhammer 40,000: Indomitus Box Set',
     'description': 'The ultimate Warhammer 40k starter set featuring Space Marines and Necrons.',
@@ -433,6 +442,7 @@ const DUMMY_ITEMS: ItemsType[] = [
   },
   {
     'id': 10,
+    'createdAt': new Date('2023-010-01 10:00:00'),
     'creatorId': 1,
     'name': 'Warhammer 40,000: Space Marine Primaris Intercessors Squad',
     'description': 'A set of highly detailed Space Marine Primaris Intercessors for your Warhammer 40k army.',
