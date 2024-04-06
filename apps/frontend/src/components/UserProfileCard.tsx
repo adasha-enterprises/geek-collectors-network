@@ -1,8 +1,9 @@
 import React from 'react';
 import { Box, Flex, HStack, IconButton, Image, Text } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
-// If more user data is needed, it can be added here
 type UserData = {
+  id: string
   name: string,
   image?: string
   mutualFriends?: number,
@@ -33,6 +34,9 @@ function navigateToUserProfile() {
 }
 
 function UserProfileCard({ userData, buttons }: UserProfileCardProps) {
+  const navigate = useNavigate();
+  const profilePath = `/profile/${userData.id}`;
+
   return (
     <HStack
       backgroundColor={'background'}
@@ -43,9 +47,11 @@ function UserProfileCard({ userData, buttons }: UserProfileCardProps) {
       w={'100%'}
       borderBottom={'1px'}
       borderColor={'greyOut'}
+      cursor={'pointer'}
     >
-      <Box flexShrink={0}
-        onClick={() => navigateToUserProfile()}>
+
+      {/* Profile image, displayed to the left of the user name */}
+      <Box flexShrink={0} onClick={() => navigate(profilePath)}>
         <Image
           borderRadius={'full'} // Makes image circular
           boxSize={['30px', '40px', '50px']} // Dynamically increases image size based on screen width
@@ -55,9 +61,7 @@ function UserProfileCard({ userData, buttons }: UserProfileCardProps) {
       </Box>
 
       {/* User name, displayed to the right of the profile image */}
-      <Flex
-        flex={'1'}
-        onClick={() => navigateToUserProfile()}>
+      <Flex flex={'1'} onClick={() => navigate(profilePath)} >
         <Text fontSize={['md', 'lg']} fontWeight={'bold'}>{userData.name}</Text>
       </Flex>
 
@@ -73,6 +77,7 @@ function UserProfileCard({ userData, buttons }: UserProfileCardProps) {
           />
         ))}
       </HStack>
+
     </HStack>
   );
 }

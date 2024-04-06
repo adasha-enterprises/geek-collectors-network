@@ -31,7 +31,7 @@ function App() {
       <Route path="/profile" >
         <Route index element={<ProfileInfo />} />
         <Route path="edit" element={<ProfileInfo />} />
-        <Route path=":username" element={<UserProfile avatar="https://bit.ly/broken-link" username="John Doe" about="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." interests={['Interest', 'Another Interest', 'One More Interest', 'Last Interest']} />} />
+        <Route path=":userId" element={<UserProfile />} />
       </Route>
 
       {/* 404 */}

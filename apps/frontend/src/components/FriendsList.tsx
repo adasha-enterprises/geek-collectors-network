@@ -31,10 +31,21 @@ function FriendsList() {
       {filteredFriends.length > 0 ? filteredFriends.map(friend => (
         <UserProfileCard
           key={friend.id}
-          userData={{ name: `${friend.firstName} ${friend.lastName}`, image: friend.profileImageUrl }}
+          userData={{
+            id: friend.id,
+            name: `${friend.firstName} ${friend.lastName}`,
+            image: friend.profileImageUrl,
+          }}
           buttons={[
-            { label: 'Send email', icon: <EmailIcon boxSize={6}/>, onClick: () => console.log(`Sending message to ${friend.id}`) },
-            { label: 'Social media', icon: <InfoIcon boxSize={5}/> },
+            {
+              label: 'Send email',
+              icon: <EmailIcon boxSize={6}/>,
+              onClick: () => console.log(`Sending message to ${friend.id}`),
+            },
+            {
+              label: 'Social media',
+              icon: <InfoIcon boxSize={5}/>,
+            },
           ]}
         />
       )) : <p>No friends found</p>
