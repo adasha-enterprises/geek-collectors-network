@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { VStack } from '@chakra-ui/react';
 import { EmailIcon, InfoIcon } from '@chakra-ui/icons';
 
-import PageTitle from '../components/PageTitle';
 import UserProfileCard from '../components/UserProfileCard';
 import SearchBar from '../components/SearchBar';
 import useFetchData from '../hooks/useFetchData';
@@ -63,7 +62,6 @@ function FriendsList() {
       alignItems={'center'}
     >
 
-      <PageTitle title={'Friends Lists'} />
       <SearchBar onSearch={handleUserSearch} />
 
       {isLoading ? loadingAnimation : renderFriendsList}

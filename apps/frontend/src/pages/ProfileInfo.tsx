@@ -13,7 +13,6 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { profileSchema } from '../schemas/schemas';
 import PageLayout from '../components/PageLayout';
-import PageTitle from '../components/PageTitle';
 import TagInput from '../components/TagInput';
 
 type ProfileInfo = {
@@ -85,7 +84,6 @@ function ProfileInfo() {
           px={10}
           pt={20}
         >
-          <PageTitle title={'Edit Profile'} />
           <div>Loading...</div>
         </VStack>
       </PageLayout>
@@ -100,7 +98,6 @@ function ProfileInfo() {
         px={10}
         py={20}
       >
-        <PageTitle title={'Edit Profile'} />
         <Formik
           initialValues={initialValues}
           validationSchema={profileSchema}

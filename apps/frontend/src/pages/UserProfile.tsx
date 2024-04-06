@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Stack, VStack, StackDivider, Avatar, Heading, Text, Tag, Button } from '@chakra-ui/react';
 import PageLayout from '../components/PageLayout';
-import PageTitle from '../components/PageTitle';
 
 type ProfileInfo = {
   email: string;
@@ -45,7 +44,6 @@ function UserProfile() {
           px={10}
           pt={20}
         >
-          <PageTitle title={'User Profile'} />
           <div>Loading...</div>
         </VStack>
       </PageLayout>

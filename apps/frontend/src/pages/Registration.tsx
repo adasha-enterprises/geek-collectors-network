@@ -2,7 +2,6 @@ import React from 'react';
 import { VStack } from '@chakra-ui/react';
 
 import PageLayout from '../components/PageLayout';
-import PageTitle from '../components/PageTitle';
 import RegistrationForm from '../components/RegistrationForm';
 
 function Registration() {
@@ -13,7 +12,6 @@ function Registration() {
         px={10}
         pt={14}
       >
-        <PageTitle title={'Sign Up'} />
         <RegistrationForm />
       </VStack>
     </ PageLayout>

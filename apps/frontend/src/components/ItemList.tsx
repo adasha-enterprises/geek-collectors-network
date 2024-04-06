@@ -5,7 +5,6 @@ import loadingAnimation from './LoadingAnimation';
 import ItemCard from './ItemCard';
 import { DeleteIcon, ViewIcon } from '@chakra-ui/icons'; // Assuming ViewIcon for opening modal
 import { SimpleGrid, VStack, Container, Center } from '@chakra-ui/react';
-import PageTitle from './PageTitle';
 import ItemModal from './ItemModal';
 
 type Item = {
@@ -83,7 +82,6 @@ function ItemList({ url }: ItemListProps) {
         spacing={4}
         width={{ base: '100%', md: '90%', lg: '80%' }}
       >
-        <PageTitle title={'Your Wishlist'} />
         <SearchBar onSearch={handleItemSearch} />
         {isLoading ? loadingAnimation : itemListLayout}
         {selectedItem && ( // Render ItemModal conditionally based on selectedItem

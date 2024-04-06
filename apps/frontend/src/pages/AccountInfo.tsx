@@ -3,7 +3,6 @@ import { VStack, StackDivider, Button, FormControl, FormLabel, FormErrorMessage,
 import { Formik, Form, Field } from 'formik';
 import { registrationSchema } from '../schemas/schemas';
 import PageLayout from '../components/PageLayout';
-import PageTitle from '../components/PageTitle';
 
 type AccountInfo = {
   firstName: string;
@@ -54,7 +53,6 @@ function AccountInfo() {
           px={10}
           pt={20}
         >
-          <PageTitle title={'Account Info'} />
           <div>Loading...</div>
         </VStack>
       </PageLayout>
@@ -70,7 +68,6 @@ function AccountInfo() {
         px={10}
         pt={20}
       >
-        <PageTitle title={'Account Info'} />
         <Formik
           initialValues={initialValues}
           validationSchema={registrationSchema}

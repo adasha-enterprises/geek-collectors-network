@@ -2,7 +2,6 @@ import React from 'react';
 import { VStack } from '@chakra-ui/react';
 
 import PageLayout from '../components/PageLayout';
-import PageTitle from '../components/PageTitle';
 import LoginForm from '../components/LoginForm';
 
 // Add Header component created by Toco following rebase / merge
@@ -14,7 +13,6 @@ function LoginPage() {
         px={10}
         pt={20}
       >
-        <PageTitle title={'Login'} />
         <LoginForm />
       </VStack>
     </PageLayout>
