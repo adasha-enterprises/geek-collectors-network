@@ -25,6 +25,7 @@ type ProfileInfo = {
   country: string;
   region: string;
   city: string;
+  tags: string[];
 }
 
 function formatDate(date: Date) {
@@ -40,7 +41,7 @@ function formatDate(date: Date) {
 
 function ProfileInfo() {
   const [initialValues, setInitialValues] = useState<ProfileInfo | null>(null);
-  const [tags, setTags] = useState<string[]>(['Interest', 'Another Interest', 'One More Interest', 'Last Interest']);
+  const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
     fetch('/api/v1/user/profile', {
@@ -50,10 +51,13 @@ function ProfileInfo() {
       },
     })
       .then(response => response.json())
-      .then(({ data }) => setInitialValues({
-        ...data,
-        birthDate: formatDate(new Date(data.birthDate)),
-      }))
+      .then(({ data }) => {
+        setInitialValues({
+          ...data,
+          birthDate: formatDate(new Date(data.birthDate)),
+        });
+        setTags(data.tags);
+      })
       .catch(error => console.error(error));
   }, []);
 
