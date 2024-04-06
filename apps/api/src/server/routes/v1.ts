@@ -35,8 +35,9 @@ export class Routes {
     router.post('/user/tag/:tagId?', authenticate, use((req, res) => this.userService.handleAddUserTag(req, res)));
     router.delete('/user/tag/:tagId', authenticate, use((req, res) => this.userService.handleDeleteUserTag(req, res)));
 
-    router.get('/user/friends', authenticate, use((req, res) => this.userService.handleGetFriendslist(req, res)));
-
+    // Friendships
+    router.get('/friendship', authenticate, use((req, res) => this.userService.handleGetFriendslist(req, res)));
+    router.get('/friendship/suggestions', authenticate, use((req, res) => this.userService.handleGetFriendSuggestions(req, res)));
     router.get('/friendship/requests', authenticate, use((req, res) => this.userService.handleGetFriendRequests(req, res)));
     router.post('/friendship/:userId', authenticate, use((req, res) => this.userService.handleCreateFriendRequest(req, res)));
     router.patch('/friendship/:userId', authenticate, use((req, res) => this.userService.handleUpdateFriendRequest(req, res)));
