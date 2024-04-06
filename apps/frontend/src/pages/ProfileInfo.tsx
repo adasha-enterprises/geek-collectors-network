@@ -39,6 +39,21 @@ function formatDate(date: Date) {
   return formattedDate;
 }
 
+const updateProfile = async (values: ProfileInfo) => {
+  const response = await fetch('/api/v1/user/profile', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(values),
+  });
+
+  if (!response.ok) {
+    const { error } = await response.json();
+    throw new Error(error.message);
+  }
+};
+
 function ProfileInfo() {
   const [initialValues, setInitialValues] = useState<ProfileInfo | null>(null);
   const [tags, setTags] = useState<string[]>([]);
@@ -89,9 +104,7 @@ function ProfileInfo() {
         <Formik
           initialValues={initialValues}
           validationSchema={profileSchema}
-          onSubmit={values => {
-            console.log(values);
-          }}
+          onSubmit={values => updateProfile(values)}
         >
           {formik => (
             <Form style={{ width: '100%' }}>
