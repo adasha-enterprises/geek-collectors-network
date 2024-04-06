@@ -26,7 +26,7 @@ function PageLayout({ children, showNavigation }: PageLayoutProps) {
         >
           <Header showNavigation={showNavigation} />
         </Box>
-        <Box overflowY="auto" h="full">
+        <Box overflowY="auto" h="full" pt="4rem">
           {children}
         </Box>
       </Box>
