@@ -19,7 +19,11 @@ import {
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Hamburger() {
+type HamburgerProps = {
+    links: { path: string; text: string }[];
+};
+
+function Hamburger({ links }: HamburgerProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const [user, setUser] = useState({ name: '', profileImageUrl: '' });
@@ -86,21 +90,13 @@ function Hamburger() {
             </DrawerHeader>
             <DrawerBody>
               <List spacing={8} textAlign={'center'}>
-                <ListItem _hover={{
-                  color: 'brand.900',
-                }}><Link to={'/friendslist'}>Friends</Link></ListItem>
-                <ListItem _hover={{
-                  color: 'brand.900',
-                }}><Link to={'/userlist'}>Network</Link></ListItem>
-                <ListItem _hover={{
-                  color: 'brand.900',
-                }}><Link to={'/wishlist'}>Wishlist</Link></ListItem>
-                <ListItem _hover={{
-                  color: 'brand.900',
-                }}><Link to={'/collection'}>Collection</Link></ListItem>
-                <ListItem _hover={{
-                  color: 'brand.900',
-                }}><Link to={'/account'}>Setting</Link></ListItem>
+                {links.map(link => (
+                  <ListItem key={link.path} _hover={{
+                    color: 'brand.900',
+                  }}>
+                    <Link to={link.path}>{link.text}</Link>
+                  </ListItem>
+                ))}
               </List>
             </DrawerBody>
             <DrawerFooter mb={8}>

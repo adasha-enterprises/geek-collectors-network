@@ -8,7 +8,7 @@ import PageLayout from '../components/PageLayout';
 
 function UserDashboard() {
   return (
-    <PageLayout showNavigation={false}>
+    <PageLayout showNavigation={true}>
       <VStack
         bg={'background'}
         divider={<StackDivider borderWidth={'1px'} />}
