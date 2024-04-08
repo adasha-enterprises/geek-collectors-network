@@ -96,7 +96,7 @@ function ProfileInfo() {
         bg={'background'}
         spacing={2}
         px={10}
-        py={20}
+        py={10}
       >
         <Formik
           initialValues={initialValues}
@@ -149,16 +149,19 @@ function ProfileInfo() {
                   <FormLabel color={'gray.500'}>Interests:</FormLabel>
                   <TagInput tags={tags} setTags={setTags} />
                 </FormControl>
-                <Button
-                  type="submit"
-                  mt={4}
-                  w={'100%'}
-                  colorScheme="brand"
-                  variant="solid"
-                  disabled={!formik.dirty || formik.isSubmitting}>
-                                SAVE
-                </Button>
               </VStack>
+              <Button
+                type="submit"
+                mt={4}
+                w={'100%'}
+                colorScheme="brand"
+                variant="solid"
+                disabled={!formik.dirty || formik.isSubmitting}
+                position={'sticky'}
+                bottom={0}
+              >
+                SAVE
+              </Button>
             </Form>
           )}
         </Formik>
