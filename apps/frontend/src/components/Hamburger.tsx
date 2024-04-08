@@ -14,6 +14,7 @@ import {
   List,
   ListItem,
   Button,
+  Divider,
 } from '@chakra-ui/react';
 
 import { HamburgerIcon } from '@chakra-ui/icons';
@@ -90,12 +91,13 @@ function Hamburger({ links }: HamburgerProps) {
             </DrawerHeader>
             <DrawerBody>
               <List spacing={8} textAlign={'center'}>
-                {links.map(link => (
-                  <ListItem key={link.path} _hover={{
-                    color: 'brand.900',
-                  }}>
-                    <Link to={link.path}>{link.text}</Link>
-                  </ListItem>
+                {links.map((link, index) => (
+                  <>
+                    <ListItem key={link.path} _hover={{ color: 'brand.900' }}>
+                      <Link to={link.path}>{link.text}</Link>
+                    </ListItem>
+                    {(index + 1) % 2 === 0 && (index + 1) !== links.length && <Divider />}
+                  </>
                 ))}
               </List>
             </DrawerBody>
