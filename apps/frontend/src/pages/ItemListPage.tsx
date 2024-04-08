@@ -10,7 +10,7 @@ function ItemCollectionPage() {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const userId = params.get('userId');
-  const url = userId ? `/api/v1/user/${userId}/collection` : '/api/v1/user/collection';
+  const url = userId ? `/api/v1/user/collection?id=${userId}` : '/api/v1/user/collection';
 
   return (
     <PageLayout showNavigation={true}>
@@ -29,7 +29,7 @@ function ItemWishlistPage() {
   const { search } = useLocation();
   const params = new URLSearchParams(search);
   const userId = params.get('userId');
-  const url = userId ? `/api/v1/user/${userId}/wishlist` : '/api/v1/user/wishlist';
+  const url = userId ? `/api/v1/user/wishlist?id=${userId}` : '/api/v1/user/wishlist';
 
   return (
     <PageLayout showNavigation={true}>

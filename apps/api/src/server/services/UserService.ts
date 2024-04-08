@@ -231,7 +231,7 @@ export class UserService {
   }
 
   public async handleGetProfile(req: express.Request, res: express.Response) {
-    const userId = req.params.userId ? parseInt(req.params.userId, 10) : req.session.userId!;
+    const userId = req.query.id ? parseInt(req.query.id.toString(), 10) : req.session.userId!;
 
     const getProfileResult = await this.controller.getProfile(userId);
 
@@ -260,7 +260,7 @@ export class UserService {
   }
 
   public async handleGetUserTags(req: express.Request, res: express.Response) {
-    const userId = req.params.userId ? parseInt(req.params.userId, 10) : req.session.userId!;
+    const userId = req.query.id ? parseInt(req.query.id.toString(), 10) : req.session.userId!;
 
     const results = await this.controller.getUserTags(userId);
     if (results) {
@@ -271,23 +271,23 @@ export class UserService {
 
   public async handleAddUserTag(req: express.Request, res: express.Response) {
     const { userId } = req.session;
-    let tagId = parseInt(req.params.tagId, 10);
-    const tagText = req.body.text;
+    const { text } = req.body;
+    let id = parseInt(req.body.id, 10);
 
-    if (Number.isNaN(tagId)) {
-      if (!tagText) {
+    if (Number.isNaN(id)) {
+      if (!text) {
         return new Error('Must provide a tag id or text');
       }
-      tagId = await this.controller.createTag(userId!, tagText);
+      id = await this.controller.createTag(userId!, text);
     }
 
-    const added = await this.controller.addUserToTag(userId!, tagId);
-    return added ? { tagId } : false;
+    const added = await this.controller.addUserToTag(userId!, id);
+    return added ? { tagId: id } : false;
   }
 
   public async handleDeleteUserTag(req: express.Request, res: express.Response) {
     const { userId } = req.session;
-    const tagId = parseInt(req.params.tagId, 10);
+    const tagId = parseInt(req.params.id, 10);
 
     const removed = await this.controller.deleteUserToTag(userId!, tagId);
     return { removed };

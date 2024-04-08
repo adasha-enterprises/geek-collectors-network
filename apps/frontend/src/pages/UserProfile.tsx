@@ -20,7 +20,7 @@ type ProfileInfo = {
 
 function UserProfile() {
   const { userId } = useParams();
-  const userProfileUrl = `/api/v1/user/${userId}/profile`;
+  const userProfileUrl = `/api/v1/user/profile?id=${userId}`;
   const [initialValues, setInitialValues] = useState<ProfileInfo | null>(null);
 
   useEffect(() => {

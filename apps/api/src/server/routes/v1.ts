@@ -27,13 +27,13 @@ export class Routes {
     router.post('/auth/login', use((req, res) => this.authService.handleLogin(req, res)));
     router.post('/auth/logout', use((req, res) => this.authService.handleLogout(req, res)));
 
-    router.get('/user/:userId?/profile', authenticate, use((req, res) => this.userService.handleGetProfile(req, res)));
+    router.get('/user/profile', authenticate, use((req, res) => this.userService.handleGetProfile(req, res)));
     router.patch('/user/profile', authenticate, use((req, res) => this.userService.handleEditProfile(req, res)));
 
     // User tags
-    router.get('/user/:userId?/tags', authenticate, use((req, res) => this.userService.handleGetUserTags(req, res)));
-    router.post('/user/tag/:tagId?', authenticate, use((req, res) => this.userService.handleAddUserTag(req, res)));
-    router.delete('/user/tag/:tagId', authenticate, use((req, res) => this.userService.handleDeleteUserTag(req, res)));
+    router.get('/user/tags', authenticate, use((req, res) => this.userService.handleGetUserTags(req, res)));
+    router.post('/user/tag', authenticate, use((req, res) => this.userService.handleAddUserTag(req, res)));
+    router.delete('/user/tag/:id', authenticate, use((req, res) => this.userService.handleDeleteUserTag(req, res)));
 
     // Friendships
     router.get('/friendship', authenticate, use((req, res) => this.userService.handleGetFriendslist(req, res)));
@@ -59,10 +59,10 @@ export class Routes {
     // router.delete('/item/:itemId/:tagId', authenticate, use((req, res) => this.itemService.handleRemoveItemTag(req, res)));
 
     // User Collection Items routes
-    router.get('/user/:userId?/collection', authenticate, use((req, res) => this.itemService.handleGetUserCollection(req, res)));
+    router.get('/user/collection', authenticate, use((req, res) => this.itemService.handleGetUserCollection(req, res)));
 
     // User Wishlist Items routes
-    router.get('/user/:userId?/wishlist', authenticate, use((req, res) => this.itemService.handleGetUserWishlist(req, res)));
+    router.get('/user/wishlist', authenticate, use((req, res) => this.itemService.handleGetUserWishlist(req, res)));
 
     return router;
   }

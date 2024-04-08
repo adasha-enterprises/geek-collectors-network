@@ -113,7 +113,7 @@ export class ItemService {
 
   public async handleGetUserCollection(req: express.Request, res: express.Response) {
     try {
-      const userId = req.params.userId ? parseInt(req.params.userId, 10) : req.session.userId!;
+      const userId = req.query.id ? parseInt(req.query.id.toString(), 10) : req.session.userId!;
       return await this.controller.getUserCollection(userId);
     } catch (err) {
       return new Error('Internal Server Error');
@@ -122,7 +122,7 @@ export class ItemService {
 
   public async handleGetUserWishlist(req: express.Request, res: express.Response) {
     try {
-      const userId = req.params.userId ? parseInt(req.params.userId, 10) : req.session.userId!;
+      const userId = req.query.id ? parseInt(req.query.id.toString(), 10) : req.session.userId!;
       return await this.controller.getUserWishlist(userId);
     } catch (err) {
       return new Error('Internal Server Error');
