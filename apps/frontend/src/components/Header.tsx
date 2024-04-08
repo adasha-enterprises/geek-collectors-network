@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { Box, Flex, IconButton, useBreakpointValue, Text } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
@@ -46,8 +46,19 @@ function Header({ showNavigation }: HeaderProps) {
         );
       }
       return (
-        <Flex align="center">
+        <Flex align="center" justify="space-between">
           <NavigationLinks links={links}/>
+          <Link key={'/logout'} to={'Logout'}>
+            <Box
+              px={2}
+              py={1}
+              color={ 'gray.200'}
+              fontSize="xl"
+              _hover={{ textDecoration: 'underline' }}
+            >
+              Logout
+            </Box>
+          </Link>
         </Flex>
       );
     }
