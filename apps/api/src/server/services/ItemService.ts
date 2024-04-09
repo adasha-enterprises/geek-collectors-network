@@ -63,7 +63,7 @@ export class ItemController {
       return results.map(result => ({
         ...result.item,
         notes: result.notes,
-        tags: result.item.tags.map(tag => tag.tag.text),
+        tags: result.item.tags.map(tag => ({ id: tag.tag.id, text: tag.tag.text })),
       }));
     }
     return results;

@@ -44,7 +44,7 @@ export class UserController {
       with: { tags: { with: { tag: true } } },
     });
     if (results) {
-      results.tags = results.tags.map(tag => tag.tag.text);
+      results.tags = results.tags.map(tag => ({ id: tag.tag.id, text: tag.tag.text }));
     }
     return results;
   }
