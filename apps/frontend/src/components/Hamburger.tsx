@@ -40,7 +40,6 @@ function Hamburger({ links }: HamburgerProps) {
     })
       .then(response => response.json())
       .then(({ data }) => {
-        console.log(data);
         setUser({
           name: `${data.firstName} ${data.lastName}`,
           profileImageUrl: data.profileImageUrl,
@@ -92,12 +91,12 @@ function Hamburger({ links }: HamburgerProps) {
             <DrawerBody>
               <List spacing={8} textAlign={'center'}>
                 {links.map((link, index) => (
-                  <>
-                    <ListItem key={link.path} _hover={{ color: 'brand.900' }}>
+                  <React.Fragment key={link.path}>
+                    <ListItem _hover={{ color: 'brand.900' }}>
                       <Link to={link.path}>{link.text}</Link>
                     </ListItem>
-                    {(index + 1) % 2 === 0 && (index + 1) !== links.length && <Divider />}
-                  </>
+                    {(index + 1) % 2 === 0 && (index + 1) !== links.length && <Divider key={`divider-${index}`} />}
+                  </React.Fragment>
                 ))}
               </List>
             </DrawerBody>
