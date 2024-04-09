@@ -43,26 +43,18 @@ export class Routes {
     router.patch('/friendship/:userId', authenticate, use((req, res) => this.userService.handleUpdateFriendRequest(req, res)));
 
     // Item routes
-
     router.get('/item/feed', authenticate, use((req, res) => this.itemService.handleGetItemFeed(req, res)));
-
-    // search for items
-    // router.get('/items', authenticate, use((req, res) => this.itemService.handleSearchItems(req, res)));
-
-    // item crud operations
-    // router.post('/item/', authenticate, use((req, res) => this.itemService.handleCreateItem(req, res)));
     router.get('/item/:itemId', authenticate, use((req, res) => this.itemService.handleGetItem(req, res)));
-    // router.patch('/item/:itemId', authenticate, use((req, res) => this.itemService.handleUpdateItem(req, res)));
-    // router.delete('/item/:itemId', authenticate, use((req, res) => this.itemService.handleDeleteItem(req, res)));
-    // item tags
-    // router.post('/item/:itemId/:tagId?', authenticate, use((req, res) => this.itemService.handleAddItemTag(req, res)));
-    // router.delete('/item/:itemId/:tagId', authenticate, use((req, res) => this.itemService.handleRemoveItemTag(req, res)));
 
     // User Collection Items routes
     router.get('/user/collection', authenticate, use((req, res) => this.itemService.handleGetUserCollection(req, res)));
+    router.post('/user/collection', authenticate, use((req, res) => this.itemService.handleAddItemToCollection(req, res)));
+    router.delete('/user/collection/:itemId', authenticate, use((req, res) => this.itemService.handleRemoveItemFromCollection(req, res)));
 
     // User Wishlist Items routes
     router.get('/user/wishlist', authenticate, use((req, res) => this.itemService.handleGetUserWishlist(req, res)));
+    router.post('/user/wishlist', authenticate, use((req, res) => this.itemService.handleAddItemToWishlist(req, res)));
+    router.delete('/user/wishlist/:itemId', authenticate, use((req, res) => this.itemService.handleRemoveItemFromWishlist(req, res)));
 
     return router;
   }
