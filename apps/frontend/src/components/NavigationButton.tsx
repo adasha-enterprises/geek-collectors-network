@@ -19,9 +19,8 @@ function NavigationButton({ to, label, variant }: NavigationButtonProps) {
 
   return (
     <Button
+      className={`navigation-button ${label.toLowerCase()}`}
       isLoading={isLoading}
-      colorScheme="brand"
-      w={{ 'base': '90%', 'md': '50%', 'lg': '30%' }}
       variant={variant || 'solid'}
       onClick={ handleClick }
     >

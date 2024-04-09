@@ -7,13 +7,10 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerBody,
-  DrawerFooter,
-  Flex,
   Avatar,
   Heading,
   List,
   ListItem,
-  Button,
   Divider,
 } from '@chakra-ui/react';
 
@@ -29,8 +26,6 @@ function Hamburger({ links }: HamburgerProps) {
   const navigate = useNavigate();
   const [user, setUser] = useState({ name: '', profileImageUrl: '' });
 
-  // Fetch profile data; if the data changes -- name
-  // or image -- update the user state
   useEffect(() => {
     fetch('/api/v1/user/profile', {
       method: 'GET',
@@ -51,7 +46,7 @@ function Hamburger({ links }: HamburgerProps) {
   return (
     <>
       <IconButton
-        colorScheme="brand"
+        colorScheme="background"
         aria-label="Hamburger Menu"
         icon={<HamburgerIcon w={8} h={8} color="white" />}
         onClick={onOpen}
@@ -59,63 +54,34 @@ function Hamburger({ links }: HamburgerProps) {
       <Drawer
         isOpen={isOpen}
         onClose={onClose}
-        placement="right"
-        size={'xs'}
       >
         <DrawerOverlay>
           <DrawerContent>
             <DrawerHeader
-              backgroundColor={'brand.500'}
-              py={8}
-              mb={4}
-              _hover={{
-                cursor: 'pointer',
-                backgroundColor: 'brand.600',
-              }}
+              className="hamburger-header"
+              p={8}
               onClick={() => {
                 if (window.location.pathname !== '/profile') {
                   navigate('/profile');
                 }
               }}
             >
-              <Flex align={'center'} direction={'column'}>
-
-                {/* Add src tag with user image and name */}
-                <Avatar size={'lg'} mb={4} src={user.profileImageUrl} />
-                <Heading
-                  size={'md'}
-                  color={'white'}
-                >{user.name}</Heading>
-              </Flex>
+              {/* Add src tag with user image and name */}
+              <Avatar className="avator" size={'lg'} name={user.name} src={user.profileImageUrl} />
+              <Heading>{user.name}</Heading>
             </DrawerHeader>
-            <DrawerBody>
-              <List spacing={8} textAlign={'center'}>
+            <DrawerBody className="hamburger-body">
+              <List>
                 {links.map((link, index) => (
-                  <React.Fragment key={link.path}>
-                    <ListItem _hover={{ color: 'brand.900' }}>
+                  <>
+                    <ListItem key={link.path}>
                       <Link to={link.path}>{link.text}</Link>
                     </ListItem>
                     {(index + 1) % 2 === 0 && (index + 1) !== links.length && <Divider key={`divider-${index}`} />}
-                  </React.Fragment>
+                  </>
                 ))}
               </List>
             </DrawerBody>
-            <DrawerFooter mb={8}>
-              <Button
-                colorScheme="brand"
-                variant="outline"
-                w={'full'}
-                onClick={() => {
-                  fetch('/api/logout', {
-                    credentials: 'include',
-                  }).then(() => {
-                    navigate('/');
-                  }).catch(error => {
-                    console.error('Logout error:', error);
-                  });
-                }
-                }>Logout</Button>
-            </DrawerFooter>
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>

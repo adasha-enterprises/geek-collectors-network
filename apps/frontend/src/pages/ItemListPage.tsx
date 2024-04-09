@@ -13,7 +13,7 @@ function ItemCollectionPage() {
   const url = userId ? `/api/v1/user/collection?id=${userId}` : '/api/v1/user/collection';
 
   return (
-    <PageLayout showNavigation={true}>
+    <PageLayout>
       <VStack
         justify={'center'}
       >
@@ -32,7 +32,7 @@ function ItemWishlistPage() {
   const url = userId ? `/api/v1/user/wishlist?id=${userId}` : '/api/v1/user/wishlist';
 
   return (
-    <PageLayout showNavigation={true}>
+    <PageLayout>
       <VStack
         justify={'center'}
       >

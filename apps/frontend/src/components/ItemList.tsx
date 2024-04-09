@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SearchBar from './SearchBar';
 import useFetchData from '../hooks/useFetchData';
-import loadingAnimation from './LoadingAnimation';
+import loadingAnimation from './widgets/LoadingAnimation';
 import ItemCard from './ItemCard';
 import { DeleteIcon, ViewIcon } from '@chakra-ui/icons'; // Assuming ViewIcon for opening modal
 import { SimpleGrid, VStack, Container, Center } from '@chakra-ui/react';

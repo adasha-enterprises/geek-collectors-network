@@ -6,7 +6,7 @@ import PageLayout from '../components/PageLayout';
 
 function FriendsListPage() {
   return (
-    <PageLayout showNavigation={true}>
+    <PageLayout>
       <VStack
         justify={'center'}
       >

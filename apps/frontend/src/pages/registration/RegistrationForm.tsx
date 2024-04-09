@@ -2,9 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Formik } from 'formik';
 import { Button, VStack } from '@chakra-ui/react';
-import TextInput from './TextInput';
-import PageLink from './PageLink';
-import { registrationSchema } from '../schemas/schemas';
+import TextInput from '../../components/TextInput';
+import PageLink from '../../components/PageLink';
+import { registrationSchema } from '../../schemas/schemas';
 
 function signUp(navigate: (path: string) => void, values: Record<string, string>) {
   fetch('/api/v1/auth/signup', {
@@ -34,18 +34,22 @@ function RegistrationForm() {
       onSubmit={signUp.bind(null, navigate)}
     >
       {formik => (
-        <Form>
+        <Form className="login-form">
           <VStack gap={4} >
-            <TextInput name="firstName" label="First name:" />
-            <TextInput name="lastName" label="Last name:" />
-            <TextInput name="email" label="Email:" type="email" />
-            <TextInput name="password" label="Password:" type="password" />
+            <TextInput name="firstName" label="First name" />
+            <TextInput name="lastName" label="Last name" />
+            <TextInput name="email" label="Email" type="email" />
+            <TextInput name="password" label="Password" type="password" />
 
             <Button
               type="submit"
-              w={'100%'}
+              variant="outline"
               colorScheme="brand"
-              variant="solid"
+              _hover={{
+                backgroundColor: 'brand.500',
+                border: '1px solid transparent',
+                color: 'white',
+              }}
               disabled={formik.isSubmitting}>
                 SIGN UP
             </Button>

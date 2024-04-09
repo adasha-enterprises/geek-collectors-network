@@ -8,13 +8,12 @@ import PageLayout from '../components/PageLayout';
 
 function UserDashboard() {
   return (
-    <PageLayout showNavigation={true}>
+    <PageLayout>
       <VStack
-        bg={'background'}
         divider={<StackDivider borderWidth={'1px'} />}
         spacing={8}
-        px={10}
-        pt={20}
+        w={'80%'}
+        maxW={'30rem'}
       >
         <Heading size={'sm'} alignSelf={'center'} justifySelf={'center'} mb={4} >
             Profile & Settings

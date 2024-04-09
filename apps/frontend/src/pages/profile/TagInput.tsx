@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Flex, Box, Tag, TagCloseButton, Input } from '@chakra-ui/react';
+import { Flex, Tag, TagLabel, TagCloseButton, Input } from '@chakra-ui/react';
 
 type TagInfo = {
   id: number;
@@ -62,25 +62,23 @@ function TagInput({ tags, setTags }: TagInputProps) {
   }, [tagInput, tags]);
 
   return (
-    <Flex >
-      <Box w={'100%'}>
-        <Input
-          value={tagInput}
-          onChange={e => setTagInput(e.target.value)}
-          border={'none'}
-          focusBorderColor={'transparent'}
-          placeholder="Add interests..."
-          w={'100%'}
-          mb={2}
-        />
+    <>
+      <Input
+        value={tagInput}
+        onChange={e => setTagInput(e.target.value)}
+        placeholder="Add interests..."
+      />
+      <Flex className="tag-container">
         {tags.map(tag => (
-          <Tag key={tag.text} size="lg" m={1} backgroundColor={'brand.100'} borderRadius={'15px'}>
-            {tag.text}
-            <TagCloseButton onClick={() => removeTag(tag.id)} />
+          <Tag key={tag.text} size={'lg'} colorScheme={'brand'} variant={'solid'} borderRadius={'full'} >
+            <TagLabel>
+              {tag.text}
+            </TagLabel>
+            <TagCloseButton className="tag-close-button" onClick={() => removeTag(tag.id)} />
           </Tag>
         ))}
-      </Box>
-    </Flex>
+      </Flex>
+    </>
   );
 }
 

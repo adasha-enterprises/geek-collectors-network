@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Stack, VStack, StackDivider, Avatar, Heading, Text, Tag, Button } from '@chakra-ui/react';
-import PageLayout from '../components/PageLayout';
-import { TagInfo } from '../components/TagInput';
+import PageLayout from '../../components/PageLayout';
+import loadingAnimation from '../../components/widgets/LoadingAnimation';
+import { TagInfo } from './TagInput';
 
 type ProfileInfo = {
   email: string;
@@ -40,15 +41,8 @@ function UserProfile() {
 
   if (!initialValues) {
     return (
-      <PageLayout showNavigation={true}>
-        <VStack
-          bg={'background'}
-          spacing={2}
-          px={10}
-          pt={20}
-        >
-          <div>Loading...</div>
-        </VStack>
+      <PageLayout>
+        {loadingAnimation}
       </PageLayout>
     );
   }
@@ -59,19 +53,22 @@ function UserProfile() {
   const fullName = `${firstName} ${lastName}`;
 
   return (
-    <PageLayout showNavigation={true}>
+    <PageLayout>
       <VStack
-        bg={'background'}
-        spacing={6}
-        px={10}
-        py={20}
+        className="profile"
         align={'start'}
         divider={<StackDivider borderWidth={'1px'}/>}
       >
-        <Stack spacing={2}>
-          <Avatar size={'lg'} mb={4} src={profileImageUrl}/>
-          <Heading size={'md'}>{fullName}</Heading>
-          <Text fontSize={'sm'}>Member since 1922 - Total friends: 3000</Text>
+        <Stack className="profile-section">
+          <Avatar
+            className="avatar"
+            size={['lg', 'xl']}
+            name={`${fullName.split(' ')[0]} ${fullName.split(' ')[1]}`}
+            src={profileImageUrl}
+          />
+          <Heading as={'h1'}>{fullName}</Heading>
+          <Text>Member since 2014</Text>
+          <Text>Total friends: 412</Text>
           {/* <Button
             size={'s`m'}
             colorScheme={'brand'}
@@ -81,12 +78,12 @@ function UserProfile() {
             onClick={() => navigate('/profile/edit')}
           >Edit profile</Button> */}
         </Stack>
-        <Stack spacing={4}>
-          <Heading size={'sm'} color={'text'}>About</Heading>
-          <Text fontSize={'sm'}>{about}</Text>
+        <Stack className="profile-section">
+          <Heading>About</Heading>
+          <Text>{about}</Text>
         </Stack>
-        <Stack spacing={4}>
-          <Heading size={'sm'}>Interests</Heading>
+        <Stack className="profile-section">
+          <Heading>Interests</Heading>
           <Box>
             {tags.map(tag => (
               <Tag
@@ -103,6 +100,7 @@ function UserProfile() {
             ))}
           </Box>
         </Stack>
+        <></>
       </VStack>
     </PageLayout>
   );

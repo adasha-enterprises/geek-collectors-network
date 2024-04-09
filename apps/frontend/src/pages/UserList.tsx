@@ -62,7 +62,7 @@ function UserList() {
 
 
   return (
-    <PageLayout showNavigation={true} >
+    <PageLayout>
       <VStack bg={'background'} px={10} pt={14} spacing={0}>
 
         <Tabs size={['sm', 'md']} variant={'enclosed'} colorScheme="brand">

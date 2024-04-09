@@ -3,6 +3,7 @@ import { Spinner } from '@chakra-ui/react';
 
 const loadingAnimation = (
   <Spinner
+    className="loading-animation"
     thickness="4px"
     color={'brand.500'}
     emptyColor="gray.200"

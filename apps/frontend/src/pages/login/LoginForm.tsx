@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Formik } from 'formik';
 import { Button, VStack, useToast } from '@chakra-ui/react';
 
-import TextInput from './TextInput';
-import PageLink from './PageLink';
-import { loginSchema } from '../schemas/schemas';
-import LoginControls from './LoginControls';
+import TextInput from '../../components/TextInput';
+import PageLink from '../../components/PageLink';
+import { loginSchema } from '../../schemas/schemas';
 
 type LoginValues = {
   email: string;
@@ -50,16 +49,14 @@ function LoginForm() {
       toast({
         title: 'Login Successful',
         status: 'success',
-        duration: 5000,
-        isClosable: true,
+        duration: 2000,
       });
       navigate('/dashboard');
     } else {
       toast({
         title: 'Login Failed',
         status: 'error',
-        duration: 5000,
-        isClosable: true,
+        duration: 2000,
       });
     }
     setIsLoading(false);
@@ -72,19 +69,22 @@ function LoginForm() {
       onSubmit={handleSubmit}
     >
       {formik => (
-        <Form>
+        <Form className="login-form">
           <VStack gap={4}>
-            <TextInput name="email" label="Email:" />
-            <TextInput name="password" label="Password:" type="password" />
-
-            <LoginControls />
+            <TextInput name="email" label="Email" />
+            <TextInput name="password" label="Password" type="password" />
 
             <Button
+              className="login-button"
               isLoading={isLoading}
               type="submit"
-              w={'100%'}
+              variant="outline"
               colorScheme="brand"
-              variant="solid"
+              _hover={{
+                backgroundColor: 'brand.500',
+                border: '1px solid transparent',
+                color: 'white',
+              }}
               disabled={formik.isSubmitting}>
                 LOG IN
             </Button>

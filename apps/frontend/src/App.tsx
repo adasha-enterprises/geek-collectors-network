@@ -1,13 +1,13 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import LandingPage from './pages/LandingPage';
-import Registration from './pages/Registration';
-import LoginPage from './pages/LoginPage';
+import LandingPage from './pages/landing/LandingPage';
+import Registration from './pages/registration/Registration';
+import LoginPage from './pages/login/LoginPage';
 import UserDashboard from './pages/UserDashboard';
-import AccountInfo from './pages/AccountInfo';
-import ProfileInfo from './pages/ProfileInfo';
-import UserProfile from './pages/UserProfile';
+import AccountInfo from './pages/account/AccountInfo';
+import ProfileInfo from './pages/profile/ProfileInfo';
+import UserProfile from './pages/profile/UserProfile';
 import UserListTestPage from './pages/UserListTestPage';
 import FriendsListPage from './pages/FriendsListPage';
 import { ItemCollectionPage, ItemWishlistPage } from './pages/ItemListPage';

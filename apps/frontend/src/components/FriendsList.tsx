@@ -5,7 +5,7 @@ import { EmailIcon, InfoIcon } from '@chakra-ui/icons';
 import UserProfileCard from '../components/UserProfileCard';
 import SearchBar from '../components/SearchBar';
 import useFetchData from '../hooks/useFetchData';
-import loadingAnimation from '../components/LoadingAnimation';
+import loadingAnimation from './widgets/LoadingAnimation';
 import { Friend } from '../types/types';
 
 function FriendsList() {

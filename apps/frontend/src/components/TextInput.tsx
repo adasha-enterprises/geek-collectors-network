@@ -14,7 +14,7 @@ function TextInput({ name, label, type = 'text' }: TextInputProps) {
   return (
     <FormControl id={name} isInvalid={!!(meta.touched && meta.error)}>
       <FormLabel>{label}</FormLabel>
-      <Input {...field} type={type} focusBorderColor="brand.600" />
+      <Input {...field} type={type} backgroundColor={'white'} focusBorderColor="brand.600" />
       <FormErrorMessage>{meta.error}</FormErrorMessage>
     </FormControl>
   );
