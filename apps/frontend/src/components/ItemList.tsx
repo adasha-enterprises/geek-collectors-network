@@ -3,9 +3,18 @@ import SearchBar from './SearchBar';
 import useFetchData from '../hooks/useFetchData';
 import loadingAnimation from './widgets/LoadingAnimation';
 import ItemCard from './ItemCard';
-import { DeleteIcon, ViewIcon } from '@chakra-ui/icons'; // Assuming ViewIcon for opening modal
 import { SimpleGrid, VStack, Container, Center } from '@chakra-ui/react';
 import ItemModal from './ItemModal';
+import { CardButton } from './CardButtons';
+import { ViewIcon } from '@chakra-ui/icons'; // Assuming ViewIcon for opening modal
+import { TagInfo } from '../pages/profile/TagInput';
+
+
+type ActionProps = {
+    label: string;
+    onClick: () => void;
+    variant: 'solid' | 'outline';
+}
 
 type Item = {
     id: number,
@@ -13,22 +22,25 @@ type Item = {
     description: string,
     imageUrl: string
     url: string
-    tags: string[]
+    tags: TagInfo[]
 }
 
 type ItemListProps = {
   url: string
+  buttons?: ((itemId: number) => CardButton)[]
 }
 
-function ItemList({ url }: ItemListProps) {
+
+function ItemList({ url, buttons }: ItemListProps) {
   const { data: items, isLoading } = useFetchData<Item>(url);
   const [filteredItems, setFilteredItems] = useState<Item[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null); // Changed to store an Item or null
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
   useEffect(() => {
     setFilteredItems(items);
   }, [items]);
+
 
   const handleItemSearch = (query: string) => {
     const lowercaseQuery = query.toLowerCase();
@@ -37,41 +49,66 @@ function ItemList({ url }: ItemListProps) {
     setFilteredItems(filtered);
   };
 
-  // Adjusted to accept itemId and return a configuration object
-  const openItemModal = (itemId: number) => ({
-    label: 'Open Item',
-    icon: <ViewIcon />,
-    variant: 'solid',
-    colorScheme: 'brand',
-    onClick: () => { // Updated to find and set the selected item based on itemId
-      const item = items.find(listedItem => listedItem.id === itemId);
-      setSelectedItem(item || null);
-      setModalOpen(true);
-    },
-  });
-
-  const deleteItem = {
-    label: 'Delete Item',
-    icon: <DeleteIcon />,
-    variant: 'outline',
-    colorScheme: 'brand',
-    onClick: () => console.log('Deleting item...'), // Placeholder functionality
-  };
-
   const itemListLayout = filteredItems.length <= 0 ? (
     <Center w="full">No items found</Center>
   ) : (
     <SimpleGrid columns={[1, 2, 3]} spacing={4}>
-      {filteredItems.map(item => (
-        <ItemCard
-          key={item.id}
-          itemData={{ title: item.name, description: item.description, itemImage: item.imageUrl }}
-          // Dynamically configure buttons for each item
-          buttons={[openItemModal(item.id), deleteItem]}
-        />
-      ))}
+      {filteredItems.map(item => {
+        const cardButtons = !buttons ? [] : buttons.map(button => button(item.id));
+        return (
+          <ItemCard
+            key={item.id}
+            itemData={{ title: item.name, description: item.description, itemImage: item.imageUrl }}
+            buttons={cardButtons}
+            onClick={() => {
+              const clickedItem = items.find(listedItem => listedItem.id === item.id);
+              setSelectedItem(clickedItem || null);
+              setModalOpen(true);
+            }}
+          />
+        );
+      })}
     </SimpleGrid>
   );
+
+
+  const itemListModal = () => {
+    if (!selectedItem) {
+      return (<></>);
+    }
+    const item = selectedItem!;
+    const modelButtons:ActionProps[] = !buttons ? [] : buttons.map(button => {
+      const cardButton = button(item.id);
+      return ({
+        label: cardButton.label,
+        onClick: cardButton.onClick || (() => console.log(cardButton.label)),
+        variant: 'outline',
+      });
+    });
+
+    return (
+      <ItemModal
+        isOpen={modalOpen}
+        onClose={() => { setModalOpen(false); setSelectedItem(null); }} // Also reset selectedItem on close
+        bodyProps={{
+          id: item.id,
+          name: item.name,
+          description: item.description,
+          imageUrl: item.imageUrl,
+          url: item.url,
+          tags: item.tags,
+        }}
+        footerActions={[
+          ...modelButtons,
+          {
+            label: 'Close',
+            onClick: () => setModalOpen(false),
+            variant: 'solid',
+          },
+        ]}
+      />
+    );
+  };
 
   return (
     <Container maxW="container.xl" centerContent p={'0'}>
@@ -84,27 +121,7 @@ function ItemList({ url }: ItemListProps) {
       >
         <SearchBar onSearch={handleItemSearch} />
         {isLoading ? loadingAnimation : itemListLayout}
-        {selectedItem && ( // Render ItemModal conditionally based on selectedItem
-          <ItemModal
-            isOpen={modalOpen}
-            onClose={() => { setModalOpen(false); setSelectedItem(null); }} // Also reset selectedItem on close
-            bodyProps={{
-              id: selectedItem.id,
-              name: selectedItem.name,
-              description: selectedItem.description,
-              imageUrl: selectedItem.imageUrl,
-              url: selectedItem.url,
-              tags: selectedItem.tags,
-            }}
-            footerActions={[
-              {
-                label: 'Close',
-                onClick: () => setModalOpen(false),
-                variant: 'outline',
-              },
-            ]}
-          />
-        )}
+        {itemListModal()}
       </VStack>
     </Container>
   );

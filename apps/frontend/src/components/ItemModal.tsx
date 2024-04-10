@@ -18,7 +18,7 @@ import {
 
 import GeneralModal from './GeneralModal';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-
+import { TagInfo } from '../pages/profile/TagInput';
 
 type ItemModalHeaderProps = {
     name: string;
@@ -39,7 +39,7 @@ type ItemModalBodyProps = {
     description: string;
     imageUrl: string;
     url: string
-    tags: string[];
+    tags: TagInfo[];
 }
 
 function ItemModalBody({ id, name, description, imageUrl, url, tags }: ItemModalBodyProps) {
@@ -64,9 +64,9 @@ function ItemModalBody({ id, name, description, imageUrl, url, tags }: ItemModal
             <Text size={'md'} as={'b'}>Item Tags</Text>
             <Wrap spacing={0}>
               {tags.map(tag => (
-                <WrapItem key={id}>
+                <WrapItem key={tag.text}>
                   <Tag size="lg" m={1} backgroundColor={'brand.100'} borderRadius="15px">
-                    {tag}
+                    {tag.text}
                   </Tag>
                 </WrapItem>
               ))}

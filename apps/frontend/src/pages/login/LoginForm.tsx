@@ -51,7 +51,7 @@ function LoginForm() {
         status: 'success',
         duration: 2000,
       });
-      navigate('/dashboard');
+      navigate('/feed');
     } else {
       toast({
         title: 'Login Failed',

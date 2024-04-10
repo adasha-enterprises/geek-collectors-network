@@ -32,14 +32,14 @@ function Header() {
             justifySelf={'start'}
             onClick={() => navigate(-1)}
           />
-          <Heading className="gcn" onClick={() => navigate('/dashboard')}>GCN</Heading>
+          <Heading className="gcn" onClick={() => navigate('/feed')}>GCN</Heading>
           <Hamburger links={links}/>
         </>
       );
     }
     return (
       <>
-        <Heading className="gcn" onClick={() => navigate('/dashboard')}>GCN</Heading>
+        <Heading className="gcn" onClick={() => navigate('/feed')}>GCN</Heading>
         <NavigationLinks links={links}/>
       </>
     );

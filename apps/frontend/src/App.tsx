@@ -10,7 +10,7 @@ import ProfileInfo from './pages/profile/ProfileInfo';
 import UserProfile from './pages/profile/UserProfile';
 import UserListTestPage from './pages/UserListTestPage';
 import FriendsListPage from './pages/FriendsListPage';
-import { ItemCollectionPage, ItemWishlistPage } from './pages/ItemListPage';
+import { ItemFeedPage, ItemCollectionPage, ItemWishlistPage } from './pages/ItemListPage';
 
 function App() {
   return (
@@ -18,21 +18,22 @@ function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/register" element={<Registration />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/userlist" element={<UserListTestPage />} />
-      <Route path="/friendslist" element={<FriendsListPage />} />
-      <Route path="/collection" element={<ItemCollectionPage />} />
-      <Route path="/wishlist" element={<ItemWishlistPage />} />
 
+      <Route path="/feed" element={<ItemFeedPage />} />
 
-      <Route path="/dashboard" element={<UserDashboard />} />
-      <Route path="/account" element={<AccountInfo />} />
-
-      {/* Profile page and profile edit page */}
       <Route path="/profile" >
         <Route index element={<ProfileInfo />} />
         <Route path="edit" element={<ProfileInfo />} />
         <Route path=":userId" element={<UserProfile />} />
       </Route>
+
+      <Route path="/account" element={<AccountInfo />} />
+
+      <Route path="/userlist" element={<UserListTestPage />} />
+      <Route path="/friendslist" element={<FriendsListPage />} />
+
+      <Route path="/collection" element={<ItemCollectionPage />} />
+      <Route path="/wishlist" element={<ItemWishlistPage />} />
 
       {/* 404 */}
       <Route path="*" element={<Navigate to="/" />} />
