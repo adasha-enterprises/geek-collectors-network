@@ -3,6 +3,8 @@ type Friend = {
     id: string,
     firstName: string,
     lastName: string,
+    email: string,
+    twitter?: string,
     profileImageUrl: string,
   }
 
