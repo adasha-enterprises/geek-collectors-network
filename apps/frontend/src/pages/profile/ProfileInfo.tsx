@@ -15,7 +15,6 @@ type ProfileInfoProps = {
   firstName: string;
   lastName: string;
   profileImageUrl: string;
-  email: string;
   birthDate: string;
   about: string;
   country: string;
@@ -128,11 +127,6 @@ function ProfileInfo() {
           <Form className="profile-form">
             <VStack gap={1} divider={<StackDivider/>} >
               <Avatar className="avatar" border={'1px'} size={['lg', 'xl']} name={`${initialValues.firstName} ${initialValues.lastName}`} src={initialValues.profileImageUrl}></Avatar>
-              <FormControl id={'email'} isInvalid={!!(formik.errors.email && formik.touched.email)}>
-                <FormLabel>Email</FormLabel>
-                <Field as={Input} name={'email'}></Field>
-                <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-              </FormControl>
               <FormControl id={'birthDate'} isInvalid={!!(formik.errors.birthDate && formik.touched.birthDate)}>
                 <FormLabel>Date of Birth</FormLabel>
                 <Field as={Input} name={'birthDate'} placeholder={'MM/DD/YYYY'}></Field>
