@@ -9,14 +9,14 @@ import userFetchAndFilterData from '../hooks/useFetchData';
 import { User } from '../types/types';
 
 function UserList() {
-  const { data: pendingUsers } = userFetchAndFilterData<User>('https://dummyjson.com/users?limit=3&skip=10', 'users');
+  const { data: pendingUsers } = userFetchAndFilterData<User>('/api/v1/friendship/requests');
   const [filteredPendingUsers, setFilteredPendingUsers] = useState<User[]>([]);
   useEffect(() => {
     setFilteredPendingUsers(pendingUsers);
   }, [pendingUsers]);
 
 
-  const { data: suggestedUsers } = userFetchAndFilterData<User>('https://dummyjson.com/users?limit=7&skip=15', 'users');
+  const { data: suggestedUsers } = userFetchAndFilterData<User>('/api/v1/friendship/suggestions');
   const [filteredSuggestedUsers, setFilteredSuggestedUsers] = useState<User[]>([]);
   useEffect(() => {
     setFilteredSuggestedUsers(suggestedUsers);
