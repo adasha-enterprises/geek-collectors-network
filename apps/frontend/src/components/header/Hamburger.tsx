@@ -11,7 +11,6 @@ import {
   Heading,
   List,
   ListItem,
-  Divider,
 } from '@chakra-ui/react';
 
 import { HamburgerIcon } from '@chakra-ui/icons';
@@ -41,7 +40,7 @@ function Hamburger({ links }: HamburgerProps) {
         });
       })
       .catch(error => console.error(error));
-  }, [user.name, user.profileImageUrl]);
+  }, []);
 
   return (
     <>
@@ -72,13 +71,10 @@ function Hamburger({ links }: HamburgerProps) {
             </DrawerHeader>
             <DrawerBody className="hamburger-body">
               <List>
-                {links.map((link, index) => (
-                  <>
-                    <ListItem key={link.path}>
-                      <Link to={link.path}>{link.text}</Link>
-                    </ListItem>
-                    {(index + 1) % 2 === 0 && (index + 1) !== links.length && <Divider key={`divider-${index}`} />}
-                  </>
+                {links.map(link => (
+                  <ListItem key={link.path}>
+                    <Link to={link.path}>{link.text}</Link>
+                  </ListItem>
                 ))}
               </List>
             </DrawerBody>

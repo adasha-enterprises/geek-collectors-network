@@ -62,7 +62,7 @@ function UserProfile() {
         <Stack className="profile-section">
           <Avatar
             className="avatar"
-            size={['lg', 'xl']}
+            size={'lg'}
             name={`${fullName.split(' ')[0]} ${fullName.split(' ')[1]}`}
             src={profileImageUrl}
           />

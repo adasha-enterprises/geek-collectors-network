@@ -1,24 +1,21 @@
 import React from 'react';
 import {
   HStack,
-  VStack,
   Text,
-  Card,
-  CardBody,
   Stack,
   AspectRatio,
   Image,
-  Divider,
   Tag,
   Wrap,
   WrapItem,
   Button,
   Link,
+  Divider,
 } from '@chakra-ui/react';
 
-import GeneralModal from './GeneralModal';
+import GeneralModal from '../../components/widgets/GeneralModal';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { TagInfo } from '../pages/profile/TagInput';
+import { TagInfo } from '../profile/TagInput';
 
 type ItemModalHeaderProps = {
     name: string;
@@ -26,9 +23,7 @@ type ItemModalHeaderProps = {
 
 function ItemModalHeader({ name }: ItemModalHeaderProps) {
   return (
-    <HStack w={'100%'} justify={'center'}>
-      <Text fontSize={'xl'}>{name}</Text>
-    </HStack>
+    <Text>{name}</Text>
   );
 }
 
@@ -44,38 +39,31 @@ type ItemModalBodyProps = {
 
 function ItemModalBody({ id, name, description, imageUrl, url, tags }: ItemModalBodyProps) {
   return (
-    <VStack>
-      <Card>
-        <CardBody>
-          <Stack spacing={4}>
-
-            <AspectRatio ratio={ 16 / 9 }>
-              <Image src={imageUrl || 'https://via.placeholder.com/150'} objectFit={'cover'} borderRadius={5}/>
-            </AspectRatio>
-
-            <Text>{description}</Text>
-
-            <Divider />
-
-            <Link href={url} isExternal> {name} <ExternalLinkIcon mx="2px" /> </Link>
-
-            <Divider />
-
-            <Text size={'md'} as={'b'}>Item Tags</Text>
-            <Wrap spacing={0}>
-              {tags.map(tag => (
-                <WrapItem key={tag.text}>
-                  <Tag size="lg" m={1} backgroundColor={'brand.100'} borderRadius="15px">
-                    {tag.text}
-                  </Tag>
-                </WrapItem>
-              ))}
-            </Wrap>
-
-          </Stack>
-        </CardBody>
-      </Card>
-    </VStack>
+    <Stack className="modal-body">
+      <AspectRatio ratio={ 16 / 9 }>
+        <Image src={imageUrl || 'https://via.placeholder.com/150'} objectFit={'cover'}/>
+      </AspectRatio>
+      <Text>{description}</Text>
+      <Link href={url} isExternal>
+        {url}<ExternalLinkIcon/>
+      </Link>
+      <Wrap spacing={0}>
+        {tags.map(tag => (
+          <WrapItem key={tag.text}>
+            <Tag
+              size={'lg'}
+              variant={'solid'}
+              colorScheme={'brand'}
+              borderRadius={'full'}
+              m={1}
+            >
+              {tag.text}
+            </Tag>
+          </WrapItem>
+        ))}
+      </Wrap>
+      <Divider/>
+    </Stack>
   );
 }
 
@@ -92,22 +80,26 @@ type ItemModalFooterProps = {
 
 function ItemModalFooter({ actions } : ItemModalFooterProps) {
   return (
-    <VStack w={'100%'}>
+    <HStack className="modal-footer">
       {actions.map((action, index) => (
-        <Button
-          fontSize={['xs', 'sm', 'md', 'lg']}
-          key={index}
-          width={'100%'}
-          variant={action.variant}
-          colorScheme={'brand'}
-          onClick={action.onClick}
-        >
-          {action.label}</Button>
+        action.label !== 'Hide' && (
+          <Button
+            key={index}
+            variant={action.variant}
+            colorScheme={'brand'}
+            onClick={action.onClick}
+            _hover={{
+              bg: 'brand.500',
+              color: 'white',
+            }}
+          >
+            {action.label}
+          </Button>
+        )
       ))}
-    </VStack>
+    </HStack>
   );
 }
-
 
 type ItemModalProps = {
     isOpen: boolean;

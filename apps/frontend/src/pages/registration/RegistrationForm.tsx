@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Formik } from 'formik';
 import { Button, VStack } from '@chakra-ui/react';
 import TextInput from '../../components/TextInput';
-import PageLink from '../../components/PageLink';
+import PageLink from '../../components/widgets/PageLink';
 import { registrationSchema } from '../../schemas/schemas';
 
 function signUp(navigate: (path: string) => void, values: Record<string, string>) {

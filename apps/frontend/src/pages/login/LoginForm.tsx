@@ -4,7 +4,7 @@ import { Form, Formik } from 'formik';
 import { Button, VStack, useToast } from '@chakra-ui/react';
 
 import TextInput from '../../components/TextInput';
-import PageLink from '../../components/PageLink';
+import PageLink from '../../components/widgets/PageLink';
 import { loginSchema } from '../../schemas/schemas';
 
 type LoginValues = {

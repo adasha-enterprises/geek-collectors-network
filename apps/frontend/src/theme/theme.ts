@@ -51,6 +51,7 @@ export const theme = extendTheme({
         'textDecoration': 'none',
       },
       'body': {
+        'backgroundColor': 'background.50',
         'height': '100vh',
         'width': '100vw',
       },
@@ -145,6 +146,9 @@ export const theme = extendTheme({
         },
       },
       'form': {
+        'background': 'white',
+        'borderRadius': '0.5rem',
+        'padding': '3rem',
         'width': '100%',
         'maxWidth': '30rem',
         'button': {
@@ -284,6 +288,9 @@ export const theme = extendTheme({
         'margin': '0 0 1rem',
       },
       '.profile': {
+        'background': 'white',
+        'borderRadius': '0.5rem',
+        'padding': '3rem',
         'width': '80%',
         'maxWidth': '30rem',
         '.profile-section': {
@@ -297,6 +304,170 @@ export const theme = extendTheme({
             'fontWeight': 'normal',
             'margin': '0 0 0.5rem',
           },
+        },
+      },
+      // User list page
+      '.tabs': {
+        'gap': '0.2rem',
+      },
+      '.tag-panel': {
+        'p': {
+          'textAlign': 'center',
+          'margin': '1rem 0',
+        },
+      },
+      // Search bar
+      '.search-bar': {
+        'display': 'flex',
+        'margin': '0 0 1rem',
+        '.search-icon': {
+          'color': 'grey',
+          'height': '100%',
+        },
+        'input': {
+          'background': 'white',
+          'padding': '1.7rem 2.2rem',
+        },
+        '.clear-button': {
+          'height': '100%',
+          'button': {
+            'background': 'transparent',
+            'color': 'grey',
+            '_active': {
+              'color': 'brand.500',
+            },
+            '_hover': {
+              'boxShadow': 'none',
+            },
+          },
+        },
+      },
+      // Friend list page
+      '.friends-list': {
+        'width': '90%',
+        'maxWidth': '30rem',
+        'h1': {
+          'margin': '0 0 1rem',
+        },
+        'p': {
+          'margin': '1rem 0',
+        },
+      },
+      '.profile-card': {
+        'background': 'white',
+        'alignItems': 'center',
+        'border': '1px solid lightgrey',
+        'borderRadius': '0.5rem',
+        'gap': '1rem',
+        'padding': '1rem',
+        'width': '100%',
+        '_hover': {
+          'boxShadow': '0 0 2px 0.5px lightgrey',
+          'cursor': 'pointer',
+        },
+        'div': {
+          'display': 'flex',
+          'alignItems': 'center',
+          'gap': '1rem',
+        },
+        'img': {
+          'borderRadius': '50%',
+          'height': '3rem',
+          'width': '3rem',
+        },
+        'h2': {
+          'fontColor': 'text',
+          'fontSize': '1.2rem',
+          'fontWeight': 'normal',
+          'margin': '0',
+        },
+        '.contact-buttons': {
+          'gap': '0.5rem',
+          'justifyContent': 'end',
+          'button': {
+            'backgroundColor': 'transparent',
+            '_hover': {
+              'cursor': 'pointer',
+              'zIndex': 1,
+            },
+          },
+        },
+      },
+      // Item list page
+      '.item-list': {
+        'width': '90%',
+        '.search-bar': {
+          'width': '100%',
+          'maxWidth': '30rem',
+        },
+      },
+      // Modal
+      '.modal': {
+        '.modal-header': {
+          'position': 'relative',
+          'background': 'background.500',
+          'color': 'white',
+          'padding': '1rem 2rem',
+          'p': {
+            'margin': '0 1rem 0 0',
+          },
+        },
+        '.close-button': {
+          'color': 'white',
+          'position': 'absolute',
+          'right': '1rem',
+          'top': '1rem',
+          'zIndex': 999,
+        },
+        '.modal-body': {
+          'padding': '1rem',
+          'gap': '1rem',
+          'a': {
+            'color': 'grey',
+            'fontSize': '1rem',
+            ':hover': {
+              'color': 'brand.500',
+            },
+            'svg': {
+              'margin': '0 0 0 0.5rem',
+            },
+          },
+        },
+        '.modal-footer': {
+          'gap': '1rem',
+          'justifyContent': 'end',
+          'margin': '0 0 1rem',
+          'button': {
+            'fontWeight': 'light',
+            'width': '10rem',
+          },
+        },
+      },
+      // Item card
+      '.item-card': {
+        'borderRadius': '0.5rem',
+        'cursor': 'pointer',
+        'transition': 'transform 0.2s',
+        'padding': '1rem',
+        'width': '100%',
+        '_hover': {
+          'transform': 'scale(1.02)',
+        },
+        '.item-card-body': {
+          'padding': '1rem',
+          'h2': {
+            'fontSize': '1.2rem',
+            'margin': '1rem 0',
+          },
+          'p': {
+            'color': 'grey',
+            'fontSize': '1rem',
+            'margin': '0',
+          },
+        },
+        '.action-buttons': {
+          'gap': '1rem',
+          'justifyContent': 'end',
         },
       },
     },

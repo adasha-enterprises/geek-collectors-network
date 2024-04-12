@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
-import { SmallCloseIcon } from '@chakra-ui/icons';
+import { Button, Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react';
+import { Search2Icon, SmallCloseIcon } from '@chakra-ui/icons';
 
 type SearchBarProps = {
     onSearch: (search: string) => void;
@@ -21,26 +21,23 @@ function SearchBar({ onSearch, placeholderText = 'Search...' }: SearchBarProps) 
   };
 
   return (
-    <InputGroup>
-
+    <InputGroup className="search-bar">
+      <InputLeftElement className="search-icon" pointerEvents="none">
+        <Search2Icon/>
+      </InputLeftElement>
       <Input
         value={value}
         placeholder={placeholderText}
         onChange={handleChange}
         focusBorderColor="brand.600"
-        backgroundColor={'background'}/>
-
-      <InputRightElement>
+      />
+      <InputRightElement className="clear-button">
         <Button
-          background="transparent"
-          _active={{ bg: 'brand.600' }}
-          _hover={{ boxShadow: 'none' }}
           onClick={handleClear}
         >
-          <SmallCloseIcon color={'brand.600'} boxSize={6}/>
+          <SmallCloseIcon/>
         </Button>
       </InputRightElement>
-
     </InputGroup>
   );
 }

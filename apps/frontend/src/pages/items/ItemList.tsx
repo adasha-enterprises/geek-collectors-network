@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import SearchBar from './SearchBar';
-import useFetchData from '../hooks/useFetchData';
-import loadingAnimation from './widgets/LoadingAnimation';
+import SearchBar from '../../components/widgets/SearchBar';
+import useFetchData from '../../hooks/useFetchData';
+import loadingAnimation from '../../components/widgets/LoadingAnimation';
 import ItemCard from './ItemCard';
-import { SimpleGrid, VStack, Container, Center } from '@chakra-ui/react';
+import { SimpleGrid, VStack, Text } from '@chakra-ui/react';
 import ItemModal from './ItemModal';
 import { CardButton } from './CardButtons';
 import { ViewIcon } from '@chakra-ui/icons'; // Assuming ViewIcon for opening modal
-import { TagInfo } from '../pages/profile/TagInput';
+import { TagInfo } from '../profile/TagInput';
 
 
 type ActionProps = {
@@ -50,9 +50,9 @@ function ItemList({ url, buttons }: ItemListProps) {
   };
 
   const itemListLayout = filteredItems.length <= 0 ? (
-    <Center w="full">No items found</Center>
+    <Text>No items found</Text>
   ) : (
-    <SimpleGrid columns={[1, 2, 3]} spacing={4}>
+    <SimpleGrid columns={[1, 1, 2, 3]} spacing={4}>
       {filteredItems.map(item => {
         const cardButtons = !buttons ? [] : buttons.map(button => button(item.id));
         return (
@@ -100,30 +100,17 @@ function ItemList({ url, buttons }: ItemListProps) {
         }}
         footerActions={[
           ...modelButtons,
-          {
-            label: 'Close',
-            onClick: () => setModalOpen(false),
-            variant: 'solid',
-          },
         ]}
       />
     );
   };
 
   return (
-    <Container maxW="container.xl" centerContent p={'0'}>
-      <VStack
-        bg={'background'}
-        px={10}
-        pt={14}
-        spacing={4}
-        width={{ base: '100%', md: '90%', lg: '80%' }}
-      >
-        <SearchBar onSearch={handleItemSearch} />
-        {isLoading ? loadingAnimation : itemListLayout}
-        {itemListModal()}
-      </VStack>
-    </Container>
+    <VStack className="item-list">
+      <SearchBar onSearch={handleItemSearch} />
+      {isLoading ? loadingAnimation : itemListLayout}
+      {itemListModal()}
+    </VStack>
   );
 }
 

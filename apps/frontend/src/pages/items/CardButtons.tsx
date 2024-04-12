@@ -30,7 +30,7 @@ const addToCollectionButton = (itemId: number) => ({
 const removeFromCollectionButton = (itemId: number) => ({
   label: 'Remove from Collection',
   icon: <DeleteIcon />,
-  variant: 'outline',
+  variant: 'solid',
   colorScheme: 'brand',
   onClick: () => {
     console.log(`Removing item ${itemId} from Collection...`);
@@ -58,7 +58,7 @@ const addToWishlistButton = (itemId: number) => ({
 const removeFromWishlistButton = (itemId: number) => ({
   label: 'Remove from Wishlist',
   icon: <DeleteIcon />,
-  variant: 'outline',
+  variant: 'solid',
   colorScheme: 'brand',
   onClick: () => {
     console.log(`Removing item ${itemId} from Wishlist...`);
@@ -67,10 +67,10 @@ const removeFromWishlistButton = (itemId: number) => ({
 });
 
 const hideItemButton = (itemId: number) => ({
-  label: 'Hide item',
+  label: 'Hide',
   icon: <ViewOffIcon />,
-  variant: 'outline',
-  colorScheme: 'brand',
+  variant: 'solid',
+  colorScheme: 'gray',
   onClick: () => {
     console.log(`Hiding item ${itemId} from feed...`);
   },

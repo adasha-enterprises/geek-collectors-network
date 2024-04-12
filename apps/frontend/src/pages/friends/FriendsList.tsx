@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { VStack } from '@chakra-ui/react';
+import { VStack, Text } from '@chakra-ui/react';
 import { EmailIcon, ChatIcon } from '@chakra-ui/icons';
 
-import UserProfileCard from '../components/UserProfileCard';
-import SearchBar from '../components/SearchBar';
-import useFetchData from '../hooks/useFetchData';
-import loadingAnimation from './widgets/LoadingAnimation';
-import { Friend } from '../types/types';
+import UserProfileCard from '../profile/UserProfileCard';
+import SearchBar from '../../components/widgets/SearchBar';
+import useFetchData from '../../hooks/useFetchData';
+import loadingAnimation from '../../components/widgets/LoadingAnimation';
+import { Friend } from '../../types/types';
 
 function FriendsList() {
   const { data: friends, isLoading } = useFetchData<Friend>('/api/v1/friendship');
@@ -58,25 +58,15 @@ function FriendsList() {
             },
           ]}
         />
-      )) : <p>No friends found</p>
+      )) : <Text>No friends found</Text>
       }
     </>
   );
 
   return (
-    <VStack
-      bg={'background'}
-      px={10}
-      pt={14}
-      spacing={4}
-      width={{ base: '100%', md: '90%', lg: '80%' }}
-      alignItems={'center'}
-    >
-
+    <VStack className="friends-list">
       <SearchBar onSearch={handleUserSearch} />
-
       {isLoading ? loadingAnimation : renderFriendsList}
-
     </VStack>
   );
 }

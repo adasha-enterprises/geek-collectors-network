@@ -3,7 +3,7 @@ import { VStack } from '@chakra-ui/react';
 
 import LoginForm from './LoginForm';
 
-function LoginPage() {
+function Login() {
   return (
     <VStack
       className="background"
@@ -13,4 +13,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default Login;

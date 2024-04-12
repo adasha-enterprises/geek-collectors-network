@@ -1,8 +1,8 @@
 import React from 'react';
-import GeneralModal from './GeneralModal';
+import GeneralModal from '../../components/widgets/GeneralModal';
 import { Button, HStack, Textarea, Text } from '@chakra-ui/react';
 
-import { FriendRequestHeaderProps } from '../types/types';
+import { FriendRequestHeaderProps } from '../../types/types';
 
 
 function FriendRequestHeader({ userName } : FriendRequestHeaderProps) {

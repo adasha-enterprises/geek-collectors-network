@@ -10,7 +10,7 @@ import NavigationLinks from './NavigationLinks';
 const links = [
   { path: '/profile/edit', text: 'Profile' },
   { path: '/account', text: 'Account' },
-  { path: '/friendslist', text: 'Friends' },
+  { path: '/friends', text: 'Friends' },
   { path: '/userlist', text: 'Networking' },
   { path: '/collection', text: 'Collection' },
   { path: '/wishlist', text: 'Wishlist' },

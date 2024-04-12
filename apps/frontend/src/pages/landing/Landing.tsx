@@ -1,8 +1,8 @@
 import React from 'react';
 import { VStack, HStack, Image, Box, Text } from '@chakra-ui/react';
-import NavigationButton from '../../components/NavigationButton';
+import NavigationButton from '../../components/widgets/NavigationButton';
 
-function LandingPage() {
+function Landing() {
   return (
     <VStack
       className="background"
@@ -27,4 +27,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default Landing;

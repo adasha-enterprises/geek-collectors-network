@@ -9,7 +9,7 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 
-import { ModalProps } from '../types/types';
+import { ModalProps } from '../../types/types';
 
 
 function GeneralModal({ onClose, isOpen, headerContent, bodyContent, footerContent } : ModalProps) {
@@ -17,19 +17,11 @@ function GeneralModal({ onClose, isOpen, headerContent, bodyContent, footerConte
 
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
-      <ModalContent maxWidth={{ base: '90%', lg: '50%', xl: '40%' }}>
-
-        <ModalHeader
-          sx={{
-            paddingBottom: 0,
-          }}
-        >{headerContent}</ModalHeader>
-        <ModalCloseButton />
-
+      <ModalContent className="modal">
+        <ModalHeader className="modal-header">{headerContent}</ModalHeader>
+        <ModalCloseButton className="close-button" />
         <ModalBody>{bodyContent}</ModalBody>
-
         <ModalFooter>{footerContent}</ModalFooter>
-
       </ModalContent>
     </Modal>
 
