@@ -1,119 +1,182 @@
-# Geek Collector's Network
-&nbsp;
-## Getting Started
+# Project Release Notes
 
-The project's workflow is designed to accommodate developers who prefer working in a Docker environment or locally on their machines.
+## About this release
 
-### Prerequisites
-Before starting, install the following tools:
- - Node v18+
- - [Docker](https://docs.docker.com/get-docker/) - We use Docker to develop and package our applications.
- - GNU Make - Make provides developers with an interface to interact with projects and their tools, allowing the project to scale without requiring developers to relearn commands.
+The Geek Collectors Network (GCN) is an online social platform specifically for collectors of geek culture, ranging from toys and action figures to memorabilia from popular franchises like Pokemon, Marvel, DC, and Disney. GCN will allow users to connect with fellow enthusiasts, curate and manage wishlists of sought-after items, and showcase their personal collections. A unique feature of GCN is the ability for users to share discoveries from unique or lesser-known shops with their network.
 
-### Setup
-Simply install dependencies across all projects by running:
+## Current Features
 
-```shell
-make install
+### User Authentication
+
+- Create a new account by entering first name, last name, email, and password
+
+- Login with email and password
+- Logout
+
+### User Profile
+
+- Profile created when a user signs up for an account
+- Edit account details including email, DOB, Country, Province/State, City, About, and Interests
+- Users can edit and save profile details, then see the public-facing profile page
+- User profile avatar uses image at url
+
+### Networking
+
+- View a list of current friends
+- Filter friends by entering name in search bar
+- View a list of recommended friends
+
+- User Card had buttons to send request
+- Send request modal has optional request message
+
+- View a list of pending friend requests
+
+- User Card has buttons to accept or deny requests
+
+- Email button opens email client with template email
+
+### Collectible Items Management
+
+- See the item feed (landing page) that shows items most recently added to GCN
+- Click on the item card to open the modal that displays more item details
+
+- Larger Image
+- Description
+- External link to the item (e.g. in an online store)
+- Item tags
+
+- Add items to personal Collection or Wishlist
+- View Collection or Wishlist Items pages
+- Remove Items from the Collection or Wishlist
+
+## Known Bugs, Issues and Limitations
+
+### Landing Page
+
+- The logo not rendered correctly
+- Not redirect to the Item Feed if a user is logged in
+
+### Sign Up Page
+
+- Password only checked for minimum 8 characters length
+- Unable to sign up without both first name and last name
+
+### Login Page
+
+- No password recovery
+- No “Remember me” function
+
+### Home Page (Item Feed)
+
+- Currently gets all items not in the user’s collection or wishlist
+- No filtering method, e.g. prefer showing items
+- Hide Item button functionality not implemented
+- Adding an item to the Collection/Wishlist gives no user feedback and the item remains on the page
+- Not connected with the Geek Gift Registry items database
+- Many item fields are not displayed in the Item Card or info modal
+
+### User Profile Page
+
+- Cannot edit profile image url
+- “About” section changes do not persist
+
+### Account Page
+
+- User cannot change their password
+
+### Friends Page
+
+- Displayed users are dummy data pulled from another site, not the database
+- Messaging button, the right button, does nothing
+
+### Networking Page
+
+- Pending Friend Request tab
+
+- Users are dummy data pulled from another site, not the database
+- Accepting or denying friend requests has no functionality
+
+- Friend Suggestions tab
+
+- Accepting a Pending Friend Request does not add them to the Friends list
+
+### Collection Page
+
+- Create New Item not implemented
+- Share Collection with user not implemented
+
+### Wishlist Page
+
+- Missing Add To Collection button (i.e. when item is obtained)
+- Share Wishlist with user not implemented
+
+---
+
+# Deployment Notes
+
+## Installation Requirements
+
+- Operating System: Ubuntu 20.04+
+
+- Node v18+
+- Docker Engine v26+ (Depends if you are self-hosting the database)
+
+# Configurations
+
+Copy the example environment file `./apps/api/.env.example` and paste it inside `./apps/api/.env`
+
+You’ll find pre-set environment variables.
+
+|                   |                                                                                 |         |
+| ----------------- | ------------------------------------------------------------------------------- | ------- |
+| VARIABLE          | DESCRIPTION                                                                     | DEFAULT |
+| API_HOST          | The address to bind the application to                                          | 0.0.0.0 |
+| API_PORT          | The address to bind the port to                                                 | 3000    |
+| DATABASE_HOST     | The IPv4 address or hostname of the database                                    |         |
+| DATABASE_PORT     | The port to your MySQL database                                                 | 3306    |
+| DATABASE_USER     | The name of a user with read-write access to the GeekCollectorsNetwork database | root    |
+| DATABASE_PASSWORD | The password for the database user                                              |         |
+| DATABASE_NAME     | The name of the database to store application information                       |         |
+| WEB_ROOT          | A relative file path to the built frontend files                                |         |
+
+|
+
+# App Deployment Instructions
+
+You’ll need to install all dependencies to build and run the app:
+
+```
+npm install -ws
 ```
 
-### Launching Projects
-1. In all app projects, there is a `.env.example` file. **COPY** this file, name it `.env`, and customize it. You should only have to change the ports to make it runnable on your machine.
+## Frontend
 
+Once dependencies are installed, you must now build the frontend:
 
-2. Choose how you want to run the applications.
-
-You may choose to run all applications in Docker using:
 ```
-make dev
+npm run build
 ```
 
-**OR** launch each manually by changing the directory to each project in "apps/" and running:
+## Database
+
+If you are using a remote MySQL server, fill in the database configuration in the `./apps/api/.env` file.
+
+In the remote database, you have to create the GeekCollectorsNetwork and SessionStore databases, you can find the commands in `./docker/mysql/initdb/init.sq`.
+
+OTHERWISE if you want to locally host your database, use the pre-set database configuration and run:
+
 ```
-npm run start:dev
-```
-
-&nbsp;
-## Development
-All development will be done in projects located under `apps/` and `packages/`.
-
-Adding new files to projects must be done within the respective project folder. In most cases, you will never have to add or modify files in the root directory.
-
-### Feature Branches
-In [Issues](#Issues), the branch naming convention is described but you can ignore that if you follow the instructions in this section.
-
-1. Open an issue you want to work on.
-2. Click "Create a Branch" on the right-side panel.
-3. Accept the defaults, optionally change the short description if it bothers you.
-4. Copy the commands to open the branch locally.
-5. Paste the commands in your terminal.
-
-You've now linked an issue/task to your branch and your Pull Request (PR) will automatically close your issue when it is merged!
-
-### Installing Node Dependencies
-Besides running Make/Docker commands, you only need to run commands in the root directory when installing new Node dependencies.
-
-To install a new dependency for a project, you have to add a `-w [path/to/project]` option:
-```shell
-npm install -w ./apps/frontend -P react react-dom
-npm install -w ./apps/api -D @types/helmet
+docker compose -p geek-collectors-network -f ./docker-compose.yml up -d mysql-resource
 ```
 
-&nbsp;
-## Contribution Guidelines
-### Commits
-This project uses the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) and [Angular Convention](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines) as our method of writing meaningful commits with some minor adjustments.
+## Application 
 
-Here are some modified rules:
-1. Commit titles **MUST** be 72 characters or lower.
-2. Commit bodies **MUST** be 100 characters or lower.
+Start the application using:
 
-Choosing between commit types can be challenging and seem mostly subjective, especially if you're new. If you're unsure, ask!
-
-#### Types
-- **build**: Script or configuration changes that effect how the application is built (compiled, transpiled) or packaged (docker).
-- **chore**: Non-code changes not covered in build, docs, or ci, such as dependency updates, tool configurations, and file renaming; serves as a 'miscellaneous' type.
-- **ci**: CI/CD changes.
-- **docs**: Code or document changes that adds documentation or edits existing documentation.
-- **feat**: Code changes that adds functionality.
-- **fix**: Code changes that fix a bug.
-- **perf**: Code changes that optimizes a system's performance.
-- **refactor**: Code changes that restructure, reorganize, or simplify existing code **without altering functionality**.
-- **style**: Any changes that involve code style or formatting enhancements.
-- **test**: Code-testing changes.
-
-##### What type do I use if I need to remove a feature?
-If you need to **remove** a feature, it's been argued for a long time to be a _refactor_ but I believe you should use [feat](https://stackoverflow.com/questions/48075169/semantic-commit-type-when-remove-something/73944665#73944665), as answered by [Fernando](https://stackoverflow.com/users/1401341/fernando).
-
-> Use feat when you add or remove a feature. <br/><br/>
-> According to wikipedia, "code refactoring is the process of restructuring existing computer code without changing its external behavior". <br/><br/>
-> If you remove a feature you change code behavior so it can not be a refactor.
-
-An example of a remove commit:
 ```
-feat: remove price filtering
-
-Removed price filtering functionality from the web app and api because blah blah blah.
+npm run -w apps/api start
 ```
 
-#### Scope
-Some valid scope names include:
- - api
- - frontend
- - npm
- - docker
+# Final Code
 
-If a single commit must change functionality across multiple scopes, the scope can be left empty.
-
-If a scope cannot be determined, then the scope can be left empty. It's better to have empty scopes than to clutter up the namespaces.
-
-### GitHub
-#### Issues
-The branching convention that should be used is `[iss-number]-[description]`. The iss-number should be the number/id of the issue it's based on, without the hashtag (#). The description should be a short description with dashes in-between instead of spaces. The description should begin with a scope to make it more clear.
-
-`367-frontend-implement-user-profiles`
-
-#### Pull Requests
-When creating your PR, you should link your issue to the PR if it hasn't done so automatically. This will automatically close the issue when the PR is merged and it doubles as documentation as well.
-
-When it comes time to merge, make sure to select the "Merge Commit". The other merge options make bug-hunting harder or cause merge issues later down the line.
+[https://github.com/Geek-Collectors-Network/geek-collectors-network](https://github.com/Geek-Collectors-Network/geek-collectors-network)
