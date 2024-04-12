@@ -112,24 +112,23 @@ The Geek Collectors Network (GCN) is an online social platform specifically for 
 
 ---
 
+
 # Deployment Notes
 
-## Installation Requirements
 
-- Operating System: Ubuntu 20.04+
+## System Requirements
 
 - Node v18+
-- Docker Engine v26+ (Depends if you are self-hosting the database)
+- Docker Engine v26+ (If self-hosting the database)
 
-# Configurations
+## Configurations
 
 Copy the example environment file `./apps/api/.env.example` and paste it inside `./apps/api/.env`
 
 You’ll find pre-set environment variables.
 
-|                   |                                                                                 |         |
-| ----------------- | ------------------------------------------------------------------------------- | ------- |
 | VARIABLE          | DESCRIPTION                                                                     | DEFAULT |
+| ----------------- | ------------------------------------------------------------------------------- | ------- |
 | API_HOST          | The address to bind the application to                                          | 0.0.0.0 |
 | API_PORT          | The address to bind the port to                                                 | 3000    |
 | DATABASE_HOST     | The IPv4 address or hostname of the database                                    |         |
@@ -139,37 +138,37 @@ You’ll find pre-set environment variables.
 | DATABASE_NAME     | The name of the database to store application information                       |         |
 | WEB_ROOT          | A relative file path to the built frontend files                                |         |
 
-|
 
-# App Deployment Instructions
 
-You’ll need to install all dependencies to build and run the app:
+## App Deployment Instructions
+
+Install all dependencies to build and run the app:
 
 ```
 npm install -ws
 ```
 
-## Frontend
+### Frontend
 
-Once dependencies are installed, you must now build the frontend:
+After dependencies are installed, build the frontend with:
 
 ```
 npm run build
 ```
 
-## Database
+### Database
 
-If you are using a remote MySQL server, fill in the database configuration in the `./apps/api/.env` file.
+**If using a remote MySQL server**, fill in the database configuration in the `./apps/api/.env` file.
 
-In the remote database, you have to create the GeekCollectorsNetwork and SessionStore databases, you can find the commands in `./docker/mysql/initdb/init.sq`.
+In the remote database, create the GeekCollectorsNetwork and SessionStore databases. Find the commands in `./docker/mysql/initdb/init.sq`.
 
-OTHERWISE if you want to locally host your database, use the pre-set database configuration and run:
+**If hosting database locally**, use the pre-set database configuration and run:
 
 ```
 docker compose -p geek-collectors-network -f ./docker-compose.yml up -d mysql-resource
 ```
 
-## Application 
+### Application 
 
 Start the application using:
 
@@ -177,6 +176,13 @@ Start the application using:
 npm run -w apps/api start
 ```
 
-# Final Code
+## Final Code
 
-[https://github.com/Geek-Collectors-Network/geek-collectors-network](https://github.com/Geek-Collectors-Network/geek-collectors-network)
+Project repository:
+https://github.com/Geek-Collectors-Network/geek-collectors-network
+
+Client:
+https://github.com/Geek-Collectors-Network/geek-collectors-network/tree/main/apps/frontend
+
+Server:
+https://github.com/Geek-Collectors-Network/geek-collectors-network/tree/main/apps/api
