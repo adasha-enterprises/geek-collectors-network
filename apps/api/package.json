@@ -34,7 +34,7 @@
     "typescript": "^5.3.3"
   },
   "scripts": {
-    "start": "tsx src/index.ts",
+    "start": "tsx -r dotenv/config src/index.ts",
     "start:dev": "tsx watch --inspect=0.0.0.0:9229 -r dotenv/config src/index.ts",
     "lint": "eslint --ext ts src/ && tsc --noEmit -p tsconfig.json",
     "migrate": "drizzle-kit generate:mysql"
