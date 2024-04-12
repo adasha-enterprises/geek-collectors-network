@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
-  VStack,
-  StackDivider,
-  Avatar,
-  Button,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Input,
-  Textarea,
+  VStack, StackDivider, Avatar, Button, FormControl, FormLabel,
+  FormErrorMessage, Input, Textarea, useToast, Box,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import { profileSchema } from '../../schemas/schemas';
 import PageLayout from '../../components/PageLayout';
 import { TagInfo, TagInput } from './TagInput';
 import loadingAnimation from '../../components/widgets/LoadingAnimation';
 
-type ProfileInfo = {
+type ProfileInfoProps = {
+  id: string,
   firstName: string;
   lastName: string;
   profileImageUrl: string;
@@ -33,48 +28,86 @@ function formatDate(date: Date) {
   const month = date.getUTCMonth() + 1; // Months are zero-indexed, so add 1
   const day = date.getUTCDate();
   const year = date.getUTCFullYear();
+
   // Format the date as MM/DD/YYYY
   const formattedDate = `${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`;
-
   return formattedDate;
 }
 
-const updateProfile = async (values: ProfileInfo) => {
-  const response = await fetch('/api/v1/user/profile', {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(values),
-  });
+async function updateProfile (values: ProfileInfoProps): Promise<boolean> {
+  try {
+    const response = await fetch('/api/v1/user/profile', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values),
+    });
 
-  if (!response.ok) {
-    const { error } = await response.json();
-    throw new Error(error.message);
+    const data = await response.json();
+    if (!response.ok || data.isError) {
+      throw new Error(data.message || 'Failed to update profile due to network request error.');
+    }
+    return true;
+  } catch (error) {
+    console.log('Profile update failed: ', error);
+    return false;
   }
-};
+}
 
 function ProfileInfo() {
-  const [initialValues, setInitialValues] = useState<ProfileInfo | null>(null);
+  const [initialValues, setInitialValues] = useState<ProfileInfoProps | null>(null);
   const [tags, setTags] = useState<TagInfo[]>([]);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const toast = useToast();
+
+  const goToProfile = () => {
+    navigate(`/profile/${initialValues?.id}`);
+  };
+
+  const handleUpdateProfile = async (values: ProfileInfoProps) => {
+    setIsLoading(true);
+    const success = await updateProfile(values);
+    setIsLoading(false);
+
+    if (success) {
+      toast({
+        title: 'Profile succesfully updated!',
+        status: 'success',
+        duration: 2000,
+      });
+    } else {
+      toast({
+        title: 'Profile update failed.',
+        status: 'error',
+        duration: 2000,
+      });
+    }
+  };
 
   useEffect(() => {
-    fetch('/api/v1/user/profile', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(({ data }) => {
-        setInitialValues({
-          ...data,
-          birthDate: formatDate(new Date(data.birthDate)),
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch('/api/v1/user/profile', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
         });
+
+        const { data } = await response.json();
+        setInitialValues({ ...data, birthDate: formatDate(new Date(data.birthDate)) });
         setTags(data.tags);
-      })
-      .catch(error => console.error(error));
-  }, []);
+        setIsLoading(false);
+      } catch (error) {
+        toast({
+          title: 'Failed to load profile data.',
+          description: 'Please refresh the page to try again.',
+          status: 'error',
+          duration: 2000,
+        });
+        setIsLoading(false);
+      }
+    };
+    fetchProfile();
+  }, [toast]);
 
   if (!initialValues) {
     return (
@@ -89,14 +122,12 @@ function ProfileInfo() {
       <Formik
         initialValues={initialValues}
         validationSchema={profileSchema}
-        onSubmit={values => updateProfile(values)}
+        onSubmit={handleUpdateProfile}
       >
         {formik => (
           <Form className="profile-form">
             <VStack gap={1} divider={<StackDivider/>} >
-              <Avatar className="avatar" border={'1px'} size={['lg', 'xl']} name={`${initialValues.firstName} ${initialValues.lastName}`} src={initialValues.profileImageUrl}>
-                {/* <AvatarBadge boxSize={'1em'} bg="brand.500" border={'1px'} >+</AvatarBadge> */}
-              </Avatar>
+              <Avatar className="avatar" border={'1px'} size={['lg', 'xl']} name={`${initialValues.firstName} ${initialValues.lastName}`} src={initialValues.profileImageUrl}></Avatar>
               <FormControl id={'email'} isInvalid={!!(formik.errors.email && formik.touched.email)}>
                 <FormLabel>Email</FormLabel>
                 <Field as={Input} name={'email'}></Field>
@@ -135,19 +166,37 @@ function ProfileInfo() {
                 <FormLabel>Interests</FormLabel>
                 <TagInput tags={tags} setTags={setTags} />
               </FormControl>
-              <Button
-                className="submit-button"
-                type="submit"
-                colorScheme="brand"
-                variant="outline"
-                _hover={{
-                  backgroundColor: 'brand.500',
-                  border: '1px solid transparent',
-                  color: 'white',
-                }}
-                disabled={!formik.dirty || formik.isSubmitting}>
-                                SAVE
-              </Button>
+              <Box display="flex" flexDirection="column" width="100%">
+                <Button
+                  className="submit-button"
+                  isLoading={isLoading}
+                  type="submit"
+                  colorScheme="brand"
+                  variant="outline"
+                  _hover={{
+                    backgroundColor: 'brand.500',
+                    border: '1px solid transparent',
+                    color: 'white',
+                  }}
+                  disabled={!formik.dirty || formik.isSubmitting}
+                >
+                SAVE
+                </Button>
+                <Button
+                  className="submit-button"
+                  onClick={goToProfile}
+                  colorScheme="brand"
+                  type="button"
+                  variant="outline"
+                  _hover={{
+                    backgroundColor: 'brand.500',
+                    border: '1px solid transparent',
+                    color: 'white',
+                  }}
+                >
+                SEE MY PROFILE
+                </Button>
+              </Box>
             </VStack>
           </Form>
         )}
