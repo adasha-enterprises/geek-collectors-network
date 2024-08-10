@@ -52,8 +52,8 @@ COPY --from=node /usr/local/lib/ /usr/local/lib/
 COPY --from=node /usr/local/bin/ /usr/local/bin/
 
 # Create user and workspace
-RUN groupadd -f --gid 1000 ${USER} \
-    && useradd --uid 1000 --gid ${USER} --shell /bin/bash --create-home ${USER} \
+RUN groupadd -f --gid 1111 ${USER} \
+    && useradd --uid 1111 --gid ${USER} --shell /bin/bash --create-home ${USER} \
     && mkdir ${WORKSPACE} \
     && chown -R ${USER}:${USER} ${WORKSPACE}
 
