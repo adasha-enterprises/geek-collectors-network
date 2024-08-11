@@ -27,7 +27,7 @@ export class Server {
       contentSecurityPolicy: process.env.NODE_ENV === 'development' ? false : {
         directives: {
           'script-src': ['\'self\''],
-          'img-src': ['\'self\'', 'data:'],
+          'img-src': ['\'self\'', 'data:', 'https://ggr-images.s3-us-west-2.amazonaws.com'],
           'connect-src': ['\'self\''],
         },
       },
